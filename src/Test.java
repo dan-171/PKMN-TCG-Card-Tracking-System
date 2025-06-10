@@ -11,4 +11,5 @@ public class Test {
 	//test class	
 	// ahahhaa
 	//dont hahaha
+	//if not doro appear in your room
 }
