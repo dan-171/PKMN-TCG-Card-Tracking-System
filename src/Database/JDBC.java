@@ -18,7 +18,7 @@ public class JDBC {
 	{
 		driver = "com.mysql.jdbc.Driver";
 		connectionURL = "jdbc:mysql://localhost:3306/";
-		dbName = "pokemon";
+		dbName = "pkmn-tcg-card-tracking-system";
 		username = "root";
 		password = "";
 	}
@@ -34,7 +34,7 @@ public class JDBC {
 	    try (Connection conn = getConnection();
 	         Statement stmt = conn.createStatement()) {
 
-	        String query = "SELECT * FROM persons WHERE Username = '" + username + "' AND Password = '" + password + "'";
+	        String query = "SELECT * FROM players WHERE Username = '" + username + "' AND Password = '" + password + "'";
 	        ResultSet rs = stmt.executeQuery(query);
 	        return rs.next();
 
