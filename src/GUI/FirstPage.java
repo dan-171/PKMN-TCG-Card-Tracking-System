@@ -1,6 +1,7 @@
 package GUI;
 
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Iterator;
@@ -217,15 +218,54 @@ public class FirstPage implements ActionListener{
 		}
 		
 		else if (event.getSource() == signInButton) {
-		    
+			// Handle login
+	        try {
+	            BasicJDBC db = new BasicJDBC();
+	            boolean isValid = db.validateLogin(usernameField.getText(), passwordField.getText());
+
+	            if (isValid) {
+	                JOptionPane.showMessageDialog(frame, "Login successful!");
+	                // proceed to the main application
+	            } else {
+	                JOptionPane.showMessageDialog(frame, "Invalid username or password.");
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            JOptionPane.showMessageDialog(frame, "Error while logging in.");
+	        }
 		}
 		
 		else if (event.getSource() == registerButton) {
+			// Handle registration
+	        try {
+	            BasicJDBC db = new BasicJDBC();
 
+	            if (passwordField1.getText().equals(passwordField2.getText()) &&
+	                !usernameField.getText().isEmpty()) {
+
+	                int id = db.insertUser(usernameField.getText(), passwordField1.getText());
+
+	                if (id > 0) {
+	                    JOptionPane.showMessageDialog(frame,
+	                         "Registration successful!\nYour User ID: " + id + 
+	                         "\nUsername: " + usernameField.getText() + 
+	                         "\nPassword: " + passwordField1.getText());  
+	                } else {
+	                    JOptionPane.showMessageDialog(frame, "Registration failed.");
+	                }
+	            } else {
+	                JOptionPane.showMessageDialog(frame, "Passwords do not match or Username is empty.");
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            JOptionPane.showMessageDialog(frame, "Error while registering.");
+	        }
 		}
+
 	}
 	
 	public static void main (String [] args){
 		new FirstPage();
+
 	}
 }
