@@ -321,7 +321,7 @@ public class FirstPage implements ActionListener{
 		else if (event.getSource() == savePasswordButton) {
 			// Handle registration
 	        try {
-	            BasicJDBC db = new BasicJDBC();
+	            JDBC db = new JDBC();
 	            char[] passwordChars1 = passwordField1.getPassword();
 	            String password1 = new String(passwordChars1);
 	            char[] passwordChars2 = passwordField2.getPassword();
@@ -354,17 +354,11 @@ public class FirstPage implements ActionListener{
 		else if (event.getSource() == signInButton) {
 			// Handle login
 	        try {
-<<<<<<< HEAD
 	            JDBC db = new JDBC();
-	            boolean isValid = db.validateLogin(usernameField.getText(), passwordField.getText());
-=======
-	            BasicJDBC db = new BasicJDBC();
 	            char[] passwordChars = passwordField.getPassword();
 	            String password = new String(passwordChars);
 
-
 	            boolean isValid = db.validateLogin(usernameField.getText(), password);
->>>>>>> fe1488ca5d552742b2c0f189e9049ccc14345bab
 
 	            if (isValid) {
 	                JOptionPane.showMessageDialog(frame, "Login successful!");
@@ -387,19 +381,14 @@ public class FirstPage implements ActionListener{
 		else if (event.getSource() == registerButton) {
 			// Handle registration
 	        try {
-<<<<<<< HEAD
-	            JDBC db = new JDBC();
 
-	            if (passwordField1.getText().equals(passwordField2.getText()) &&
-=======
-	            BasicJDBC db = new BasicJDBC();
+	            JDBC db = new JDBC();
 	            char[] passwordChars1 = passwordField1.getPassword();
 	            String password1 = new String(passwordChars1);
 	            char[] passwordChars2 = passwordField2.getPassword();
 	            String password2 = new String(passwordChars2);
 	            
 	            if (password1.equals(password2) &&
->>>>>>> fe1488ca5d552742b2c0f189e9049ccc14345bab
 	                !usernameField.getText().isEmpty()) {
 
 	                int id = db.insertUser(usernameField.getText(), password1);
