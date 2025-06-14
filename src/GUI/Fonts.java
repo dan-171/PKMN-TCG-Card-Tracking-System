@@ -6,18 +6,25 @@ import java.awt.*;
 
 public class  Fonts{
 	private Font header,heading1, heading2,  bodyFont;
-	private final int headerFontSize = 50,heading1Size = 36 , heading2Size = 30,  bodyFontSize = 16; 
+	private final int headerFontSize = 50, heading1Size = 36 , heading2Size = 30,  bodyFontSize = 20; 
 	
 	public Fonts() {
 		this.header = new Font("Times New Roman", Font.BOLD, headerFontSize);
 		this.heading1 = new Font("Times New Roman", Font.BOLD, heading1Size);
 		this.heading2 = new Font("Times New Roman", Font.BOLD, heading2Size);
 		this.bodyFont = new Font("Times New Roman", Font.PLAIN, bodyFontSize);
+		
+		
+		//Change the default fonts
+		UIManager.put("Label.font", bodyFont);
+        UIManager.put("Button.font", bodyFont);
+        UIManager.put("TextField.font", bodyFont);
+        UIManager.put("PasswordField.font", bodyFont);
 	}
 	
 	
 	//Overloading 
-	public void HeaderFont(JLabel jLabel ) {
+	public void HeaderFont(JLabel jLabel) {
 		jLabel.setFont(header);
 	}
 	
