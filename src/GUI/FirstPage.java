@@ -11,8 +11,11 @@ import java.util.Iterator;
 public class FirstPage implements ActionListener{
 	private JFrame frame;
 	private JPanel northPanel, centralPanel, westPanel, centralRightPanel, centralLeftPanel;
-	private JTextField usernameField, passwordField, passwordField1, passwordField2;
-	JButton signInButton, registerButton,signInMenu, registerMenu, forgotPassword;
+	private JTextField usernameField, userIDField;
+	private JPasswordField  passwordField, passwordField1, passwordField2;
+	private JButton signInButton, registerButton,passwordMenu, signInMenu, registerMenu, savePasswordButton;
+	private JCheckBox showPasswordCheckBox;
+	private Boolean showPasswordBoolean;
 	private JRadioButton rb1, rb2, rb3;
 	private ButtonGroup group;
 	
@@ -20,6 +23,7 @@ public class FirstPage implements ActionListener{
 	Fonts fonts = new Fonts();
 	SetUp setUp = new SetUp();
 	GridBagConstraints gbc = new GridBagConstraints();
+	
 	
 	public static final int breadth = 1920, length = 1080, Margin = 300;
 	
@@ -40,7 +44,10 @@ public class FirstPage implements ActionListener{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
 		centralRightPanel= setUp.gridBagLayout();
-		centralLeftPanel = setUp.gridLayout(2, 1);
+		centralLeftPanel = setUp.gridBagLayout();
+		showPasswordBoolean = false;
+		showPasswordCheckBox = new JCheckBox("Show Password");
+		
 		
 	}
 	
@@ -69,30 +76,21 @@ public class FirstPage implements ActionListener{
         
 		//Left Part
 		//Sign In button
-		gbc.insets = new Insets(150, 0, 0, 100); // Top, Left, Bottom, Right padding
-		
-		JPanel leftPanel1 = setUp.gridBagLayout();
+		setUp.setGBC(gbc, 0, 0, 2, gbc.CENTER, gbc.NONE, new Insets(0, 0, 0, 100), 0);
 		signInMenu = new JButton("Sign In"); 
 		signInMenu.addActionListener(this);
 		fonts.Heading1(signInMenu);	
 		signInMenu.setPreferredSize(menuDimension);
-		
-		leftPanel1.add(signInMenu, gbc);
-		centralLeftPanel.add(leftPanel1);
+		centralLeftPanel.add(signInMenu, gbc);
 		
 		
 		//Register button
-		//Adjust gbc for the leftPanel2
-		gbc.insets = new Insets(0, 0, 280, 100); 
-	
-		JPanel leftPanel2 = setUp.gridBagLayout();	
+		//Adjust gbc  
+		setUp.setGBC(gbc, 0, 1, 2, gbc.CENTER, gbc.NONE, new Insets(80, 0, 160, 100), 0);
 		registerMenu = new JButton("Register");
 		registerMenu.addActionListener(this);
-		leftPanel2.add(registerMenu);
 		registerMenu.setPreferredSize(menuDimension);
-		
-		leftPanel2.add(registerMenu, gbc);
-		centralLeftPanel.add(leftPanel2);
+		centralLeftPanel.add(registerMenu, gbc);
 		
 		
 		
@@ -105,11 +103,8 @@ public class FirstPage implements ActionListener{
 	
 	
 	public void signInCentralPanel() {
-		//Right Part
-		
-		
 		// Title Label
-		JLabel titleJLabel = new JLabel("Please Sign In.");
+		JLabel titleJLabel = new JLabel("Please Sign In");
 		setUp.setGBC(gbc, 0, 0, 2, gbc.CENTER, gbc.NONE, new Insets(-200, 0, 0, 0), 0);
 		fonts.Heading1(titleJLabel);
 		centralRightPanel.add(titleJLabel, gbc);
@@ -120,69 +115,144 @@ public class FirstPage implements ActionListener{
 		setUp.setGBC(gbc, 0, 1, 1, gbc.LINE_START, gbc.NONE, userInsets, 0);
 		centralRightPanel.add(usernameJLabel, gbc);
 
-		usernameField = new JTextField(10);
+		usernameField = new JTextField(20);
 		setUp.setGBC(gbc, 1, 1, 1, gbc.LINE_START, gbc.HORIZONTAL, userInsets, 1);
 		centralRightPanel.add(usernameField, gbc);
 
 		//Password
-		Insets passwordInsets = new Insets(-20, 0, 50, 0);
+		Insets passwordInsets = new Insets(-20, 0, 30, 0);
 		JLabel passwordJLabel = new JLabel("Password: ");
 		setUp.setGBC(gbc, 0, 2, 1, gbc.LINE_START, gbc.NONE, passwordInsets, 0);
 		centralRightPanel.add(passwordJLabel, gbc);
 		
-		passwordField = new JTextField(10);
+		passwordField = new JPasswordField (20);
 		setUp.setGBC(gbc, 1, 2, 1, gbc.LINE_START, gbc.HORIZONTAL, passwordInsets, 1);
 		centralRightPanel.add(passwordField, gbc);
+		
+		showPasswordCheckBox.addActionListener(this);
+		setUp.setGBC(gbc, 0, 3, 1, gbc.LINE_START, gbc.NONE, passwordInsets, 1);
+		centralRightPanel.add(showPasswordCheckBox, gbc);
+		
+		//Change the pattern to hide the text
+		passwordField.setEchoChar('*'); 
 		
 		//Sign In Button
 		signInButton = new JButton("Log In");
 		fonts.Heading2(signInButton);
 		signInButton.addActionListener(this);
-		setUp.setGBC(gbc, 0, 3, 2, gbc.CENTER, gbc.HORIZONTAL, new Insets(0, 0, 20, 0), 1);
+		setUp.setGBC(gbc, 0, 4, 2, gbc.CENTER, gbc.HORIZONTAL, new Insets(0, 0, 20, 0), 1);
 		centralRightPanel.add(signInButton, gbc);
 		
 		
-		forgotPassword	= new JButton("Forgot Password");
-		setUp.setGBC(gbc, 0, 4, 2, gbc.CENTER, gbc.NONE, new Insets(0, 0, 0, 0), 1);
-		forgotPassword.addActionListener(this);
-		centralRightPanel.add(forgotPassword, gbc);
-		
-		
+		passwordMenu = new JButton("Forgot Password");
+		setUp.setGBC(gbc, 0, 5, 2, gbc.CENTER, gbc.NONE, new Insets(0, 0, 0, 0), 1);
+		passwordMenu.addActionListener(this);
+		centralRightPanel.add(passwordMenu, gbc);
 	} 
 	
 	public void registerCentralPanel() {
+		// Title Label
+		JLabel titleJLabel = new JLabel("Please Register");
+		setUp.setGBC(gbc, 0, 0, 2, gbc.CENTER, gbc.NONE, new Insets(-200, 0, 0, 0), 0);
+		fonts.Heading1(titleJLabel);
+		centralRightPanel.add(titleJLabel, gbc);
+
 		
+		//Username 
+		Insets userInsets = new Insets(-50, 0, 50, 0);
 		JLabel usernameJLabel = new JLabel("Username: ");
+		setUp.setGBC(gbc, 0, 1, 1, gbc.LINE_START, gbc.NONE, userInsets, 0);
+		centralRightPanel.add(usernameJLabel, gbc);
+
 		usernameField = new JTextField(10);
-		setUp.formField(centralRightPanel, usernameJLabel, usernameField, 3, 3);
+		setUp.setGBC(gbc, 1, 1, 1, gbc.LINE_START, gbc.HORIZONTAL, userInsets, 1);
+		centralRightPanel.add(usernameField, gbc);
 		
+		//Password
+		Insets passwordInsets = new Insets(-20, 0, 30, 0);
+		JLabel passwordJLabel1 = new JLabel("Password: ");
+		setUp.setGBC(gbc, 0, 2, 1, gbc.LINE_START, gbc.NONE, passwordInsets, 0);
+		centralRightPanel.add(passwordJLabel1, gbc);
 		
+		passwordField1 = new JPasswordField (10);
+		setUp.setGBC(gbc, 1, 2, 1, gbc.LINE_START, gbc.HORIZONTAL, passwordInsets, 1);
+		centralRightPanel.add(passwordField1, gbc);
 		
-		JLabel pwd1 = new JLabel("Password: ");
-		passwordField1 = new JTextField(10);
-		JLabel pwd2 = new JLabel("Confirm Password: ");
-		passwordField2 = new JTextField(10);
+		JLabel passwordJLabel2 = new JLabel("Confirm Password: ");
+		setUp.setGBC(gbc, 0, 3, 1, gbc.LINE_START, gbc.NONE, passwordInsets, 0);
+		centralRightPanel.add(passwordJLabel2, gbc);
 		
+		passwordField2 = new JPasswordField (10);
+		setUp.setGBC(gbc, 1, 3, 1, gbc.LINE_START, gbc.HORIZONTAL, passwordInsets, 1);
+		centralRightPanel.add(passwordField2, gbc);
 		
+		showPasswordCheckBox.addActionListener(this);
+		setUp.setGBC(gbc, 0, 4, 1, gbc.LINE_START, gbc.NONE, passwordInsets, 0);
+		centralRightPanel.add(showPasswordCheckBox, gbc);
 		
-		centralRightPanel.add(new JPanel());
-		centralRightPanel.add(new JPanel());
-		centralRightPanel.add(pwd1);
-		centralRightPanel.add(passwordField1);
-		centralRightPanel.add(pwd2);
-		centralRightPanel.add(passwordField2);
+		//Change the pattern to hide the text
+        passwordField1.setEchoChar('*'); 
+        passwordField2.setEchoChar('*');
+
+		//Register Button
+		 registerButton = new JButton("Register");
+		 fonts.Heading2(registerButton);
+		 registerButton.addActionListener(this);
+		 setUp.setGBC(gbc, 0, 5, 2, gbc.CENTER, gbc.HORIZONTAL, new Insets(0, 0, 20, 0), 1);
+		 centralRightPanel.add(registerButton, gbc);
 		
+	} 
+	
+	public void forgotPasswordCentralPanel() {
+		// Title Label
+		JLabel titleJLabel = new JLabel("Forgot Password");
+		setUp.setGBC(gbc, 0, 0, 2, gbc.CENTER, gbc.NONE, new Insets(-200, 0, 0, 0), 0);
+		fonts.Heading1(titleJLabel);
+		centralRightPanel.add(titleJLabel, gbc);
+
 		
+		//Username 
+		Insets userInsets = new Insets(-50, 0, 50, 0);
+		JLabel userIDJLabel = new JLabel("User ID: ");
+		setUp.setGBC(gbc, 0, 1, 1, gbc.LINE_START, gbc.NONE, userInsets, 0);
+		centralRightPanel.add(userIDJLabel, gbc);
+
+		userIDField = new JTextField(10);
+		setUp.setGBC(gbc, 1, 1, 1, gbc.LINE_START, gbc.HORIZONTAL, userInsets, 1);
+		centralRightPanel.add(userIDField, gbc);
 		
-		registerButton = new JButton("Register");
-		fonts.Heading2(registerButton);
-		registerButton.addActionListener(this);
+		//Password
+		Insets passwordInsets = new Insets(-20, 0, 30, 0);
+		JLabel passwordJLabel1 = new JLabel("Password: ");
+		setUp.setGBC(gbc, 0, 2, 1, gbc.LINE_START, gbc.NONE, passwordInsets, 0);
+		centralRightPanel.add(passwordJLabel1, gbc);
 		
-		centralRightPanel.add(new JLabel());
-		centralRightPanel.add(registerButton);
+		passwordField1 = new JPasswordField (10);
+		setUp.setGBC(gbc, 1, 2, 1, gbc.LINE_START, gbc.HORIZONTAL, passwordInsets, 1);
+		centralRightPanel.add(passwordField1, gbc);
 		
-		centralRightPanel.add(centralRightPanel);
+		JLabel passwordJLabel2 = new JLabel("Confirm Password: ");
+		setUp.setGBC(gbc, 0, 3, 1, gbc.LINE_START, gbc.NONE, passwordInsets, 0);
+		centralRightPanel.add(passwordJLabel2, gbc);
 		
+		passwordField2 = new JPasswordField (10);
+		setUp.setGBC(gbc, 1, 3, 1, gbc.LINE_START, gbc.HORIZONTAL, passwordInsets, 1);
+		centralRightPanel.add(passwordField2, gbc);
+		
+		showPasswordCheckBox.addActionListener(this);
+		setUp.setGBC(gbc, 0, 4, 1, gbc.LINE_START, gbc.NONE, passwordInsets, 0);
+		centralRightPanel.add(showPasswordCheckBox, gbc);
+		
+		//Change the pattern to hide the text
+        passwordField1.setEchoChar('*'); 
+        passwordField2.setEchoChar('*');
+
+		//save Password Button
+         savePasswordButton = new JButton("Save Password");
+		 fonts.Heading2(savePasswordButton);
+		 savePasswordButton.addActionListener(this);
+		 setUp.setGBC(gbc, 0, 5, 2, gbc.CENTER, gbc.HORIZONTAL, new Insets(0, 0, 20, 0), 1);
+		 centralRightPanel.add(savePasswordButton, gbc);
 	} 
 	
 	public void WestPanel() {
@@ -201,31 +271,108 @@ public class FirstPage implements ActionListener{
 		frame.add(eastPanel, BorderLayout.EAST);
 	}
 	
-	
 	public void actionPerformed(ActionEvent event) {
 		if (event.getSource() == signInMenu) {
 		    fonts.Heading1(signInMenu);
 		    fonts.BodyFont(registerMenu);
 		    centralRightPanel.removeAll(); // Clear existing components
 		    signInCentralPanel(); 
+		    centralRightPanel.revalidate();     //Recalculate layout
+		    centralRightPanel.repaint();        //Repaint the panel
+		    
+		    //Reset the showPasswordCheckBox
+		    showPasswordCheckBox.setSelected(false);
 		}
-
+		
 		else if (event.getSource() == registerMenu) {
 		    fonts.Heading1(registerMenu);    
 		    fonts.BodyFont(signInMenu);
 		    centralRightPanel.removeAll(); 
 		    registerCentralPanel(); 
+		    centralRightPanel.revalidate();     
+		    centralRightPanel.repaint();
+		    
+		    //Reset the showPasswordCheckBox
+		    showPasswordCheckBox.setSelected(false);
+		}
+		
+		else if (event.getSource() == showPasswordCheckBox) {
+				// Show text
+				if (showPasswordCheckBox.isSelected()) {
+	                passwordField.setEchoChar((char) 0); 
+	                passwordField1.setEchoChar((char) 0); 
+	                passwordField2.setEchoChar((char) 0); 
+	            } else {
+	                passwordField.setEchoChar('*'); // Hide text
+	                passwordField1.setEchoChar('*'); 
+	                passwordField2.setEchoChar('*');
+	            }
+		}
+		
+
+		else if (event.getSource() == passwordMenu) {
+		    centralRightPanel.removeAll(); // Clear existing components
+		    forgotPasswordCentralPanel(); // Call the method to set up the forgot password UI
+		    centralRightPanel.revalidate(); // Refresh layout
+		    centralRightPanel.repaint();    // Repaint to show changes
+		    
+		    // Reset the showPasswordCheckBox
+		    showPasswordCheckBox.setSelected(false);
+		}
+
+		
+		else if (event.getSource() == savePasswordButton) {
+			// Handle registration
+	        try {
+	            BasicJDBC db = new BasicJDBC();
+	            char[] passwordChars1 = passwordField1.getPassword();
+	            String password1 = new String(passwordChars1);
+	            char[] passwordChars2 = passwordField2.getPassword();
+	            String password2 = new String(passwordChars2);
+	            
+	            
+	            //Check to change to the forgot password function
+	            if (password1.equals(password2) &&
+	                !userIDField.getText().isEmpty()) {
+	            	
+	                int id = db.insertUser(userIDField.getText(), password1);
+
+	                if (id > 0) {
+	                    JOptionPane.showMessageDialog(frame,
+	                         "Registration successful!\nYour User ID: " + id + 
+	                         "\nUsername: " + usernameField.getText() + 
+	                         "\nPassword: " + password1);  
+	                } else {
+	                    JOptionPane.showMessageDialog(frame, "Registration failed.");
+	                }
+	            } else {
+	                JOptionPane.showMessageDialog(frame, "Passwords do not match or Username is empty.");
+	            }
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	            JOptionPane.showMessageDialog(frame, "Error while registering.");
+	        }
 		}
 		
 		else if (event.getSource() == signInButton) {
 			// Handle login
 	        try {
 	            BasicJDBC db = new BasicJDBC();
-	            boolean isValid = db.validateLogin(usernameField.getText(), passwordField.getText());
+	            char[] passwordChars = passwordField.getPassword();
+	            String password = new String(passwordChars);
+
+
+	            boolean isValid = db.validateLogin(usernameField.getText(), password);
 
 	            if (isValid) {
 	                JOptionPane.showMessageDialog(frame, "Login successful!");
+	                
+	                
+	                
 	                // proceed to the main application
+	                
+	                
+	                
 	            } else {
 	                JOptionPane.showMessageDialog(frame, "Invalid username or password.");
 	            }
@@ -239,17 +386,21 @@ public class FirstPage implements ActionListener{
 			// Handle registration
 	        try {
 	            BasicJDBC db = new BasicJDBC();
-
-	            if (passwordField1.getText().equals(passwordField2.getText()) &&
+	            char[] passwordChars1 = passwordField1.getPassword();
+	            String password1 = new String(passwordChars1);
+	            char[] passwordChars2 = passwordField2.getPassword();
+	            String password2 = new String(passwordChars2);
+	            
+	            if (password1.equals(password2) &&
 	                !usernameField.getText().isEmpty()) {
 
-	                int id = db.insertUser(usernameField.getText(), passwordField1.getText());
+	                int id = db.insertUser(usernameField.getText(), password1);
 
 	                if (id > 0) {
 	                    JOptionPane.showMessageDialog(frame,
 	                         "Registration successful!\nYour User ID: " + id + 
 	                         "\nUsername: " + usernameField.getText() + 
-	                         "\nPassword: " + passwordField1.getText());  
+	                         "\nPassword: " + password1);  
 	                } else {
 	                    JOptionPane.showMessageDialog(frame, "Registration failed.");
 	                }
@@ -261,6 +412,7 @@ public class FirstPage implements ActionListener{
 	            JOptionPane.showMessageDialog(frame, "Error while registering.");
 	        }
 		}
+		
 
 	}
 	
