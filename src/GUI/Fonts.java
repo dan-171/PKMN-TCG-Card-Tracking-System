@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class  Fonts{
 	private Font header,heading1, heading2,  bodyFont;
-	private final int headerFontSize = 50,heading1Size = 36 , heading2Size = 30,  bodyFontSize = 20; 
+	private final int headerFontSize = 50, heading1Size = 36 , heading2Size = 30,  bodyFontSize = 20; 
 	
 	public Fonts() {
 		this.header = new Font("Times New Roman", Font.BOLD, headerFontSize);
@@ -19,6 +19,7 @@ public class  Fonts{
 		UIManager.put("Label.font", bodyFont);
         UIManager.put("Button.font", bodyFont);
         UIManager.put("TextField.font", bodyFont);
+        UIManager.put("PasswordField.font", bodyFont);
 	}
 	
 	
