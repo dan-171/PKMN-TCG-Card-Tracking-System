@@ -1,21 +1,18 @@
 package GUI;
 
+import Database.JDBC;
+
 import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Iterator;
 
-
-
 public class FirstPage implements ActionListener{
 	private JFrame frame;
 	private JPanel northPanel, centralPanel, westPanel, centralRightPanel, centralLeftPanel;
 	private JTextField usernameField, passwordField, passwordField1, passwordField2;
 	JButton signInButton, registerButton,signInMenu, registerMenu, forgotPassword;
-	private JRadioButton rb1, rb2, rb3;
-	private ButtonGroup group;
-	
 	
 	Fonts fonts = new Fonts();
 	SetUp setUp = new SetUp();
@@ -220,7 +217,7 @@ public class FirstPage implements ActionListener{
 		else if (event.getSource() == signInButton) {
 			// Handle login
 	        try {
-	            BasicJDBC db = new BasicJDBC();
+	            JDBC db = new JDBC();
 	            boolean isValid = db.validateLogin(usernameField.getText(), passwordField.getText());
 
 	            if (isValid) {
@@ -238,7 +235,7 @@ public class FirstPage implements ActionListener{
 		else if (event.getSource() == registerButton) {
 			// Handle registration
 	        try {
-	            BasicJDBC db = new BasicJDBC();
+	            JDBC db = new JDBC();
 
 	            if (passwordField1.getText().equals(passwordField2.getText()) &&
 	                !usernameField.getText().isEmpty()) {
