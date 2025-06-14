@@ -16,9 +16,6 @@ public class SetUp {
 		return panel;
 	}
 	
-	
-	
-	
 	//Overloading
 	public void formField(JPanel panel, JLabel jLabel, JTextField jtextfield, int totalRow, int targetRow) {
 		for (int i = 0; i < totalRow;i++) {
