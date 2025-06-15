@@ -9,15 +9,12 @@ import javax.swing.JOptionPane;
 public class Main {
 
 	public static void main(String[] args) {
-		JDBC db = new JDBC();
-
+		
 		try 
 		{
 			//Create a connection to the database
-			Connection conn = db.getConnection();
+			Connection conn = JDBC.getConnection();
 			JOptionPane.showMessageDialog(null, "Database successfully connected!");
-			//Create a Statement object
-			Statement stmt = conn.createStatement();
 
 			new FirstPage();
 		}
