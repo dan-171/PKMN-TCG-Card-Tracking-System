@@ -1,6 +1,6 @@
 package GUI;
 
-import Database.JDBC;
+import Database.PlayerAccess;
 
 import javax.swing.*;
 
@@ -13,7 +13,7 @@ public class FirstPage implements ActionListener{
 	private JPanel northPanel, centralPanel, westPanel, centralRightPanel, centralLeftPanel;
 	private JTextField usernameField, userIDField;
 	private JPasswordField  passwordField, passwordField1, passwordField2;
-	private JButton signInButton, registerButton,passwordMenu, signInMenu, registerMenu, savePasswordButton;
+	private JButton signInButton, registerButton,passwordMenu, signInMenu, registerMenu, resetPasswordButton;
 	private JCheckBox showPasswordCheckBox;
 	private Boolean showPasswordBoolean;
 	
@@ -134,7 +134,7 @@ public class FirstPage implements ActionListener{
 		passwordField.setEchoChar('*'); 
 		
 		//Sign In Button
-		signInButton = new JButton("Log In");
+		signInButton = new JButton("Sign In");
 		fonts.Heading2(signInButton);
 		signInButton.addActionListener(this);
 		setUp.setGBC(gbc, 0, 4, 2, gbc.CENTER, gbc.HORIZONTAL, new Insets(0, 0, 20, 0), 1);
@@ -244,12 +244,12 @@ public class FirstPage implements ActionListener{
         passwordField1.setEchoChar('*'); 
         passwordField2.setEchoChar('*');
 
-		//save Password Button
-         savePasswordButton = new JButton("Save Password");
-		 fonts.Heading2(savePasswordButton);
-		 savePasswordButton.addActionListener(this);
+		//reset Password Button
+         resetPasswordButton = new JButton("Reset Password");
+		 fonts.Heading2(resetPasswordButton);
+		 resetPasswordButton.addActionListener(this);
 		 setUp.setGBC(gbc, 0, 5, 2, gbc.CENTER, gbc.HORIZONTAL, new Insets(0, 0, 20, 0), 1);
-		 centralRightPanel.add(savePasswordButton, gbc);
+		 centralRightPanel.add(resetPasswordButton, gbc);
 	} 
 	
 	public void WestPanel() {
@@ -318,10 +318,11 @@ public class FirstPage implements ActionListener{
 		}
 
 		
-		else if (event.getSource() == savePasswordButton) {
-			// Handle registration
+		else if (event.getSource() == resetPasswordButton) {
+			// Handle reset password
+			PlayerAccess playerAccess = new PlayerAccess();
 	        try {
-	            JDBC db = new JDBC();
+	        	
 	            char[] passwordChars1 = passwordField1.getPassword();
 	            String password1 = new String(passwordChars1);
 	            char[] passwordChars2 = passwordField2.getPassword();
@@ -332,11 +333,11 @@ public class FirstPage implements ActionListener{
 	            if (password1.equals(password2) &&
 	                !userIDField.getText().isEmpty()) {
 	            	
-	                int id = db.insertUser(userIDField.getText(), password1);
+	                int id = playerAccess.insertUser(userIDField.getText(), password1);
 
 	                if (id > 0) {
 	                    JOptionPane.showMessageDialog(frame,
-	                         "Registration successful!\nYour User ID: " + id + 
+	                         "Registration successful!\nPlayer ID: " + id + 
 	                         "\nUsername: " + usernameField.getText() + 
 	                         "\nPassword: " + password1);  
 	                } else {
@@ -352,13 +353,13 @@ public class FirstPage implements ActionListener{
 		}
 		
 		else if (event.getSource() == signInButton) {
-			// Handle login
+			// Handle sign in
+			PlayerAccess playerAccess = new PlayerAccess();
 	        try {
-	            JDBC db = new JDBC();
 	            char[] passwordChars = passwordField.getPassword();
 	            String password = new String(passwordChars);
 
-	            boolean isValid = db.validateLogin(usernameField.getText(), password);
+	            boolean isValid = playerAccess.validateLogin(usernameField.getText(), password);
 
 	            if (isValid) {
 	                JOptionPane.showMessageDialog(frame, "Login successful!");
@@ -380,9 +381,8 @@ public class FirstPage implements ActionListener{
 		
 		else if (event.getSource() == registerButton) {
 			// Handle registration
+			PlayerAccess playerAccess = new PlayerAccess();
 	        try {
-
-	            JDBC db = new JDBC();
 	            char[] passwordChars1 = passwordField1.getPassword();
 	            String password1 = new String(passwordChars1);
 	            char[] passwordChars2 = passwordField2.getPassword();
@@ -391,7 +391,7 @@ public class FirstPage implements ActionListener{
 	            if (password1.equals(password2) &&
 	                !usernameField.getText().isEmpty()) {
 
-	                int id = db.insertUser(usernameField.getText(), password1);
+	                int id = playerAccess.insertUser(usernameField.getText(), password1);
 
 	                if (id > 0) {
 	                    JOptionPane.showMessageDialog(frame,
