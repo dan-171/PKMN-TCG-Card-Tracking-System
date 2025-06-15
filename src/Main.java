@@ -16,7 +16,6 @@ public class Main {
 			Connection conn = JDBC.getConnection();
 			JOptionPane.showMessageDialog(null, "Database successfully connected!");
 
-			//new ImageDisplayExample();
 			new FirstPage();
 		}
 		catch (Exception e) 
