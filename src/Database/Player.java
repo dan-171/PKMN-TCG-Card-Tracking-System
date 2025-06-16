@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Timestamp;
 
 public class Player {
 	private int playerID;
@@ -95,5 +96,69 @@ public class Player {
 	    }
 
 	    return updated;
+	}
+	
+	//add for testing
+	public boolean loadPlayerProfile(int playerId) {
+	    boolean found = false;
+
+	    try (Connection conn = JDBC.getConnection()) {
+	        // First fetch player info
+	        PreparedStatement ps = conn.prepareStatement(
+	                "SELECT Username, RegistrationDate FROM players WHERE ID = ?");
+	        ps.setInt(1, playerId);
+	        ResultSet rs = ps.executeQuery();
+
+	        if (rs.next()) {
+	            this.playerID = playerId;
+	            this.name = rs.getString("Username");
+
+	            this.registerDate = rs.getTimestamp("RegistrationDate");
+
+	            found = true;
+	        }
+
+	        rs.close();
+	        ps.close();
+
+	        // Then sum up total cards for this player
+	        PreparedStatement psCount = conn.prepareStatement(
+	                "SELECT SUM(CardQuantity) AS total FROM players_cards WHERE PlayerID = ?");
+	        psCount.setInt(1, playerId);
+	        ResultSet rsCount = psCount.executeQuery();
+
+	        if (rsCount.next()) {
+	            this.cardQuantity = rsCount.getInt("total");
+
+	            if (rsCount.wasNull()) { // If SUM is NULL, then set to 0
+	                this.cardQuantity = 0;
+	            }
+	        }
+
+	        rsCount.close();
+	        psCount.close();
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return found;
+	}
+
+	private String name;
+	private int cardQuantity;
+	private Timestamp registerDate;
+
+	// getters for these
+	public String getName(){
+	    return name;
+	}
+
+	public int getCardQuantity(){
+	    return cardQuantity;
+	}
+
+	public Timestamp getRegistrationDate(){
+	    return registerDate;
 	}
 }
