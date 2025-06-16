@@ -12,7 +12,7 @@ import javax.swing.*;
 import GUI.TriangleLabel.Direction;
 
 
-public class userProfile implements ActionListener{
+public class UserProfile implements ActionListener{
 	private JFrame userProfile;
 	private JPanel panelHeader,centerBg,titleBg,userInfoPanel,userInfoArea;
 	private JLabel pageTitle,profileImage,userName,userId,numOfcards,regDate;
@@ -23,7 +23,7 @@ public class userProfile implements ActionListener{
 	String name,userID,registerDate;
 	int numOfCards;
 	
-	public userProfile(){
+	public UserProfile(){
 		init();			
 		HeaderPanel();
 		userInfo();
@@ -209,8 +209,10 @@ public class userProfile implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == BackBtn)  
-			System.out.println("Back button clicked!");
+		if(e.getSource() == BackBtn){
+		      userProfile.dispose();
+		      FirstPage FirstPage = new FirstPage();
+		}
 		else if(e.getSource() == updateUserInfo)
 			System.out.println("Update User button clicked!");
 	}

@@ -320,7 +320,6 @@ public class FirstPage implements ActionListener{
 		    
 		}	else if (event.getSource() == resetPasswordButton) {
 			// Handle reset password
-			Player player = new Player();
 
 		    char[] passwordChars1 = passwordField1.getPassword();
 		    String password1 = new String(passwordChars1);
@@ -340,7 +339,7 @@ public class FirstPage implements ActionListener{
 		        return;
 		    }
 
-		    boolean updated = player.resetPassword(username, password1);
+		    boolean updated = Player.resetPassword(username, password1);
 
 		    if ((updated)) 
 		    {
@@ -354,17 +353,15 @@ public class FirstPage implements ActionListener{
 		
 		else if (event.getSource() == signInButton) {
 			// Handle sign in
-			Player player = new Player();
 	        try {
 	            char[] passwordChars = passwordField.getPassword();
 	            String password = new String(passwordChars);
 
-	            boolean isValid = player.validateSignin(usernameField.getText(), password);
+	            int PID = Player.validateSignIn(usernameField.getText(), password);
 
-	            if (isValid) {
+	            if (PID != 0) {
 	                JOptionPane.showMessageDialog(frame, "Login successful!");
-	                
-	                
+	                Player player = new Player(PID);
 	                
 	                // proceed to the main application
 	                
@@ -382,7 +379,6 @@ public class FirstPage implements ActionListener{
 		
 		else if (event.getSource() == registerButton) {
 			// Handle registration
-			Player player = new Player();
 	        try {
 	            char[] passwordChars1 = passwordField1.getPassword();
 	            String password1 = new String(passwordChars1);
@@ -391,7 +387,7 @@ public class FirstPage implements ActionListener{
 	            
 	            if (password1.equals(password2) &&
 	                !usernameField.getText().isEmpty()) {
-	                int id = player.insertUser(usernameField.getText(), password1);
+	                int id = Player.insertPlayer(usernameField.getText(), password1);
 
 	                if (id > 0) {
 	                    JOptionPane.showMessageDialog(frame,
