@@ -7,10 +7,14 @@ import java.io.File;
 import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+
+
+import Database.Player;
+
 import GUI.TriangleLabel.Direction;
 
 
-public class userProfile implements ActionListener{
+public class PlayerProfile implements ActionListener{
 	private JFrame userProfile;
 	private JPanel panelHeader,centerBg,titleBg,userInfoPanel,
 	userInfoArea,centerPanel,westPanel,northPanel,eastPanel,southPanel;
@@ -22,7 +26,7 @@ public class userProfile implements ActionListener{
 	String name ,userID,registerDate;
 	int numOfCards;
 	
-	public userProfile(){
+	public PlayerProfile(){
 		init();			
 		HeaderPanel();
 		userInfo();
@@ -207,7 +211,7 @@ public class userProfile implements ActionListener{
 		updateUserInfo.addActionListener(this);
 		southPanel.add(updateUserInfo);
 	}
-	
+
 	public void updateInfo() {
 		//define the option
 		String[]updateOption = {"Player Name","Password","Cancel"};
@@ -317,7 +321,20 @@ public class userProfile implements ActionListener{
 		        default:
 		            //Close dialog
 		            return;
+			}
 		}
+	//load player profile
+	public void loadProfile(int playerId) {
+	    Player player = Player.loadPlayerProfile(playerId);
+
+	    if (player != null) {
+	        //refresh the GUI components:
+	    	playerName.setText("Name: " + player.getPlayerName());
+	        userId.setText("Player ID: " + player.getPlayerID());
+	        numOfcards.setText("Numbers of cards: " + player.getCardQuantity());
+	        regDate.setText("Registered date: " + player.getRegistrationDate().toString());
+	    } else
+	        JOptionPane.showMessageDialog(userProfile, "Player not found.");
 	}
 	
 	@Override
@@ -326,9 +343,22 @@ public class userProfile implements ActionListener{
 			System.out.println("Back button clicked!");
 		}
 		else if(e.getSource() == updateUserInfo) {
+		if(e.getSource() == BackBtn){
+		      userProfile.dispose();
+		      FirstPage FirstPage = new FirstPage();
+		}
+		else if(e.getSource() == updateUserInfo)
 			System.out.println("Update User button clicked!");
 			updateInfo();
 		}
 	}
+	
+	//add here
+	public static void main(String[] args) {
+	    PlayerProfile profile = new PlayerProfile();
 
+	    //for example:
+	    profile.loadProfile(1);
+	    profile.userProfile.setVisible(true);
+	}
 }
