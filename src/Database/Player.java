@@ -8,32 +8,31 @@ import java.sql.Statement;
 public class Player {
 	private int playerID;
 	
-	public Player() {
-		
-	}
+	public Player() {}
 	
-	public Player(int playerID){
+	public Player(int playerID)
+	{
 		this.playerID = playerID;
 	}
 	
-	public int getPlayerID() {
+	public int getPlayerID() 
+	{
 		return playerID;
-		
 	}
 	
 	public boolean validateSignin(String username, String password) {
 	    try (Connection conn = JDBC.getConnection();
-	        Statement stmt = conn.createStatement()) {
+	        Statement stmt = conn.createStatement()) 
+	    {
 	        String query = "SELECT * FROM players WHERE Username = '" + username + "' AND Password = '" + password + "'";
 	        ResultSet rs = stmt.executeQuery(query);
 	        return rs.next();
-
-	    } catch (Exception e) {
+	    } 
+	    catch (Exception e) 
+	    {
 	        e.printStackTrace();
 	        return false;
-	        
 	    }
-	    
 	}
 
 	public int insertUser(String username, String password) {
@@ -60,15 +59,34 @@ public class Player {
 	            	//for (int i = 1; i <= 102; i++) {
 	            		//newset.setString(1, );
 	            	//}
-	            }
-	                
+	            }      
 	        }
-
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        
+	    } 
+	    catch (Exception e) 
+	    {
+	        e.printStackTrace();  
 	    }
 
 	    return generatedId;
+	}
+	
+	public boolean resetPassword(String username, String newPassword) {
+	    boolean updated = false;
+
+	    try (Connection conn = JDBC.getConnection();
+	         Statement stmt = conn.createStatement()) {
+
+	        String update = "UPDATE players SET Password = '" + newPassword + "' WHERE ID = '" + username + "'";
+	        int row = stmt.executeUpdate(update);
+	        if (row == 1) {
+	            updated = true;
+	        }
+	    } 
+	    catch (Exception e) 
+	    {
+	        e.printStackTrace();
+	    }
+
+	    return updated;
 	}
 }
