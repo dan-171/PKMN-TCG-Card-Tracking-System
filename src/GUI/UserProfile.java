@@ -208,25 +208,18 @@ public class UserProfile implements ActionListener{
 		southPanel.add(updateUserInfo);
 	}
 	
-	//add here
-	public void loadProfile(int PlayerId) {
-	    Player player = new Player(PlayerId);
-	    boolean found = player.loadPlayerProfile(PlayerId);
+	//load player profile
+	public void loadProfile(int playerId) {
+	    Player player = Player.loadPlayerProfile(playerId);
 
-	    if (found) {
-	        this.name = player.getName();
-	        this.userID = String.valueOf(PlayerId);
-	        this.numOfCards = player.getCardQuantity();
-	        this.registerDate = player.getRegistrationDate().toString();
-
-	        // Now refresh the GUI components:
-	        userName.setText("Name: " + name);
-	        userId.setText("User ID: " + userID);
-	        numOfcards.setText("Numbers of cards: " + numOfCards);
-	        regDate.setText("Registered date: " + registerDate);
-	    } else {
+	    if (player != null) {
+	        //refresh the GUI components:
+	        userName.setText("Name: " + player.getPlayerName());
+	        userId.setText("Player ID: " + player.getPlayerID());
+	        numOfcards.setText("Numbers of cards: " + player.getCardQuantity());
+	        regDate.setText("Registered date: " + player.getRegistrationDate().toString());
+	    } else
 	        JOptionPane.showMessageDialog(userProfile, "Player not found.");
-	    }
 	}
 	
 	@Override
@@ -241,10 +234,10 @@ public class UserProfile implements ActionListener{
 	
 	//add here
 	public static void main(String[] args) {
-	    userProfile profile = new userProfile();
+	    UserProfile profile = new UserProfile();
 
 	    // for example:
-	    profile.loadProfile(4);
+	    profile.loadProfile(1);
 	    profile.userProfile.setVisible(true);
 	}
 }
