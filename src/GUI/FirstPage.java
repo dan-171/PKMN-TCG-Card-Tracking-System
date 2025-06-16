@@ -1,6 +1,6 @@
 package GUI;
 
-import Database.PlayerAccess;
+import Database.Player;
 
 import javax.swing.*;
 
@@ -9,6 +9,7 @@ import java.awt.event.*;
 import java.util.Iterator;
 
 public class FirstPage implements ActionListener{
+	
 	private JFrame frame;
 	private JPanel northPanel, centralPanel, westPanel, centralRightPanel, centralLeftPanel;
 	private JTextField usernameField, userIDField;
@@ -26,13 +27,13 @@ public class FirstPage implements ActionListener{
 	
 	//Constructor
 	public FirstPage(){
-		
 		init();
 		NorthPanel();
 		CentralPanel();
 		WestPanel();
 		EastPanel();
 		frame.setVisible(true);
+		
 	}
 	
 	public void init(){
@@ -45,11 +46,9 @@ public class FirstPage implements ActionListener{
 		showPasswordBoolean = false;
 		showPasswordCheckBox = new JCheckBox("Show Password");
 		
-		
 	}
 	
 	public void NorthPanel() {
-		
 		northPanel = setUp.gridBagLayout();
 		JLabel Title = new JLabel("Welcome to the Pokemon TCG Card Tracking System");
 		fonts.HeaderFont(Title);
@@ -58,6 +57,7 @@ public class FirstPage implements ActionListener{
 		northPanel.add(Title, gbc);
 		
 		frame.add(northPanel, BorderLayout.NORTH);
+		
 	}
 	
 	public void CentralPanel() {
@@ -80,7 +80,6 @@ public class FirstPage implements ActionListener{
 		signInMenu.setPreferredSize(menuDimension);
 		centralLeftPanel.add(signInMenu, gbc);
 		
-		
 		//Register button
 		//Adjust gbc  
 		setUp.setGBC(gbc, 0, 1, 2, gbc.CENTER, gbc.NONE, new Insets(80, 0, 160, 100), 0);
@@ -89,13 +88,12 @@ public class FirstPage implements ActionListener{
 		registerMenu.setPreferredSize(menuDimension);
 		centralLeftPanel.add(registerMenu, gbc);
 		
-		
-		
 		//Add to centralPanel then add to frame
 		centralPanel.add(centralLeftPanel);
 		signInCentralPanel();
 		centralPanel.add(centralRightPanel);
 		frame.add(centralPanel, BorderLayout.CENTER);	
+		
 	}
 	
 	
@@ -145,6 +143,7 @@ public class FirstPage implements ActionListener{
 		setUp.setGBC(gbc, 0, 5, 2, gbc.CENTER, gbc.NONE, new Insets(0, 0, 0, 0), 1);
 		passwordMenu.addActionListener(this);
 		centralRightPanel.add(passwordMenu, gbc);
+		
 	} 
 	
 	public void registerCentralPanel() {
@@ -250,22 +249,23 @@ public class FirstPage implements ActionListener{
 		 resetPasswordButton.addActionListener(this);
 		 setUp.setGBC(gbc, 0, 5, 2, gbc.CENTER, gbc.HORIZONTAL, new Insets(0, 0, 20, 0), 1);
 		 centralRightPanel.add(resetPasswordButton, gbc);
+		 
 	} 
 	
 	public void WestPanel() {
-		
 		westPanel = new JPanel();
 		westPanel.setPreferredSize(new Dimension(Margin, 0));
 		
 		frame.add(westPanel, BorderLayout.WEST);
+		
 	}
 	
 	public void EastPanel() {
-		
 		JPanel eastPanel = new JPanel();
 		eastPanel.setPreferredSize(new Dimension(Margin, 0));
 		
 		frame.add(eastPanel, BorderLayout.EAST);
+		
 	}
 	
 	public void actionPerformed(ActionEvent event) {
@@ -279,9 +279,8 @@ public class FirstPage implements ActionListener{
 		    
 		    //Reset the showPasswordCheckBox
 		    showPasswordCheckBox.setSelected(false);
-		}
-		
-		else if (event.getSource() == registerMenu) {
+		    
+		} else if (event.getSource() == registerMenu) {
 		    fonts.Heading1(registerMenu);    
 		    fonts.BodyFont(signInMenu);
 		    centralRightPanel.removeAll(); 
@@ -291,23 +290,22 @@ public class FirstPage implements ActionListener{
 		    
 		    //Reset the showPasswordCheckBox
 		    showPasswordCheckBox.setSelected(false);
-		}
-		
-		else if (event.getSource() == showPasswordCheckBox) {
+		    
+		} else if (event.getSource() == showPasswordCheckBox) {
 				// Show text
 				if (showPasswordCheckBox.isSelected()) {
 	                passwordField.setEchoChar((char) 0); 
 	                passwordField1.setEchoChar((char) 0); 
 	                passwordField2.setEchoChar((char) 0); 
+	                
 	            } else {
 	                passwordField.setEchoChar('*'); // Hide text
 	                passwordField1.setEchoChar('*'); 
 	                passwordField2.setEchoChar('*');
+	                
 	            }
-		}
-		
-
-		else if (event.getSource() == passwordMenu) {
+				
+		}	else if (event.getSource() == passwordMenu) {
 		    centralRightPanel.removeAll(); // Clear existing components
 		    forgotPasswordCentralPanel(); // Call the method to set up the forgot password UI
 		    centralRightPanel.revalidate(); // Refresh layout
@@ -315,51 +313,49 @@ public class FirstPage implements ActionListener{
 		    
 		    // Reset the showPasswordCheckBox
 		    showPasswordCheckBox.setSelected(false);
-		}
-
-		
-		else if (event.getSource() == resetPasswordButton) {
+		    
+		}	else if (event.getSource() == resetPasswordButton) {
 			// Handle reset password
-			PlayerAccess playerAccess = new PlayerAccess();
+			Player player = new Player();
 	        try {
-	        	
-	            char[] passwordChars1 = passwordField1.getPassword();
+	        	char[] passwordChars1 = passwordField1.getPassword();
 	            String password1 = new String(passwordChars1);
 	            char[] passwordChars2 = passwordField2.getPassword();
 	            String password2 = new String(passwordChars2);
 	            
-	            
 	            //Check to change to the forgot password function
 	            if (password1.equals(password2) &&
 	                !userIDField.getText().isEmpty()) {
-	            	
-	                int id = playerAccess.insertUser(userIDField.getText(), password1);
+	                int id = player.insertUser(userIDField.getText(), password1);
 
 	                if (id > 0) {
 	                    JOptionPane.showMessageDialog(frame,
 	                         "Registration successful!\nPlayer ID: " + id + 
 	                         "\nUsername: " + usernameField.getText() + 
 	                         "\nPassword: " + password1);  
-	                } else {
+	                    
+	                } else
 	                    JOptionPane.showMessageDialog(frame, "Registration failed.");
-	                }
-	            } else {
+	                
+	            } else
 	                JOptionPane.showMessageDialog(frame, "Passwords do not match or Username is empty.");
-	            }
+	            
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	            JOptionPane.showMessageDialog(frame, "Error while registering.");
+	            
 	        }
+	        
 		}
 		
 		else if (event.getSource() == signInButton) {
 			// Handle sign in
-			PlayerAccess playerAccess = new PlayerAccess();
+			Player player = new Player();
 	        try {
 	            char[] passwordChars = passwordField.getPassword();
 	            String password = new String(passwordChars);
 
-	            boolean isValid = playerAccess.validateLogin(usernameField.getText(), password);
+	            boolean isValid = player.validateSignin(usernameField.getText(), password);
 
 	            if (isValid) {
 	                JOptionPane.showMessageDialog(frame, "Login successful!");
@@ -370,18 +366,19 @@ public class FirstPage implements ActionListener{
 	                
 	                
 	                
-	            } else {
+	            } else
 	                JOptionPane.showMessageDialog(frame, "Invalid username or password.");
-	            }
+	            
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	            JOptionPane.showMessageDialog(frame, "Error while logging in.");
+	            
 	        }
 		}
 		
 		else if (event.getSource() == registerButton) {
 			// Handle registration
-			PlayerAccess playerAccess = new PlayerAccess();
+			Player player = new Player();
 	        try {
 	            char[] passwordChars1 = passwordField1.getPassword();
 	            String password1 = new String(passwordChars1);
@@ -390,23 +387,24 @@ public class FirstPage implements ActionListener{
 	            
 	            if (password1.equals(password2) &&
 	                !usernameField.getText().isEmpty()) {
-
-	                int id = playerAccess.insertUser(usernameField.getText(), password1);
+	                int id = player.insertUser(usernameField.getText(), password1);
 
 	                if (id > 0) {
 	                    JOptionPane.showMessageDialog(frame,
 	                         "Registration successful!\nYour User ID: " + id + 
 	                         "\nUsername: " + usernameField.getText() + 
 	                         "\nPassword: " + password1);  
-	                } else {
+	                    
+	                } else
 	                    JOptionPane.showMessageDialog(frame, "Registration failed.");
-	                }
-	            } else {
+	                    
+	            } else
 	                JOptionPane.showMessageDialog(frame, "Passwords do not match or Username is empty.");
-	            }
+	                
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	            JOptionPane.showMessageDialog(frame, "Error while registering.");
+	            
 	        }
 		}
 		
