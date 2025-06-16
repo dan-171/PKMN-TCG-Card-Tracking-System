@@ -9,6 +9,7 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import Database.Player;
 import GUI.TriangleLabel.Direction;
 
 
@@ -207,6 +208,27 @@ public class UserProfile implements ActionListener{
 		southPanel.add(updateUserInfo);
 	}
 	
+	//add here
+	public void loadProfile(int PlayerId) {
+	    Player player = new Player(PlayerId);
+	    boolean found = player.loadPlayerProfile(PlayerId);
+
+	    if (found) {
+	        this.name = player.getName();
+	        this.userID = String.valueOf(PlayerId);
+	        this.numOfCards = player.getCardQuantity();
+	        this.registerDate = player.getRegistrationDate().toString();
+
+	        // Now refresh the GUI components:
+	        userName.setText("Name: " + name);
+	        userId.setText("User ID: " + userID);
+	        numOfcards.setText("Numbers of cards: " + numOfCards);
+	        regDate.setText("Registered date: " + registerDate);
+	    } else {
+	        JOptionPane.showMessageDialog(userProfile, "Player not found.");
+	    }
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == BackBtn){
@@ -216,5 +238,13 @@ public class UserProfile implements ActionListener{
 		else if(e.getSource() == updateUserInfo)
 			System.out.println("Update User button clicked!");
 	}
+	
+	//add here
+	public static void main(String[] args) {
+	    userProfile profile = new userProfile();
 
+	    // for example:
+	    profile.loadProfile(4);
+	    profile.userProfile.setVisible(true);
+	}
 }
