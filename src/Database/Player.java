@@ -37,37 +37,41 @@ public class Player {
 
 	public int insertUser(String username, String password) {
 	    int generatedId = -1;
-	    String initPlayer = "INSERT INTO players (Username, Password) VALUES (?, ?)";
+
+	    String initPlayer = "INSERT INTO players (Username, Password, RegistrationDate) VALUES (?, ?, ?)";
 	    String initPlayers_Cards = "INSERT INTO players_cards (PlayerID, CardID, CardQuantity) VALUES (?, ?, ?)";
-	    
+
 	    try (Connection conn = JDBC.getConnection()) {
-	    	PreparedStatement signup = conn.prepareStatement(initPlayer, Statement.RETURN_GENERATED_KEYS);
-	    	signup.setString(1, username);
-	    	signup.setString(2, password);
-	        int row = signup.executeUpdate(); //add new player to players table
+	        PreparedStatement signup = conn.prepareStatement(initPlayer, Statement.RETURN_GENERATED_KEYS);
+	        signup.setString(1, username);
+	        signup.setString(2, password);
+	        // Set registration date to current timestamp
+	        signup.setTimestamp(3, new java.sql.Timestamp(System.currentTimeMillis()));
+
+	        int row = signup.executeUpdate();
 
 	        if (row == 1) {
 	            ResultSet rs = signup.getGeneratedKeys();
 	            if (rs.next()) {
-	            	generatedId = rs.getInt(1);
-	            	rs.close();
-	            	
-	            	PreparedStatement newSet = conn.prepareStatement(initPlayers_Cards);
-	            	for (int i = 0; i < 120; i++) {
-	            		String cardID = String.format("BS%03d", i+1);
-	            		newSet.setInt(1, generatedId);
-	            		newSet.setString(2, cardID);
+	                generatedId = rs.getInt(1);
+	                rs.close();
+
+	                PreparedStatement newSet = conn.prepareStatement(initPlayers_Cards);
+	                for (int i = 0; i < 120; i++) {
+	                    String cardID = String.format("BS%03d", i + 1);
+	                    newSet.setInt(1, generatedId);
+	                    newSet.setString(2, cardID);
 	                    newSet.setInt(3, 0);
 	                    newSet.addBatch();
-	            	}
-	            	newSet.executeBatch();
-	            	newSet.close();
+	                }
+	                newSet.executeBatch();
+	                newSet.close();
 	            }
 	        }
 	    } 
 	    catch (Exception e) 
 	    {
-	        e.printStackTrace();  
+	        e.printStackTrace();
 	    }
 
 	    return generatedId;
