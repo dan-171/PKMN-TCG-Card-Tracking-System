@@ -37,15 +37,14 @@ public class Player {
 
 	public int insertUser(String username, String password) {
 	    int generatedId = -1;
-	    String initializePlayer = "INSERT INTO players (Username, Password) VALUES (?, ?)";
-	    String getPlayerID = "SELECT PlayerID FROM players ORDER BY PlayerID DESC LIMIT 1";
-	    String initializePlayers_Cards = "INSERT INTO players_cards (PlayerID, CardID, CardQuantity) VALUES (?, ?, ?)";
+	    String initPlayer = "INSERT INTO players (Username, Password) VALUES (?, ?)";
+	    String initPlayers_Cards = "INSERT INTO players_cards (PlayerID, CardID, CardQuantity) VALUES (?, ?, ?)";
 	    
 	    try (Connection conn = JDBC.getConnection()) {
-	    	PreparedStatement signup = conn.prepareStatement(initializePlayer);
+	    	PreparedStatement signup = conn.prepareStatement(initPlayer, Statement.RETURN_GENERATED_KEYS);
 	    	signup.setString(1, username);
 	    	signup.setString(2, password);
-	        int row = signup.executeUpdate(initializePlayer, Statement.RETURN_GENERATED_KEYS); //add new player to players table
+	        int row = signup.executeUpdate(); //add new player to players table
 
 	        if (row == 1) {
 	            ResultSet rs = signup.getGeneratedKeys();
@@ -53,13 +52,17 @@ public class Player {
 	            	generatedId = rs.getInt(1);
 	            	rs.close();
 	            	
-	            	//Statement stmt = conn.createStatement();
-	        	    //ResultSet rs = stmt.executeQuery(getPlayerID);
-	            	PreparedStatement newset = conn.prepareStatement(initializePlayers_Cards);
-	            	//for (int i = 1; i <= 102; i++) {
-	            		//newset.setString(1, );
-	            	//}
-	            }      
+	            	PreparedStatement newSet = conn.prepareStatement(initPlayers_Cards);
+	            	for (int i = 0; i < 120; i++) {
+	            		String cardID = String.format("BS%03d", i+1);
+	            		newSet.setInt(1, generatedId);
+	            		newSet.setString(2, cardID);
+	                    newSet.setInt(3, 0);
+	                    newSet.addBatch();
+	            	}
+	            	newSet.executeBatch();
+	            	newSet.close();
+	            }
 	        }
 	    } 
 	    catch (Exception e) 
