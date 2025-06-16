@@ -39,13 +39,17 @@ public class FirstPage implements ActionListener{
 	public void init(){
 		frame = new JFrame();
 		frame.setSize(breadth,length);
+		frame.setResizable(false);
+		frame.setTitle("Pokemon TCG Card Tracking System");
+		ImageIcon logo = new ImageIcon("resources/LOGO/logo.jpg");
+		frame.setIconImage(logo.getImage());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
 		centralRightPanel= setUp.gridBagLayout();
 		centralLeftPanel = setUp.gridBagLayout();
 		showPasswordBoolean = false;
 		showPasswordCheckBox = new JCheckBox("Show Password");
-		
+
 	}
 	
 	public void NorthPanel() {
@@ -407,7 +411,5 @@ public class FirstPage implements ActionListener{
 	            
 	        }
 		}
-		
-
 	}
 }

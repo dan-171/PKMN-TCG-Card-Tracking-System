@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class JDBC {
-	private static final String driver = "com.mysql.jdbc.Driver";
+	private static final String driver = "com.mysql.cj.jdbc.Driver";
 	private static final String connectionURL = "jdbc:mysql://localhost:3306/";
 	private static final String dbName = "pkmn-tcg-card-tracking-system";
 	private static final String username = "root";
