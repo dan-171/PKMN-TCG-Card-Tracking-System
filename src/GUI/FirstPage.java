@@ -321,35 +321,35 @@ public class FirstPage implements ActionListener{
 		}	else if (event.getSource() == resetPasswordButton) {
 			// Handle reset password
 			Player player = new Player();
-	        try {
-	        	char[] passwordChars1 = passwordField1.getPassword();
-	            String password1 = new String(passwordChars1);
-	            char[] passwordChars2 = passwordField2.getPassword();
-	            String password2 = new String(passwordChars2);
-	            
-	            //Check to change to the forgot password function
-	            if (password1.equals(password2) &&
-	                !userIDField.getText().isEmpty()) {
-	                int id = player.insertUser(userIDField.getText(), password1);
 
-	                if (id > 0) {
-	                    JOptionPane.showMessageDialog(frame,
-	                         "Registration successful!\nPlayer ID: " + id + 
-	                         "\nUsername: " + usernameField.getText() + 
-	                         "\nPassword: " + password1);  
-	                    
-	                } else
-	                    JOptionPane.showMessageDialog(frame, "Registration failed.");
-	                
-	            } else
-	                JOptionPane.showMessageDialog(frame, "Passwords do not match or Username is empty.");
-	            
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	            JOptionPane.showMessageDialog(frame, "Error while registering.");
-	            
-	        }
-	        
+		    char[] passwordChars1 = passwordField1.getPassword();
+		    String password1 = new String(passwordChars1);
+		    char[] passwordChars2 = passwordField2.getPassword();
+		    String password2 = new String(passwordChars2);
+		    String username = userIDField.getText();
+
+		    if (username.isEmpty()) 
+		    {
+		        JOptionPane.showMessageDialog(frame, "Username cannot be empty.");
+		        return;
+		    }
+
+		    if (!password1.equals(password2)) 
+		    {
+		        JOptionPane.showMessageDialog(frame, "Passwords do not match.");
+		        return;
+		    }
+
+		    boolean updated = player.resetPassword(username, password1);
+
+		    if ((updated)) 
+		    {
+		        JOptionPane.showMessageDialog(frame, "Password reset successfully.");
+		    } 
+		    else 
+		    {
+		        JOptionPane.showMessageDialog(frame, "ID not found or reset failed.");
+		    }
 		}
 		
 		else if (event.getSource() == signInButton) {
