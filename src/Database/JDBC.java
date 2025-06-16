@@ -13,10 +13,10 @@ public class JDBC {
 	private static final String username = "root";
 	private static final String password = "";
 	
-	public static Connection getConnection() throws Exception
-	{
+	public static Connection getConnection() throws Exception{
 		Class.forName(driver);
 		return DriverManager.getConnection(connectionURL+dbName, username, password);
+		
 	}
 
 }
