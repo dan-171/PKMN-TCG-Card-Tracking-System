@@ -27,14 +27,14 @@ public class Pokedex {
 	
 	//indicate cards not yet acquired
 	public boolean missingCard(String cardFileID) {
-		String query = "SELECT * FROM players_cards WHERE PlayerID = ? AND CardID = ? AND CardQuantity > 0";
 		
 		try (Connection conn = JDBC.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(query)) {
-				pstmt.setInt(1, player.getPlayerID());
-				pstmt.setString(2, cardFileID);
-			    ResultSet rs = pstmt.executeQuery();
-			    if( !rs.next())
+				PreparedStatement getCard = conn.prepareStatement(
+						"SELECT * FROM players_cards WHERE PlayerID = ? AND CardID = ? AND CardQuantity > 0")) {
+				getCard.setInt(1, player.getPlayerID());
+				getCard.setString(2, cardFileID);
+			    ResultSet rs = getCard.executeQuery();
+			    if( !rs.next()) //selected card has quantity = 0
 			    	return true;
 			    
 		} catch (Exception e) {
@@ -57,12 +57,11 @@ public class Pokedex {
 	
 	//return label overview display of card set
 	public String fetchCardLabel(String cardFileID) {
-		String query = "SELECT CardName FROM cards WHERE CardID = ?";
 		
 		try (Connection conn = JDBC.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(query)) {
-				pstmt.setString(1, cardFileID);
-			    ResultSet rs = pstmt.executeQuery();
+				PreparedStatement fetchCardName = conn.prepareStatement("SELECT CardName FROM cards WHERE CardID = ?")) {
+				fetchCardName.setString(1, cardFileID);
+			    ResultSet rs = fetchCardName.executeQuery();
 			    if(rs.next())
 			    	return rs.getString("CardName");
 			    
@@ -76,12 +75,11 @@ public class Pokedex {
 	
 	//return card description
 	public String fetchCardDescription(String cardFileID) {
-		String query = "SELECT CardDescription FROM cards WHERE CardID = ?";
-		
+
 		try (Connection conn = JDBC.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(query)){
-				pstmt.setString(1, cardFileID);
-				ResultSet rs = pstmt.executeQuery();
+				PreparedStatement fetchCardDesc = conn.prepareStatement("SELECT CardDescription FROM cards WHERE CardID = ?")){
+				fetchCardDesc.setString(1, cardFileID);
+				ResultSet rs = fetchCardDesc.executeQuery();
 				if(rs.next())
 					return rs.getString("CardDescription");
 				
@@ -95,13 +93,13 @@ public class Pokedex {
 	
 	//return current card count
 	public int fetchCardCount(String cardFileID) {
-		String query = "SELECT CardQuantity FROM players_cards WHERE PlayerID = ? AND CardID = ?";
 		
 		try (Connection conn = JDBC.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(query)){
-				pstmt.setInt(1, player.getPlayerID());
-				pstmt.setString(2, cardFileID);
-				ResultSet rs = pstmt.executeQuery();
+				PreparedStatement fetchCardCount = conn.prepareStatement(
+						"SELECT CardQuantity FROM players_cards WHERE PlayerID = ? AND CardID = ?")){
+				fetchCardCount.setInt(1, player.getPlayerID());
+				fetchCardCount.setString(2, cardFileID);
+				ResultSet rs = fetchCardCount.executeQuery();
 				if(rs.next())
 					return rs.getInt("CardQuantity");
 				
@@ -115,20 +113,19 @@ public class Pokedex {
 	
 	//CardQuantity ±1
 	public void changeCardCount(String cardFileID, int i) {
-		String check = "SELECT CardQuantity FROM players_cards WHERE PlayerID = ? AND CardID = ?";
-		String update = "UPDATE players_cards SET CardQuantity = CardQuantity + ? WHERE PlayerID = ? AND CardID = ?";
 		
 		try (Connection conn = JDBC.getConnection()){
-			try(PreparedStatement checkPstmt = conn.prepareStatement(check)){
-				checkPstmt.setInt(1, i);
-				checkPstmt.setInt(2, player.getPlayerID());
-				checkPstmt.setString(3, cardFileID);
-				ResultSet rs = checkPstmt.executeQuery();
+			try(PreparedStatement check = conn.prepareStatement("SELECT CardQuantity FROM players_cards WHERE PlayerID = ? AND CardID = ?")){
+				check.setInt(1, i);
+				check.setInt(2, player.getPlayerID());
+				check.setString(3, cardFileID);
+				ResultSet rs = check.executeQuery();
 				if(rs.next()) { //if cardQuantity exist for logged-in playerID & selected cardID, increase by 1
-					try(PreparedStatement updatePstmt = conn.prepareStatement(update)){
-						updatePstmt.setInt(1, player.getPlayerID());
-						updatePstmt.setString(2, cardFileID);
-						updatePstmt.executeUpdate();
+					try(PreparedStatement update = conn.prepareStatement(
+							"UPDATE players_cards SET CardQuantity = CardQuantity + ? WHERE PlayerID = ? AND CardID = ?")){
+						update.setInt(1, player.getPlayerID());
+						update.setString(2, cardFileID);
+						update.executeUpdate();
 					}
 				}	
 			}	

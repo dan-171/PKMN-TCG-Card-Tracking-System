@@ -12,7 +12,7 @@ public class FirstPage implements ActionListener{
 	
 	private JFrame frame;
 	private JPanel northPanel, centralPanel, westPanel, centralRightPanel, centralLeftPanel;
-	private JTextField usernameField, userIDField;
+	private JTextField usernameField, playerIDField;
 	private JPasswordField  passwordField, passwordField1, passwordField2;
 	private JButton signInButton, registerButton,passwordMenu, signInMenu, registerMenu, resetPasswordButton;
 	private JCheckBox showPasswordCheckBox;
@@ -213,13 +213,13 @@ public class FirstPage implements ActionListener{
 		
 		//Username 
 		Insets userInsets = new Insets(-50, 0, 50, 0);
-		JLabel userIDJLabel = new JLabel("User ID: ");
+		JLabel playerIDJLabel = new JLabel("Player ID: ");
 		setUp.setGBC(gbc, 0, 1, 1, gbc.LINE_START, gbc.NONE, userInsets, 0);
-		centralRightPanel.add(userIDJLabel, gbc);
+		centralRightPanel.add(playerIDJLabel, gbc);
 
-		userIDField = new JTextField(10);
+		playerIDField = new JTextField(10);
 		setUp.setGBC(gbc, 1, 1, 1, gbc.LINE_START, gbc.HORIZONTAL, userInsets, 1);
-		centralRightPanel.add(userIDField, gbc);
+		centralRightPanel.add(playerIDField, gbc);
 		
 		//Password
 		Insets passwordInsets = new Insets(-20, 0, 30, 0);
@@ -325,7 +325,7 @@ public class FirstPage implements ActionListener{
 		    String password1 = new String(passwordChars1);
 		    char[] passwordChars2 = passwordField2.getPassword();
 		    String password2 = new String(passwordChars2);
-		    String username = userIDField.getText();
+		    String username = playerIDField.getText();
 
 		    if (username.isEmpty()) 
 		    {
@@ -391,7 +391,7 @@ public class FirstPage implements ActionListener{
 
 	                if (id > 0) {
 	                    JOptionPane.showMessageDialog(frame,
-	                         "Registration successful!\nYour User ID: " + id + 
+	                         "Registration successful!\nYour Player ID: " + id + 
 	                         "\nUsername: " + usernameField.getText() + 
 	                         "\nPassword: " + password1);  
 	                    
