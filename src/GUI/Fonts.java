@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class  Fonts{
 	private Font header,heading1, heading2,  bodyFont;
-	private final int headerFontSize = 70, heading1Size = 36 , heading2Size = 30,  bodyFontSize = 20; 
+	private final int headerFontSize = 60, heading1Size = 36 , heading2Size = 30,  bodyFontSize = 20; 
 	
 	public Fonts() {
 		this.header = new Font("Rockwell", Font.BOLD, headerFontSize);
