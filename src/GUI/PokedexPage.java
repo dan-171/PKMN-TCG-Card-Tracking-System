@@ -1,10 +1,12 @@
 package GUI;
 
 import Database.Player;
+import Database.Pokedex;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class PokedexPage implements ActionListener {
 	private JFrame frame;
@@ -15,6 +17,9 @@ public class PokedexPage implements ActionListener {
     private JMenuItem[]  leftJMenuItems,profileMenuItems;
     
     private Player player;
+    private Pokedex pokedex;
+    private ArrayList<JButton> cardButton;
+    
     
     private boolean showLeftMenu, showProfileMenu;
     
@@ -26,7 +31,8 @@ public class PokedexPage implements ActionListener {
 	public static final int Margin = 300;
 	
 	//Constructor
-		public PokedexPage(){
+		public PokedexPage(Pokedex pokedex){
+			this.pokedex  = pokedex;
 			init();
 			NorthPanel();
 			/*CentralPanel();
@@ -132,7 +138,9 @@ public class PokedexPage implements ActionListener {
 		String command = event.getActionCommand();
 	    switch (command) {
 	        case "Profile":
-	            //Clear the 
+	        	frame.dispose();
+	        	PlayerProfile playerProfile = new PlayerProfile();	           
+	        	//Clear the 
 	        	
 	        	
 	            break;
@@ -146,7 +154,45 @@ public class PokedexPage implements ActionListener {
 	    }
 	}
 	
-	 
+	
+    public void displayPanel() {
+        int panelWidth = (int) (screenWidth * 0.9);
+        int panelHeight = (int) (screenHeight * 0.85);
+
+        centralPanel = new JPanel();
+        centralPanel.setBackground(Color.LIGHT_GRAY);
+        centralPanel.setLayout(new FlowLayout(FlowLayout.LEADING, 10, 10));
+
+        int panelPicW = (int) (screenWidth * 0.07);
+        int panelPicH = (int) (screenHeight * 0.17);
+
+        // Loop from BS001 to BS102
+        for (int i = 1; i <= 102; i++) {
+            String cardCode = String.format("BS%03d", i);
+            ImageIcon icon = new ImageIcon(pokedex.fetchCardImg(i));
+            Image scaledImage = icon.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
+            icon = new ImageIcon(scaledImage);
+
+
+            cardButton.add(new JButton(String.format("BS%03d", i), icon));
+            cardButton.get(i).setVerticalTextPosition(SwingConstants.BOTTOM);
+            cardButton.get(i).setHorizontalTextPosition(SwingConstants.CENTER);
+            cardButton.get(i).setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
+
+            centralPanel.add(cardButton.get(i));
+        }
+        
+        // Set preferred size larger than the visible area to trigger scroll
+        centralPanel.setPreferredSize(new Dimension(panelWidth, panelHeight * 3));
+
+        // Wrap in scroll pane
+        JScrollPane scrollPane = new JScrollPane(centralPanel,
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(50);
+        frame.add(scrollPane);
+        frame.add(centralPanel);
+    }
 	
 	
 	

@@ -12,7 +12,7 @@ public class Pokedex {
 	private ArrayList<Card> cards = new ArrayList<>();
 	
 	//initialize Pokedex
-	Pokedex(Player player){
+	public Pokedex(Player player){
 		this.player = player;
 		for (int i = 0; i < setSize; i++) {
 			String paddedNo = String.format("%03d", i+1);

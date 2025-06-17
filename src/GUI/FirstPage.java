@@ -1,6 +1,7 @@
 package GUI;
 
 import Database.Player;
+import Database.Pokedex;
 
 import javax.swing.*;
 import java.awt.*;
@@ -381,7 +382,7 @@ public class FirstPage implements ActionListener{
 	                successLogin = true;
 	                getSuccessLogin();
 	                frame.dispose();
-	                PokedexPage pokedex = new PokedexPage();
+	                PokedexPage pokedex = new PokedexPage(new Pokedex(player));
 	                
 	                // proceed to the main application
 	                //Need to add the cardlayout to the pokedex
