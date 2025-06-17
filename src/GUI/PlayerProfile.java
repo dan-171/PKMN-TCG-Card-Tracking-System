@@ -5,41 +5,45 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.InputStream;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+
 import Database.Player;
+
 import GUI.TriangleLabel.Direction;
 
 
 public class PlayerProfile implements ActionListener{
-	private JFrame userProfile;
-	private JPanel panelHeader,centerBg,titleBg,userInfoPanel,userInfoArea;
-	private JLabel pageTitle,profileImage,userName,userId,numOfcards,regDate;
-	private JButton updateUserInfo;
+	private JFrame playerProfile;
+	private JPanel panelHeader,centerBg,titleBg,playerInfoPanel,
+	playerInfoArea,centerPanel,westPanel,northPanel,eastPanel,southPanel;
+	private JLabel pageTitle,profileImage,playerName,playerId,numOfcards,regDate;
+	private JButton updatePlayerInfo;
 	private RoundIconButton BackBtn;
 	
 	GridBagConstraints gbc = new GridBagConstraints();
-	String name,userID,registerDate;
+	String name ,playerID,registerDate;
 	int numOfCards;
 	
 	public PlayerProfile(){
 		init();			
-		HeaderPanel();
-		userInfo();
+		headerPanel();
+		playerInfo();
 		backGround();
-		userProfile.setVisible(true);
+		playerProfile.setVisible(true);
+		
 	}
-	
 	public void init() {
-		userProfile = new JFrame();
-		userProfile.setSize(1920,1080);
-		userProfile.setTitle("Pokemon TCG Card Tracking System");
+		playerProfile = new JFrame();
+		playerProfile.setSize(1920,1080);
+		playerProfile.setResizable(false);
+		playerProfile.setTitle("Pokemon TCG Card Tracking System");
 		ImageIcon logo = new ImageIcon("resources/LOGO/logo.jpg");
-		userProfile.setIconImage(logo.getImage());
-		userProfile.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		userProfile.setLayout(null);
+		playerProfile.setIconImage(logo.getImage());
+		playerProfile.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		playerProfile.setLocationRelativeTo(null);//default location in center
+		playerProfile.setLayout(null);
 		
 	}
 	public void backGround() {
@@ -49,31 +53,31 @@ public class PlayerProfile implements ActionListener{
 		topLeft2.setOpaque(true);	
 		topLeft2.setBounds(0, 0, 250, 500);
 		
-		userProfile.add(topLeft2);	TriangleLabel topLeft1 = new TriangleLabel(new Color(0xFFBF00), TriangleLabel.Direction.TOP_LEFT);
+		playerProfile.add(topLeft2);	TriangleLabel topLeft1 = new TriangleLabel(new Color(0xFFBF00), TriangleLabel.Direction.TOP_LEFT);
 		topLeft1.setOpaque(true);	
 		topLeft1.setBounds(0, 0, 500, 1050);
-		userProfile.add(topLeft1);	
+		playerProfile.add(topLeft1);	
 		
 		//right area
 		TriangleLabel bottomRight2 = new TriangleLabel(new Color(0xFFAE42), TriangleLabel.Direction.BOTTOM_RIGHT);
 		bottomRight2.setOpaque(true);
 		bottomRight2.setBounds(1660, 543, 250, 500);
-		userProfile.add(bottomRight2);
+		playerProfile.add(bottomRight2);
 		
 		TriangleLabel bottomRight1 = new TriangleLabel(new Color(0xFFBF00), TriangleLabel.Direction.BOTTOM_RIGHT);
 		bottomRight1.setOpaque(true);
 		bottomRight1.setBounds(1407, 0, 500, 1050);
-		userProfile.add(bottomRight1);	
+		playerProfile.add(bottomRight1);	
 		
 		//center area
 		centerBg = new JPanel();
 		centerBg.setOpaque(true);
 		centerBg.setBackground(new Color(0xFFFF00));
 		centerBg.setBounds(0, 0, 1920, 1080);	
-		userProfile.add(centerBg);
+		playerProfile.add(centerBg);
 	
 	}
-	public void HeaderPanel() {
+	public void headerPanel() {
 		//create header panel
 		panelHeader = new JPanel();
 		panelHeader.setBounds(0, 0, 1920, 100);
@@ -93,14 +97,14 @@ public class PlayerProfile implements ActionListener{
 		BackBtn.addActionListener(this);
 		panelHeader.add(BackBtn);
 		
-		userProfile.add(panelHeader);
+		playerProfile.add(panelHeader);
 	}
-	public void userInfo() {
+	public void playerInfo() {
 		//create profile picture
-		userInfoPanel = new JPanel();
-		userInfoPanel.setBounds(325,150,1225,800);
-		userInfoPanel.setLayout(null);
-		userProfile.add(userInfoPanel);
+		playerInfoPanel = new JPanel();
+		playerInfoPanel.setBounds(325,150,1225,800);
+		playerInfoPanel.setLayout(null);
+		playerProfile.add(playerInfoPanel);
 		
 		ImageIcon profilePic = new ImageIcon("resources/profileUse/mcPic.png");
 		
@@ -113,22 +117,22 @@ public class PlayerProfile implements ActionListener{
 		ImagePanel.add(profileImage); //add profile into image panel
 		ImagePanel.setBorder(BorderFactory.createLineBorder(new Color(0xB3D9FF), 5));
 		ImagePanel.setBounds(0,0,400,800);
-		userInfoPanel.add(ImagePanel); //add image panel into center panel
+		playerInfoPanel.add(ImagePanel); //add image panel into center panel
 		
-		//create a panel for user info
-		userInfoArea = new JPanel();
-		userInfoArea.setLayout(new BorderLayout());
-		userInfoArea.setBorder(BorderFactory.createLineBorder(Color.white, 5));
-		userInfoArea.setBackground(new Color(0xB3D9FF));
-		userInfoArea.setBounds(400,0,825,800);
-		userInfoPanel.add(userInfoArea);
+		//create a panel for player info
+		playerInfoArea = new JPanel();
+		playerInfoArea.setLayout(new BorderLayout());
+		playerInfoArea.setBorder(BorderFactory.createLineBorder(Color.white, 5));
+		playerInfoArea.setBackground(new Color(0xB3D9FF));
+		playerInfoArea.setBounds(400,0,825,800);
+		playerInfoPanel.add(playerInfoArea);
 		
-		JPanel westPanel = new JPanel();
+		westPanel = new JPanel();
 		westPanel.setPreferredSize(new Dimension (50,50));
 		westPanel.setBackground(new Color(0xB3D9FF));
-		userInfoArea.add(westPanel,BorderLayout.WEST);
+		playerInfoArea.add(westPanel,BorderLayout.WEST);
 
-		JPanel northPanel = new JPanel();
+		northPanel = new JPanel();
 		northPanel.setPreferredSize(new Dimension (70,70));
 		northPanel.setBackground(new Color(0xB3D9FF));
 		
@@ -144,35 +148,35 @@ public class PlayerProfile implements ActionListener{
 		
 		northPanel.add(titleBg);
 		
-		userInfoArea.add(northPanel,BorderLayout.NORTH);
+		playerInfoArea.add(northPanel,BorderLayout.NORTH);
 		
-		JPanel eastPanel = new JPanel();
+		eastPanel = new JPanel();
 		eastPanel.setPreferredSize(new Dimension (50,50));
 		eastPanel.setBackground(new Color(0xB3D9FF));
-		userInfoArea.add(eastPanel,BorderLayout.EAST);
+		playerInfoArea.add(eastPanel,BorderLayout.EAST);
 		
-		//display user info	
-		JPanel centerPanel = new JPanel();
+		//display player info	
+		centerPanel = new JPanel();
 		centerPanel.setPreferredSize(new Dimension (500,500));
 		centerPanel.setBackground(new Color(0xB3D9FF));
 		centerPanel.setLayout(new GridLayout(4,1));
-		userInfoArea.add(centerPanel,BorderLayout.CENTER);
+		playerInfoArea.add(centerPanel,BorderLayout.CENTER);
 
-		userName = new JLabel();
-		userName.setText("Name: "+name);
-		userName.setFont(new Font("Times New Roman",Font.BOLD,30));
-		userName.setForeground(Color.black);
-		userName.setVerticalTextPosition(JLabel.TOP);
-		userName.setHorizontalTextPosition(JLabel.LEFT);
-		centerPanel.add(userName);
+		playerName = new JLabel();
+		playerName.setText("Player name: "+name);
+		playerName.setFont(new Font("Times New Roman",Font.BOLD,30));
+		playerName.setForeground(Color.black);
+		playerName.setVerticalTextPosition(JLabel.TOP);
+		playerName.setHorizontalTextPosition(JLabel.LEFT);
+		centerPanel.add(playerName);
 		
-		userId = new JLabel();
-		userId.setText("User ID: "+userID);
-		userId.setFont(new Font("Times New Roman",Font.BOLD,30));
-		userId.setForeground(Color.black);
-		userId.setVerticalTextPosition(JLabel.TOP);
-		userId.setHorizontalTextPosition(JLabel.LEFT);
-		centerPanel.add(userId);
+		playerId = new JLabel();
+		playerId.setText("Player ID: "+playerID);
+		playerId.setFont(new Font("Times New Roman",Font.BOLD,30));
+		playerId.setForeground(Color.black);
+		playerId.setVerticalTextPosition(JLabel.TOP);
+		playerId.setHorizontalTextPosition(JLabel.LEFT);
+		centerPanel.add(playerId);
 
 		numOfcards = new JLabel();
 		numOfcards.setText("Numbers of cards: "+numOfCards);
@@ -190,53 +194,171 @@ public class PlayerProfile implements ActionListener{
 		regDate.setHorizontalTextPosition(JLabel.LEFT);
 		centerPanel.add(regDate);
 		
-		//create button of update user info 
-		JPanel southPanel = new JPanel();
+		//create button of update player info 
+		southPanel = new JPanel();
 		southPanel.setPreferredSize(new Dimension (100,100));
 		southPanel.setBackground(new Color(0xB3D9FF));
 		southPanel.setLayout(new FlowLayout());
-		userInfoArea.add(southPanel,BorderLayout.SOUTH);
+		playerInfoArea.add(southPanel,BorderLayout.SOUTH);
 		
-		updateUserInfo = new JButton("Update Personal Info");
-		updateUserInfo.setFont(new Font("Times New Roman",Font.BOLD,30));
-		updateUserInfo.setFocusable(false);
-		updateUserInfo.setForeground(Color.black);
-		updateUserInfo.setBackground(Color.LIGHT_GRAY);
-		updateUserInfo.setBorder(BorderFactory.createLineBorder(Color.black,3));
-		updateUserInfo.addActionListener(this);
-		southPanel.add(updateUserInfo);
+		updatePlayerInfo = new JButton("Update Personal Info");
+		updatePlayerInfo.setFont(new Font("Times New Roman",Font.BOLD,30));
+		updatePlayerInfo.setFocusable(false);
+		updatePlayerInfo.setForeground(Color.black);
+		updatePlayerInfo.setBackground(Color.LIGHT_GRAY);
+		updatePlayerInfo.setPreferredSize(new Dimension (350,50));
+		updatePlayerInfo.setBorder(BorderFactory.createLineBorder(Color.black,3));
+		updatePlayerInfo.addActionListener(this);
+		southPanel.add(updatePlayerInfo);
 	}
-	
+
+	public void updateInfo() {
+		//define the option
+		String[]updateOption = {"Player Name","Password","Cancel"};
+		
+		//create option dialog
+		int choice = JOptionPane.showOptionDialog(playerInfoPanel, 
+				"Which personal info you want update?", 
+				"Personal Info Update", 
+				JOptionPane.YES_NO_CANCEL_OPTION,
+				JOptionPane.PLAIN_MESSAGE, 
+				null, 
+				updateOption,0);
+		
+		switch(choice) {
+			case 0://player name
+				String newPlayerName = null;
+				
+				 while (true) {
+				        newPlayerName = JOptionPane.showInputDialog(
+				            playerInfoPanel,
+				            "Enter new player name:",
+				            "Update player name",
+				            JOptionPane.PLAIN_MESSAGE
+				        );
+
+				        if (newPlayerName == null) {
+				            // player clicked Cancel or closed the dialog – cancel the update
+				            return;
+				        }
+
+				        newPlayerName = newPlayerName.trim();
+
+				        if (newPlayerName.isEmpty()) {
+				            JOptionPane.showMessageDialog(
+				                playerInfoPanel,
+				                "Name cannot be empty. Please try again.",
+				                "WARNING",
+				                JOptionPane.WARNING_MESSAGE
+				            );
+				        } else if (newPlayerName.equals(name)) {
+				            JOptionPane.showMessageDialog(
+				                playerInfoPanel,
+				                "Repeated name. Please try again.",
+				                "WARNING",
+				                JOptionPane.WARNING_MESSAGE
+				            );
+				        } else {
+				            break; // valid input, exit loop
+				        }
+				    }
+
+				
+				//update the name
+				name = newPlayerName;
+				
+				centerPanel.removeAll();
+				playerName.setText("Player name: " + name);
+		        centerPanel.add(playerName);
+		        centerPanel.add(playerId);
+		        centerPanel.add(numOfcards);
+		        centerPanel.add(regDate);
+		        
+		        centerPanel.revalidate();  // Refresh layout
+				centerPanel.repaint();
+				break;
+				
+			case 1://password
+				 boolean passwordCorrect = false;
+		         String originalPassword;
+		         String storedPassword = "12345"; //link database later
+
+		         while (!passwordCorrect) {
+		        	 originalPassword = JOptionPane.showInputDialog(playerInfoPanel, "Enter original password:");
+  
+		             if (originalPassword == null) {
+		                    // player pressed Cancel
+		                    break;
+		                } else if (originalPassword.equals(storedPassword)) {
+		                    passwordCorrect = true;
+		                    String newPassword;
+		                    while (true) {
+		                        newPassword = JOptionPane.showInputDialog(playerInfoPanel, "Enter new password:");
+
+		                        if (newPassword == null) {
+		                            // Cancel update
+		                            return;
+		                        } else if (newPassword.equals(originalPassword)) {
+		                            JOptionPane.showMessageDialog(playerInfoPanel, "New password cannot be the same as the original.", "Error", JOptionPane.ERROR_MESSAGE);
+		                        } else if (newPassword.trim().isEmpty()) {
+		                            JOptionPane.showMessageDialog(playerInfoPanel, "Password cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
+		                        } else {
+		                            //update to database
+		                            System.out.println("New Password: " + newPassword);//can delete later
+		                            JOptionPane.showMessageDialog(playerInfoPanel, "Update Successfully!", "Password Update", JOptionPane.PLAIN_MESSAGE);
+		                            break;
+		                        }
+		                    }
+
+		                } else {
+		                    JOptionPane.showMessageDialog(playerInfoPanel, "Incorrect password. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+		                }
+		            }
+		            break;
+ 
+
+		        case 2: //Cancel
+		        default:
+		            //Close dialog
+		            return;
+			}
+		}
 	//load player profile
-	public void loadProfile(int playerId) {
-	    Player player = Player.loadPlayerProfile(playerId);
+	public void loadProfile(int pId) {
+	    Player player = Player.loadPlayerProfile(pId);
 
 	    if (player != null) {
 	        //refresh the GUI components:
-	        userName.setText("Name: " + player.getPlayerName());
-	        userId.setText("Player ID: " + player.getPlayerID());
+	    	playerName.setText("Name: " + player.getPlayerName());
+	        playerId.setText("Player ID: " + player.getPlayerID());
 	        numOfcards.setText("Numbers of cards: " + player.getCardQuantity());
 	        regDate.setText("Registered date: " + player.getRegistrationDate().toString());
 	    } else
-	        JOptionPane.showMessageDialog(userProfile, "Player not found.");
+	        JOptionPane.showMessageDialog(playerProfile, "Player not found.");
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == BackBtn)  {
+			System.out.println("Back button clicked!");
+		}
+		else if(e.getSource() == updatePlayerInfo) {
 		if(e.getSource() == BackBtn){
-		      userProfile.dispose();
+		      playerProfile.dispose();
 		      FirstPage FirstPage = new FirstPage();
 		}
-		else if(e.getSource() == updateUserInfo)
-			System.out.println("Update User button clicked!");
+		else if(e.getSource() == updatePlayerInfo)
+			System.out.println("Update Player button clicked!");
+			updateInfo();
+		}
 	}
 	
 	//add here
 	public static void main(String[] args) {
-		PlayerProfile profile = new PlayerProfile();
 
-	    // for example:
+		PlayerProfile profile = new PlayerProfile();
+	    //for example:
 	    profile.loadProfile(1);
-	    profile.userProfile.setVisible(true);
+	    profile.playerProfile.setVisible(true);
 	}
 }
