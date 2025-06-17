@@ -318,25 +318,35 @@ public class FirstPage implements ActionListener{
 		}	else if (event.getSource() == resetPasswordButton) {
 			// Handle reset password
 
-		    char[] passwordChars1 = passwordField1.getPassword();
-		    String password1 = new String(passwordChars1);
-		    char[] passwordChars2 = passwordField2.getPassword();
-		    String password2 = new String(passwordChars2);
-		    String username = playerIDField.getText();
-
-		    if (username.isEmpty()) 
+			String password1 = new String(passwordField1.getPassword());
+		    String password2 = new String(passwordField2.getPassword());
+		    String playerIdStr = playerIDField.getText();
+		    int playerId;
+		    
+		    if (playerIdStr.isEmpty())  //check if playerId valid
 		    {
-		        JOptionPane.showMessageDialog(frame, "Username cannot be empty.");
+		        JOptionPane.showMessageDialog(frame, "Player ID cannot be empty.");
 		        return;
 		    }
+		    else {
+		    	try {playerId = Integer.parseInt(playerIdStr);
+			    } catch (NumberFormatException e) {
+			        JOptionPane.showMessageDialog(frame, "Invalid Player ID.");
+			        return;
+			    }
+		    }
 
-		    if (!password1.equals(password2)) 
-		    {
+		    if (password1.isBlank()) { //check if blank pw
+		    	JOptionPane.showMessageDialog(frame, "Please set a password.");
+		        return;
+		    }
+		    
+		    if (!password1.equals(password2)){ //check if pw match
 		        JOptionPane.showMessageDialog(frame, "Passwords do not match.");
 		        return;
 		    }
 
-		    boolean updated = Player.resetPassword(username, password1);
+		    boolean updated = Player.resetPassword(playerId, password1);
 
 		    if ((updated)) 
 		    {
