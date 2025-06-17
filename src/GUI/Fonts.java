@@ -32,6 +32,13 @@ public class  Fonts{
 		jButton.setFont(header);
 	}
 	
+	public void HeaderFont(JComboBox comboBox ) {
+		comboBox.setFont(header);
+	}
+	
+	public void HeaderFont(JMenuItem menuItem) {
+	    menuItem.setFont(header);
+	}
 	
 	public void Heading1(JLabel jLabel ) {
 		jLabel.setFont(heading1);
@@ -39,6 +46,14 @@ public class  Fonts{
 		
 	public void Heading1 (JButton jButton ) {
 		jButton.setFont(heading1);
+	}
+	
+	public void Heading1(JComboBox comboBox ) {
+		comboBox.setFont(heading1);
+	}
+	
+	public void Heading1(JMenuItem menuItem) {
+	    menuItem.setFont(heading1);
 	}
 	
 	public void Heading2(JLabel jLabel) {
@@ -49,6 +64,14 @@ public class  Fonts{
 		jButton.setFont(heading2);
 	}
 	
+	public void Heading2(JComboBox comboBox ) {
+		comboBox.setFont(heading2);
+	}
+	
+	public void Heading2(JMenuItem menuItem) {
+	    menuItem.setFont(heading2);
+	}
+	
 	public void BodyFont(JLabel jLabel) {
 		jLabel.setFont(bodyFont);
 	}
@@ -57,6 +80,13 @@ public class  Fonts{
 		jButton.setFont(bodyFont);
 	}
 	
+	public void BodyFont(JComboBox comboBox ) {
+		comboBox.setFont(bodyFont);
+	}
+	
+	public void BodyFont(JMenuItem menuItem) {
+	    menuItem.setFont(bodyFont);
+	}
 	
 	
 	//TRING

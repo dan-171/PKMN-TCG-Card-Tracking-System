@@ -51,7 +51,7 @@ public class FirstPage implements ActionListener{
 		frame.setLocationRelativeTo(null);//default location in center
 		centralRightPanel= setUp.gridBagLayout();
 		centralLeftPanel = setUp.gridBagLayout();
-		showPasswordCheckBox = new JCheckBox("Show Password");
+		showPasswordCheckBox = new JCheckBox("Forgot Password");
 	}
 	
 	public void NorthPanel() {
