@@ -3,7 +3,6 @@ package GUI;
 import Database.Player;
 
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Iterator;
@@ -16,7 +15,6 @@ public class FirstPage implements ActionListener{
 	private JPasswordField  passwordField, passwordField1, passwordField2;
 	private JButton signInButton, registerButton,passwordMenu, signInMenu, registerMenu, resetPasswordButton;
 	private JCheckBox showPasswordCheckBox;
-	private Boolean showPasswordBoolean;
 	
 	Fonts fonts = new Fonts();
 	SetUp setUp = new SetUp();
@@ -47,7 +45,6 @@ public class FirstPage implements ActionListener{
 		frame.setLayout(new BorderLayout());
 		centralRightPanel= setUp.gridBagLayout();
 		centralLeftPanel = setUp.gridBagLayout();
-		showPasswordBoolean = false;
 		showPasswordCheckBox = new JCheckBox("Show Password");
 
 	}
@@ -364,7 +361,7 @@ public class FirstPage implements ActionListener{
 	                Player player = new Player(PID);
 	                
 	                // proceed to the main application
-	                
+	                //Need to add the cardlayout to the pokedex
 	                
 	                
 	            } else
