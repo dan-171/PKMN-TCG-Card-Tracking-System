@@ -15,7 +15,6 @@ public class FirstPage implements ActionListener{
 	private JPasswordField  passwordField, passwordField1, passwordField2;
 	private JButton signInButton, registerButton,passwordMenu, signInMenu, registerMenu, resetPasswordButton;
 	private JCheckBox showPasswordCheckBox;
-	private Boolean showPasswordBoolean;
 	
 	Fonts fonts = new Fonts();
 	SetUp setUp = new SetUp();
@@ -46,7 +45,6 @@ public class FirstPage implements ActionListener{
 		frame.setLayout(new BorderLayout());
 		centralRightPanel= setUp.gridBagLayout();
 		centralLeftPanel = setUp.gridBagLayout();
-		showPasswordBoolean = false;
 		showPasswordCheckBox = new JCheckBox("Show Password");
 
 	}
