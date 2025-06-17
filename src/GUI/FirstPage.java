@@ -3,7 +3,6 @@ package GUI;
 import Database.PlayerAccess;
 
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Iterator;
@@ -371,7 +370,7 @@ public class FirstPage implements ActionListener{
 	                
 	                
 	                // proceed to the main application
-	                
+	                //Need to add the cardlayout to the pokedex
 	                
 	                
 	            } else {
