@@ -68,7 +68,7 @@ public class FirstPage implements ActionListener{
 		northPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		
 		//rescaled the profile Pic
-		ImageIcon oriBgPic = new ImageIcon("resources/LOGO/pikachu.png");
+		ImageIcon oriBgPic = new ImageIcon("resources/LOGO/banner.png");
 		Image scaledBgPic = oriBgPic.getImage().getScaledInstance(screenWidth, screenHeight/4, Image.SCALE_SMOOTH);
 		ImageIcon bgPic = new ImageIcon(scaledBgPic);
 		
@@ -78,7 +78,7 @@ public class FirstPage implements ActionListener{
 		
 		JLabel Title = new JLabel("Pokemon TCG Card Tracking System");
 		Title.setOpaque(false);
-		Title.setBounds(200,20,screenWidth,screenHeight/9);
+		Title.setBounds(screenWidth/6,screenHeight/72,screenWidth,screenHeight/9);
 		fonts.HeaderFont(Title);
 		bgImage.add(Title);
 		
@@ -287,16 +287,41 @@ public class FirstPage implements ActionListener{
 	
 	public void WestPanel() {
 		westPanel = new JPanel();
+		westPanel.setLayout(new BorderLayout());
 		westPanel.setPreferredSize(new Dimension(Margin, 0));
 		westPanel.setBackground(new Color(0xFFFFFF));
+
+		
+		//rescaled the profile Pic
+		ImageIcon oriImage1 = new ImageIcon("resources/LOGO/pikachu2.png");
+		Image scaledImage1 = oriImage1.getImage().getScaledInstance(screenWidth/10, screenHeight/5, Image.SCALE_SMOOTH);
+		ImageIcon Image1 = new ImageIcon(scaledImage1);
+		
+		JLabel pic1 = new JLabel(Image1);
+		pic1.setHorizontalAlignment(JLabel.LEFT);
+		pic1.setVerticalAlignment(JLabel.BOTTOM);
+		westPanel.add(pic1,BorderLayout.SOUTH);
+		
 		frame.add(westPanel, BorderLayout.WEST);
 		
 	}
 	
 	public void EastPanel() {
 		JPanel eastPanel = new JPanel();
+		eastPanel.setLayout(new BorderLayout());
 		eastPanel.setPreferredSize(new Dimension(Margin, 0));
 		eastPanel.setBackground(new Color(0xFFFFFF));
+		
+		//rescaled the profile Pic
+		ImageIcon oriImage2 = new ImageIcon("resources/LOGO/eevee.png");
+		Image scaledImage2 = oriImage2.getImage().getScaledInstance(screenWidth/10, screenHeight/5, Image.SCALE_SMOOTH);
+		ImageIcon Image2 = new ImageIcon(scaledImage2);
+				
+		JLabel pic2 = new JLabel(Image2);
+		pic2.setHorizontalAlignment(JLabel.RIGHT);
+		pic2.setVerticalAlignment(JLabel.BOTTOM);
+		eastPanel.add(pic2,BorderLayout.SOUTH);
+		
 		frame.add(eastPanel, BorderLayout.EAST);
 		
 	}
