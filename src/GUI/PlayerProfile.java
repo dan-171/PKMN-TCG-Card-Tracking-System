@@ -13,7 +13,7 @@ import Database.Player;
 import GUI.TriangleLabel.Direction;
 
 
-public class UserProfile implements ActionListener{
+public class PlayerProfile implements ActionListener{
 	private JFrame userProfile;
 	private JPanel panelHeader,centerBg,titleBg,userInfoPanel,userInfoArea;
 	private JLabel pageTitle,profileImage,userName,userId,numOfcards,regDate;
@@ -24,7 +24,7 @@ public class UserProfile implements ActionListener{
 	String name,userID,registerDate;
 	int numOfCards;
 	
-	public UserProfile(){
+	public PlayerProfile(){
 		init();			
 		HeaderPanel();
 		userInfo();
@@ -35,7 +35,6 @@ public class UserProfile implements ActionListener{
 	public void init() {
 		userProfile = new JFrame();
 		userProfile.setSize(1920,1080);
-		userProfile.setResizable(false);
 		userProfile.setTitle("Pokemon TCG Card Tracking System");
 		ImageIcon logo = new ImageIcon("resources/LOGO/logo.jpg");
 		userProfile.setIconImage(logo.getImage());
@@ -234,7 +233,7 @@ public class UserProfile implements ActionListener{
 	
 	//add here
 	public static void main(String[] args) {
-	    UserProfile profile = new UserProfile();
+		PlayerProfile profile = new PlayerProfile();
 
 	    // for example:
 	    profile.loadProfile(1);

@@ -5,7 +5,6 @@ import Database.Player;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Iterator;
 
 public class FirstPage implements ActionListener{
 	
@@ -31,7 +30,6 @@ public class FirstPage implements ActionListener{
 		WestPanel();
 		EastPanel();
 		frame.setVisible(true);
-		
 	}
 	
 	public void init(){
@@ -46,7 +44,6 @@ public class FirstPage implements ActionListener{
 		centralRightPanel= setUp.gridBagLayout();
 		centralLeftPanel = setUp.gridBagLayout();
 		showPasswordCheckBox = new JCheckBox("Show Password");
-
 	}
 	
 	public void NorthPanel() {
