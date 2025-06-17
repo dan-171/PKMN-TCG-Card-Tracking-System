@@ -1,5 +1,6 @@
 package GUI;
 
+import Database.AppSession;
 import Database.Player;
 import Database.Pokedex;
 
@@ -138,7 +139,15 @@ public class PokedexPage implements ActionListener {
 	        	frame.dispose();
 	        	PlayerProfile playerProfile = new PlayerProfile();	           
 	        	//Clear the 
-	        	
+	        	Integer currentId = AppSession.getCurrentPlayerId();
+
+	            if (currentId == null) {
+	                JOptionPane.showMessageDialog(null, "No player is currently authenticated.");
+	                return;
+	            }
+
+	            playerProfile.init();
+	            playerProfile.loadProfile(currentId);
 	        	
 	            break;
 	        case "Logout":
