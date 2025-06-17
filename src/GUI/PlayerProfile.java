@@ -9,10 +9,11 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import Database.Player;
 import GUI.TriangleLabel.Direction;
 
 
-public class userProfile implements ActionListener{
+public class UserProfile implements ActionListener{
 	private JFrame userProfile;
 	private JPanel panelHeader,centerBg,titleBg,userInfoPanel,userInfoArea;
 	private JLabel pageTitle,profileImage,userName,userId,numOfcards,regDate;
@@ -23,7 +24,7 @@ public class userProfile implements ActionListener{
 	String name,userID,registerDate;
 	int numOfCards;
 	
-	public userProfile(){
+	public UserProfile(){
 		init();			
 		HeaderPanel();
 		userInfo();
@@ -207,12 +208,36 @@ public class userProfile implements ActionListener{
 		southPanel.add(updateUserInfo);
 	}
 	
+	//load player profile
+	public void loadProfile(int playerId) {
+	    Player player = Player.loadPlayerProfile(playerId);
+
+	    if (player != null) {
+	        //refresh the GUI components:
+	        userName.setText("Name: " + player.getPlayerName());
+	        userId.setText("Player ID: " + player.getPlayerID());
+	        numOfcards.setText("Numbers of cards: " + player.getCardQuantity());
+	        regDate.setText("Registered date: " + player.getRegistrationDate().toString());
+	    } else
+	        JOptionPane.showMessageDialog(userProfile, "Player not found.");
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource() == BackBtn)  
-			System.out.println("Back button clicked!");
+		if(e.getSource() == BackBtn){
+		      userProfile.dispose();
+		      FirstPage FirstPage = new FirstPage();
+		}
 		else if(e.getSource() == updateUserInfo)
 			System.out.println("Update User button clicked!");
 	}
+	
+	//add here
+	public static void main(String[] args) {
+	    UserProfile profile = new UserProfile();
 
+	    // for example:
+	    profile.loadProfile(1);
+	    profile.userProfile.setVisible(true);
+	}
 }
