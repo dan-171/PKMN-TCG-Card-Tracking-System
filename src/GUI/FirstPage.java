@@ -43,6 +43,7 @@ public class FirstPage implements ActionListener{
 		frame.setIconImage(logo.getImage());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
+		frame.setLocationRelativeTo(null);//default location in center
 		centralRightPanel= setUp.gridBagLayout();
 		centralLeftPanel = setUp.gridBagLayout();
 		showPasswordCheckBox = new JCheckBox("Show Password");
