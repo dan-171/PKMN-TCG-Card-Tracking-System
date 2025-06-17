@@ -3,22 +3,28 @@ package GUI;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class testing extends JFrame implements ActionListener {
 
     private JPanel displayPanel;
-
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    
+    private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private int screenWidth = screenSize.width;
     private int screenHeight = screenSize.height;
+    List<JButton> cardButtonList;
 
+    
     testing() {
         this.setSize(screenSize);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout()); // Use layout manager
-
+        cardButtonList = new ArrayList<>();
+        
         displayPanel(); // Build card panel
         this.setVisible(true);
+        
     }
 
     public void displayPanel() {
@@ -45,8 +51,19 @@ public class testing extends JFrame implements ActionListener {
             cardButton.setVerticalTextPosition(SwingConstants.BOTTOM);
             cardButton.setHorizontalTextPosition(SwingConstants.CENTER);
             cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
-
+            
+            
             displayPanel.add(cardButton);
+            
+            cardButton.setActionCommand(cardCode);
+            cardButton.addActionListener(new ActionListener() {
+                
+                public void actionPerformed(ActionEvent e) {
+                    String clickedCode = e.getActionCommand();
+                    System.out.println("You clicked: " + clickedCode);
+                    // You can add more logic here based on cardCode
+                }
+            });
         }
         
         // Set preferred size larger than the visible area to trigger scroll
