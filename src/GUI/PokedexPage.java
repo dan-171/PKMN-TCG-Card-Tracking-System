@@ -33,11 +33,13 @@ public class PokedexPage implements ActionListener {
 	//Constructor
 		public PokedexPage(Pokedex pokedex){
 			this.pokedex  = pokedex;
+			this.cardButton = new ArrayList<>();
 			init();
 			NorthPanel();
-			/*CentralPanel();
-			WestPanel();
-			EastPanel();*/
+			displayPanel();
+			//CentralPanel();
+			//WestPanel();
+			//EastPanel();*/
 			frame.setVisible(true);
 			
 		}
@@ -161,25 +163,23 @@ public class PokedexPage implements ActionListener {
 
         centralPanel = new JPanel();
         centralPanel.setBackground(Color.LIGHT_GRAY);
-        centralPanel.setLayout(new FlowLayout(FlowLayout.LEADING, 10, 10));
+        centralPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
         int panelPicW = (int) (screenWidth * 0.07);
         int panelPicH = (int) (screenHeight * 0.17);
 
         // Loop from BS001 to BS102
         for (int i = 1; i <= 102; i++) {
-            String cardCode = String.format("BS%03d", i);
             ImageIcon icon = new ImageIcon(pokedex.fetchCardImg(i));
             Image scaledImage = icon.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
             icon = new ImageIcon(scaledImage);
 
+            cardButton.add(new JButton(pokedex.fetchCardLabel(String.format("BS%03d", i)), icon));
+            cardButton.get(i-1).setVerticalTextPosition(SwingConstants.BOTTOM);
+            cardButton.get(i-1).setHorizontalTextPosition(SwingConstants.CENTER);
+            cardButton.get(i-1).setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
 
-            cardButton.add(new JButton(String.format("BS%03d", i), icon));
-            cardButton.get(i).setVerticalTextPosition(SwingConstants.BOTTOM);
-            cardButton.get(i).setHorizontalTextPosition(SwingConstants.CENTER);
-            cardButton.get(i).setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
-
-            centralPanel.add(cardButton.get(i));
+            centralPanel.add(cardButton.get(i-1));
         }
         
         // Set preferred size larger than the visible area to trigger scroll
@@ -191,7 +191,7 @@ public class PokedexPage implements ActionListener {
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.getVerticalScrollBar().setUnitIncrement(50);
         frame.add(scrollPane);
-        frame.add(centralPanel);
+        //frame.add(centralPanel);
     }
 	
 	

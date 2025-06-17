@@ -17,7 +17,7 @@ public class Pokedex {
 		for (int i = 0; i < setSize; i++) {
 			String paddedNo = String.format("%03d", i+1);
 			String cardFileID = "BS" + paddedNo; //BS001, BS002, ...
-			String cardFilePath = "resources/images/" + cardFileID; //image/BS001, image/BS002, ...
+			String cardFilePath = "resources/images/" + cardFileID + ".jpg"; //image/BS001, image/BS002, ...
 			Card card = new Card(cardFileID, cardFilePath);
 			cards.add(card);
 			
@@ -46,12 +46,12 @@ public class Pokedex {
 	
 	//return jpg path for overview display of full card set
 	public String fetchCardImg(int index) {
-		boolean missing = missingCard(cards.get(index).getCardID());
+		boolean missing = missingCard(cards.get(index-1).getCardID());
 		
 		if (missing) //show the card's back
 			return "resources/images/PTCG_CardBack.jpg";
 		else
-			return cards.get(index).getCardFilePath();
+			return cards.get(index-1).getCardFilePath();
 		
 	}
 	
