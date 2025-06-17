@@ -1,8 +1,10 @@
 package GUI;
+import Database.Pokedex;
 
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class testing extends JFrame implements ActionListener {
 
@@ -12,6 +14,9 @@ public class testing extends JFrame implements ActionListener {
     private int screenWidth = screenSize.width;
     private int screenHeight = screenSize.height;
 
+    private Pokedex pokedex;
+    private ArrayList<JButton> cardButton;
+    
     testing() {
         this.setSize(screenSize);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -35,18 +40,16 @@ public class testing extends JFrame implements ActionListener {
         // Loop from BS001 to BS102
         for (int i = 1; i <= 102; i++) {
             String cardCode = String.format("BS%03d", i);
-            String imagePath = "resources/images/" + cardCode + ".jpg";
-
-            ImageIcon icon = new ImageIcon(imagePath);
+            ImageIcon icon = new ImageIcon(pokedex.fetchCardImg(i));
             Image scaledImage = icon.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
             icon = new ImageIcon(scaledImage);
 
-            JButton cardButton = new JButton(cardCode, icon);
-            cardButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-            cardButton.setHorizontalTextPosition(SwingConstants.CENTER);
-            cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
+            cardButton.add(new JButton(String.format("BS%03d", i), icon));
+            cardButton.get(i).setVerticalTextPosition(SwingConstants.BOTTOM);
+            cardButton.get(i).setHorizontalTextPosition(SwingConstants.CENTER);
+            cardButton.get(i).setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
 
-            displayPanel.add(cardButton);
+            displayPanel.add(cardButton.get(i));
         }
         
         // Set preferred size larger than the visible area to trigger scroll

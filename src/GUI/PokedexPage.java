@@ -1,6 +1,7 @@
 package GUI;
 
 import Database.Player;
+import Database.Pokedex;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +16,7 @@ public class PokedexPage implements ActionListener {
     private JMenuItem[]  leftJMenuItems,profileMenuItems;
     
     private Player player;
+    private Pokedex pokedex;
     
     private boolean showLeftMenu, showProfileMenu;
     
@@ -26,7 +28,8 @@ public class PokedexPage implements ActionListener {
 	public static final int Margin = 300;
 	
 	//Constructor
-		public PokedexPage(){
+		public PokedexPage(Pokedex pokedex){
+			this.pokedex  = pokedex;
 			init();
 			NorthPanel();
 			/*CentralPanel();
