@@ -380,6 +380,8 @@ public class FirstPage implements ActionListener{
 	                
 	                successLogin = true;
 	                getSuccessLogin();
+	                frame.dispose();
+	                PokedexPage pokedex = new PokedexPage();
 	                
 	                // proceed to the main application
 	                //Need to add the cardlayout to the pokedex
