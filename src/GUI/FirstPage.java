@@ -5,7 +5,6 @@ import Database.Player;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Iterator;
 
 public class FirstPage implements ActionListener{
 	
@@ -16,12 +15,15 @@ public class FirstPage implements ActionListener{
 	private JButton signInButton, registerButton,passwordMenu, signInMenu, registerMenu, resetPasswordButton;
 	private JCheckBox showPasswordCheckBox;
 	
+	private int screenWidth, screenHeight;
+	
+	Dimension screenSize;
 	Fonts fonts = new Fonts();
 	SetUp setUp = new SetUp();
 	GridBagConstraints gbc = new GridBagConstraints();
 	
 	
-	public static final int breadth = 1920, length = 1080, Margin = 300;
+	public static final int Margin = 300;
 	
 	//Constructor
 	public FirstPage(){
@@ -31,12 +33,15 @@ public class FirstPage implements ActionListener{
 		WestPanel();
 		EastPanel();
 		frame.setVisible(true);
-		
 	}
 	
 	public void init(){
+		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		screenWidth = screenSize.width;
+		screenHeight = screenSize.height;
+		
 		frame = new JFrame();
-		frame.setSize(breadth,length);
+		frame.setSize(screenSize);
 		frame.setResizable(false);
 		frame.setTitle("Pokemon TCG Card Tracking System");
 		ImageIcon logo = new ImageIcon("resources/LOGO/logo.jpg");
@@ -46,8 +51,7 @@ public class FirstPage implements ActionListener{
 		frame.setLocationRelativeTo(null);//default location in center
 		centralRightPanel= setUp.gridBagLayout();
 		centralLeftPanel = setUp.gridBagLayout();
-		showPasswordCheckBox = new JCheckBox("Show Password");
-
+		showPasswordCheckBox = new JCheckBox("Forgot Password");
 	}
 	
 	public void NorthPanel() {
@@ -55,7 +59,7 @@ public class FirstPage implements ActionListener{
 		JLabel Title = new JLabel("Welcome to the Pokemon TCG Card Tracking System");
 		fonts.HeaderFont(Title);
 		
-		setUp.setGBC(gbc, 0, 1, 1, gbc.CENTER, gbc.HORIZONTAL, new Insets(30, 0, 0, 0), 0);
+		setUp.setGBC(gbc, 0, 0, 1, gbc.CENTER, gbc.HORIZONTAL, new Insets(30, 0, 0, 0), 0);
 		northPanel.add(Title, gbc);
 		
 		frame.add(northPanel, BorderLayout.NORTH);

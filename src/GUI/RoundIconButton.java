@@ -13,7 +13,6 @@ public class RoundIconButton extends JButton {
         setPreferredSize(new Dimension(icon.getIconWidth(), icon.getIconHeight()));
         setBorderPainted(false);
         setContentAreaFilled(false);
-        setFocusPainted(false);
         setOpaque(false);
     }
 
