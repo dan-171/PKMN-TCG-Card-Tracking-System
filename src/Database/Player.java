@@ -95,17 +95,16 @@ public class Player {
 	}
 	
 	//player forget pw -> reset pw
-	public static boolean resetPassword(String playerID, String newPassword) {
-	    boolean updated = false;
+	public static boolean resetPassword(int playerID, String newPassword) {
 	    
 	    try (Connection conn = JDBC.getConnection();
-	         PreparedStatement updatePW = conn.prepareStatement("UPDATE players SET Password = ? WHERE ID = ?")) {
+	         PreparedStatement updatePW = conn.prepareStatement("UPDATE players SET Password = ? WHERE PlayerID = ?")) {
 	    	updatePW.setString(1, newPassword);
-	    	updatePW.setString(2, playerID);
+	    	updatePW.setInt(2, playerID);
 	        
 	        int row = updatePW.executeUpdate();
 	        if (row == 1) {
-	            updated = true;
+	            return true;
 	        }
 	    } 
 	    catch (Exception e) 
@@ -113,7 +112,7 @@ public class Player {
 	        e.printStackTrace();
 	    }
 
-	    return updated;
+	    return false;
 	}
 	
 	//get player profile info

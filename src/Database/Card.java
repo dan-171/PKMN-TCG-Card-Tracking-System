@@ -13,7 +13,7 @@ public class Card {
 		return cardID;
 	}
 	
-	public String getCardIMGFile() {
+	public String getCardFilePath() {
 		return cardFilePath;
 	}
 	
