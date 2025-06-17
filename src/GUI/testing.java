@@ -56,7 +56,7 @@ public class testing extends JFrame implements ActionListener {
         JScrollPane scrollPane = new JScrollPane(displayPanel,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
+        scrollPane.getVerticalScrollBar().setUnitIncrement(50);
         this.add(scrollPane);
     }
 
