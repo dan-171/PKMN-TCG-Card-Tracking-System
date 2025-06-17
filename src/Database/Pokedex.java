@@ -51,7 +51,7 @@ public class Pokedex {
 		if (missing) //show the card's back
 			return "images/PTCG_CardBack.jpg";
 		else
-			return cards.get(index).getCardIMGFile();
+			return cards.get(index).getCardFilePath();
 		
 	}
 	
