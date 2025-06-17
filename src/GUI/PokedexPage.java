@@ -22,7 +22,7 @@ public class PokedexPage implements ActionListener {
 	GridBagConstraints gbc = new GridBagConstraints();
 	
 	
-	public static final int breadth = 1920, length = 1080, Margin = 300;
+	public static final int Margin = 300;
 	
 	//Constructor
 		public PokedexPage(){
@@ -134,7 +134,7 @@ public class PokedexPage implements ActionListener {
 	            
 	            break;
 	        case "Logout":
-	            System.out.println("Logging out");
+	        	
 	            break;
 	        default:
 	            System.out.println("Unknown action: " + command);

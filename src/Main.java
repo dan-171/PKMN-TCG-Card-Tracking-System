@@ -15,7 +15,6 @@ public class Main {
 			JOptionPane.showMessageDialog(null, "Database successfully connected!");
 
 			new FirstPage();
-			
 		}
 		catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Failed to connect to database:\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
