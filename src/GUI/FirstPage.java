@@ -1,5 +1,6 @@
 package GUI;
 
+import Database.AppSession;
 import Database.Player;
 import Database.Pokedex;
 
@@ -379,10 +380,14 @@ public class FirstPage implements ActionListener{
 	                JOptionPane.showMessageDialog(frame, "Login successful!");
 	                player = new Player(PID);
 	                
+	                AppSession.setCurrentPlayerId(PID);
+	                
 	                successLogin = true;
 	                getSuccessLogin();
 	                frame.dispose();
-	                PokedexPage pokedex = new PokedexPage(new Pokedex(player));
+	                
+	                Pokedex px = new Pokedex(player);
+	                PokedexPage pokedex = new PokedexPage(px);
 	                
 	                // proceed to the main application
 	                //Need to add the cardlayout to the pokedex
