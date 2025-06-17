@@ -107,9 +107,9 @@ public class PlayerProfile implements ActionListener{
 
 	public void playerInfo() {
 		int panelX = (int)(screenWidth * 0.17);
-	     int panelY = (int)(screenHeight * 0.14);
-	     int panelW = (int)(screenWidth * 0.64);
-	     int panelH = (int)(screenHeight * 0.74);
+	    int panelY = (int)(screenHeight * 0.14);
+	    int panelW = (int)(screenWidth * 0.64);
+	    int panelH = (int)(screenHeight * 0.74);
 	
 		//create profile picture
 		playerInfoPanel = new JPanel();
@@ -117,7 +117,13 @@ public class PlayerProfile implements ActionListener{
 		playerInfoPanel.setLayout(null);
 		playerProfile.add(playerInfoPanel);
 		
-		ImageIcon profilePic = new ImageIcon("resources/profileUse/mcPic.png");
+		int panelPicW = (int)(screenWidth * 0.16);
+		int panelPicH = (int)(screenHeight * 0.72);
+		
+		//rescaled the profile Pic
+		ImageIcon oriProfilePic = new ImageIcon("resources/profileUse/mcPic.png");
+		Image scaledProfilePic = oriProfilePic.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
+		ImageIcon profilePic = new ImageIcon(scaledProfilePic);
 		
 		profileImage = new JLabel();
 		profileImage.setIcon(profilePic);

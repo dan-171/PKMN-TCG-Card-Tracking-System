@@ -10,6 +10,8 @@ public class PokedexPage {
 	private JFrame frame;
 	private JPanel northPanel, centralPanel, westPanel;
 	
+	private int screenWidth, screenHeight;
+	
 	Fonts fonts = new Fonts();
 	SetUp setUp = new SetUp();
 	GridBagConstraints gbc = new GridBagConstraints();
@@ -29,20 +31,23 @@ public class PokedexPage {
 		}
 	
 	public void init(){
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		screenWidth = screenSize.width;
+		screenHeight = screenSize.height;
+		
 		frame = new JFrame();
-		frame.setSize(breadth,length);
+		frame.setSize(screenSize);
 		frame.setResizable(false);
 		frame.setTitle("Pokedex");
 		ImageIcon logo = new ImageIcon("resources/LOGO/logo.jpg");
 		frame.setIconImage(logo.getImage());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
-		
 	}
 	
 	public void NorthPanel() {
 		northPanel = setUp.gridBagLayout();
-		JLabel Title = new JLabel("Welcome to the Pokemon TCG Card Tracking System");
+		JLabel Title = new JLabel("Pokedex");
 		fonts.HeaderFont(Title);
 		
 		
