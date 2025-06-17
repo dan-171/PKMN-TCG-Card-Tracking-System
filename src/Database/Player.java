@@ -11,6 +11,7 @@ public class Player {
 	private String playerName;
 	private int cardQuantity;
 	private Timestamp registerDate;
+	private String password;
 
 	public Player(int playerID) {
 		this.playerID = playerID;
@@ -30,6 +31,10 @@ public class Player {
 
 	public Timestamp getRegistrationDate(){
 	    return registerDate;
+	}
+	
+	public String getPassword(){
+	    return password;
 	}
 	
 	//register player
@@ -96,23 +101,35 @@ public class Player {
 	}
 	
 	//player forget pw -> reset pw
-	public static boolean resetPassword(int playerID, String newPassword) {
-	    
+	public static boolean resetPassword(int playerId, String newPassword) {
 	    try (Connection conn = JDBC.getConnection();
-	         PreparedStatement updatePW = conn.prepareStatement("UPDATE players SET Password = ? WHERE PlayerID = ?")) {
-	    	updatePW.setString(1, newPassword);
-	    	updatePW.setInt(2, playerID);
-	        
-	        int row = updatePW.executeUpdate();
-	        if (row == 1) {
-	            return true;
-	        }
-	    } 
-	    catch (Exception e) 
-	    {
+	            PreparedStatement ps = conn.prepareStatement("UPDATE players SET Password = ? WHERE PlayerID = ?")) {
+	        ps.setString(1, newPassword);
+	        ps.setInt(2, playerId);
+
+	        int row = ps.executeUpdate();
+
+	        return row == 1;
+
+	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
+	    return false;
+	}
+	
+	public static boolean resetUsername(int playerId, String newUsername) {
+	    try (Connection conn = JDBC.getConnection();
+	            PreparedStatement ps = conn.prepareStatement("UPDATE players SET Username = ? WHERE PlayerID = ?")) {
+	        ps.setString(1, newUsername);
+	        ps.setInt(2, playerId);
 
+	        int row = ps.executeUpdate();
+
+	        return row == 1;
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 	    return false;
 	}
 	
@@ -121,7 +138,7 @@ public class Player {
 	    Player player = null;
 
 	    try (Connection conn = JDBC.getConnection(); // fetch player name, registration date
-	    		PreparedStatement getInfo = conn.prepareStatement("SELECT Username, RegistrationDate FROM players WHERE PlayerID = ?")) {
+	    		PreparedStatement getInfo = conn.prepareStatement("SELECT Username, Password, RegistrationDate FROM players WHERE PlayerID = ?")) {
 	        getInfo.setInt(1, playerId);
 	        ResultSet rs = getInfo.executeQuery();
 
@@ -129,6 +146,7 @@ public class Player {
 	        	player = new Player(playerId);
 	            player.playerName = rs.getString("Username");
 	            player.registerDate = rs.getTimestamp("RegistrationDate");
+	            player.password = rs.getString("Password");
 	        }
 
 	        rs.close();
