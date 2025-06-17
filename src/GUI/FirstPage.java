@@ -76,11 +76,11 @@ public class FirstPage implements ActionListener{
 		bgImage.setLayout(null);
 		northPanel.add(bgImage);
 		
-		JLabel Title = new JLabel("Pokemon TCG Card Tracking System");
-		Title.setOpaque(false);
-		Title.setBounds(screenWidth/6,screenHeight/72,screenWidth,screenHeight/9);
-		fonts.HeaderFont(Title);
-		bgImage.add(Title);
+//		JLabel Title = new JLabel("Pokemon TCG Card Tracking System");
+//		Title.setOpaque(false);
+//		Title.setBounds(screenWidth/6,screenHeight/72,screenWidth,screenHeight/9);
+//		fonts.HeaderFont(Title);
+//		bgImage.add(Title);
 		
 		setUp.setGBC(gbc, 0, 0, 1, gbc.CENTER, gbc.HORIZONTAL, new Insets(30, 0, 0, 0), 0);
 //		northPanel.add(Title, gbc);

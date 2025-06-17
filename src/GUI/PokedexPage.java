@@ -53,7 +53,7 @@ public class PokedexPage implements ActionListener {
 		frame = new JFrame();
 		frame.setSize(screenSize);
 		frame.setResizable(false);
-		frame.setTitle("Pokedex");
+		frame.setTitle("Pokemon TCG Card Tracking System");
 		ImageIcon logo = new ImageIcon("resources/LOGO/logo.jpg");
 		frame.setIconImage(logo.getImage());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,6 +65,7 @@ public class PokedexPage implements ActionListener {
 	
 	public void NorthPanel() {
 		northPanel = setUp.gridBagLayout();
+		northPanel.setBackground(new Color(0xe70023));
 		int top = 30;
 			
 		// Create left menu
@@ -93,6 +94,9 @@ public class PokedexPage implements ActionListener {
             }
         });
         setUp.setGBC(gbc, 0, 0, 1, gbc.LINE_START, gbc.NONE, new Insets(top, 50, 0, 0), 0);
+        leftMenuButton.setBackground(Color.WHITE);
+        leftMenuButton.setForeground(new Color(0x333333));
+        leftMenuButton.setFocusable(false);
 		northPanel.add(leftMenuButton, gbc);
         
         
@@ -100,6 +104,7 @@ public class PokedexPage implements ActionListener {
 		JLabel Title = new JLabel("Pokedex");
 		fonts.HeaderFont(Title);
 		setUp.setGBC(gbc, 1, 0, 1, gbc.CENTER, gbc.NONE, new Insets(top, 350, 0, 0), 1.0);
+		Title.setForeground(new Color(0xFFD700));
 		northPanel.add(Title, gbc);
 		
 
@@ -130,6 +135,10 @@ public class PokedexPage implements ActionListener {
             }
         });
         setUp.setGBC(gbc, 2, 0, 1, gbc.LINE_END, gbc.NONE, new Insets(top, 0, 0, 50), 1.0);
+        profileMenuButton.setBackground(Color.WHITE);
+        profileMenuButton.setForeground(new Color(0x333333));
+        profileMenuButton.setFocusable(false);
+
         northPanel.add(profileMenuButton, gbc);
 		
 		
@@ -171,7 +180,7 @@ public class PokedexPage implements ActionListener {
         int panelHeight = (int) (screenHeight * 0.85);
 
         centralPanel = new JPanel();
-        centralPanel.setBackground(Color.LIGHT_GRAY);
+        centralPanel.setBackground(Color.white);
         centralPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
         int panelPicW = (int) (screenWidth * 0.07);

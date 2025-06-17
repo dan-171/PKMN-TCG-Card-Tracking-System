@@ -10,7 +10,7 @@ import javax.swing.*;
 
 
 import Database.Player;
-
+import Database.Pokedex;
 import GUI.TriangleLabel.Direction;
 
 
@@ -360,7 +360,7 @@ public class PlayerProfile implements ActionListener{
 		else if(e.getSource() == updatePlayerInfo) {
 		if(e.getSource() == BackBtn){
 		      playerProfile.dispose();
-		      FirstPage FirstPage = new FirstPage();
+		      PokedexPage pokedexPage = new PokedexPage(new Pokedex(new Player(1)));
 		}
 		else if(e.getSource() == updatePlayerInfo)
 			System.out.println("Update Player button clicked!");
