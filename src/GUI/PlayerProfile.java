@@ -29,7 +29,6 @@ public class PlayerProfile implements ActionListener{
 	private int screenWidth = screenSize.width;
 	private int screenHeight = screenSize.height;
 
-	
 	public PlayerProfile(){
 		init();			
 		headerPanel();
@@ -104,7 +103,6 @@ public class PlayerProfile implements ActionListener{
 		
 		playerProfile.add(panelHeader);
 	}
-
 	public void playerInfo() {
 		int panelX = (int)(screenWidth * 0.17);
 	    int panelY = (int)(screenHeight * 0.14);
@@ -229,7 +227,6 @@ public class PlayerProfile implements ActionListener{
 		updatePlayerInfo.addActionListener(this);
 		southPanel.add(updatePlayerInfo);
 	}
-
 	public void updateInfo() {
 		//define the option
 		String[]updateOption = {"Player Name","Password","Cancel"};
@@ -370,7 +367,6 @@ public class PlayerProfile implements ActionListener{
 			updateInfo();
 		}
 	}
-	
 	//add here
 	public static void main(String[] args) {
 	    PlayerProfile profile = new PlayerProfile();
