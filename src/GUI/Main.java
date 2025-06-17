@@ -6,7 +6,7 @@ public class Main {
 
 //		new FirstPage();
 		//new PlayerProfile();
-		new PokedexPage();
+		//new PokedexPage();
 
 	}
 }
