@@ -146,6 +146,9 @@ public class PokedexPage implements ActionListener {
 	    }
 	}
 	
+	 
+	
+	
 	
 	public void setPlayer(Player player) {
 		this.player = player;

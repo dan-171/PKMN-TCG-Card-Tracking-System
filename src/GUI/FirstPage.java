@@ -59,7 +59,7 @@ public class FirstPage implements ActionListener{
 	
 	public void NorthPanel() {
 		northPanel = setUp.gridBagLayout();
-		JLabel Title = new JLabel("Welcome to the Pokemon TCG Card Tracking System");
+		JLabel Title = new JLabel("Pokemon TCG Card Tracking System");
 		fonts.HeaderFont(Title);
 		
 		setUp.setGBC(gbc, 0, 0, 1, gbc.CENTER, gbc.HORIZONTAL, new Insets(30, 0, 0, 0), 0);
