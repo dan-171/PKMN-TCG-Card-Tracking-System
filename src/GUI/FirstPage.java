@@ -15,6 +15,9 @@ public class FirstPage implements ActionListener{
 	private JButton signInButton, registerButton,passwordMenu, signInMenu, registerMenu, resetPasswordButton;
 	private JCheckBox showPasswordCheckBox;
 	
+	private boolean successLogin =false;
+	public Player player;
+	
 	private int screenWidth, screenHeight;
 	
 	Dimension screenSize;
@@ -56,7 +59,7 @@ public class FirstPage implements ActionListener{
 	
 	public void NorthPanel() {
 		northPanel = setUp.gridBagLayout();
-		JLabel Title = new JLabel("Welcome to the Pokemon TCG Card Tracking System");
+		JLabel Title = new JLabel("Pokemon TCG Card Tracking System");
 		fonts.HeaderFont(Title);
 		
 		setUp.setGBC(gbc, 0, 0, 1, gbc.CENTER, gbc.HORIZONTAL, new Insets(30, 0, 0, 0), 0);
@@ -373,10 +376,16 @@ public class FirstPage implements ActionListener{
 
 	            if (PID != 0) {
 	                JOptionPane.showMessageDialog(frame, "Login successful!");
-	                Player player = new Player(PID);
+	                player = new Player(PID);
+	                
+	                successLogin = true;
+	                getSuccessLogin();
+	                frame.dispose();
+	                PokedexPage pokedex = new PokedexPage();
 	                
 	                // proceed to the main application
 	                //Need to add the cardlayout to the pokedex
+	                
 	                
 	                
 	            } else
@@ -420,4 +429,10 @@ public class FirstPage implements ActionListener{
 	        }
 		}
 	}
+	
+	public boolean getSuccessLogin() {
+
+		return successLogin;
+	}
 }
+
