@@ -14,6 +14,7 @@ public class PokedexPage implements ActionListener {
     private JPopupMenu leftpopupMenu, profileMenu;
     private JMenuItem[]  leftJMenuItems,profileMenuItems;
     
+    private Player player;
     
     private boolean showLeftMenu, showProfileMenu;
     
@@ -131,9 +132,12 @@ public class PokedexPage implements ActionListener {
 		String command = event.getActionCommand();
 	    switch (command) {
 	        case "Profile":
-	            
+	            //Clear the 
+	        	
+	        	
 	            break;
 	        case "Logout":
+	        	//Username sets to null etc
 	        	
 	            break;
 	        default:
@@ -142,4 +146,8 @@ public class PokedexPage implements ActionListener {
 	    }
 	}
 	
+	
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
 }

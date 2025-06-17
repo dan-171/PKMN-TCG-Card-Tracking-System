@@ -48,7 +48,7 @@ public class testing extends JFrame implements ActionListener {
 
             displayPanel.add(cardButton);
         }
-
+        
         // Set preferred size larger than the visible area to trigger scroll
         displayPanel.setPreferredSize(new Dimension(panelWidth, panelHeight * 3));
 

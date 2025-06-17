@@ -15,6 +15,9 @@ public class FirstPage implements ActionListener{
 	private JButton signInButton, registerButton,passwordMenu, signInMenu, registerMenu, resetPasswordButton;
 	private JCheckBox showPasswordCheckBox;
 	
+	private boolean successLogin =false;
+	public Player player;
+	
 	private int screenWidth, screenHeight;
 	
 	Dimension screenSize;
@@ -373,10 +376,14 @@ public class FirstPage implements ActionListener{
 
 	            if (PID != 0) {
 	                JOptionPane.showMessageDialog(frame, "Login successful!");
-	                Player player = new Player(PID);
+	                player = new Player(PID);
+	                
+	                successLogin = true;
+	                getSuccessLogin();
 	                
 	                // proceed to the main application
 	                //Need to add the cardlayout to the pokedex
+	                
 	                
 	                
 	            } else
@@ -420,4 +427,10 @@ public class FirstPage implements ActionListener{
 	        }
 		}
 	}
+	
+	public boolean getSuccessLogin() {
+
+		return successLogin;
+	}
 }
+
