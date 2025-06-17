@@ -179,7 +179,7 @@ public class PlayerProfile implements ActionListener{
 		playerInfoArea.add(centerPanel,BorderLayout.CENTER);
 
 		playerName = new JLabel();
-		playerName.setText("Player name: "+name);
+		playerName.setText("Name: "+name);
 		playerName.setFont(new Font("Times New Roman",Font.BOLD,30));
 		playerName.setForeground(Color.black);
 		playerName.setVerticalTextPosition(JLabel.TOP);
@@ -229,7 +229,7 @@ public class PlayerProfile implements ActionListener{
 	}
 	public void updateInfo() {
 		//define the option
-		String[]updateOption = {"Player Name","Password","Cancel"};
+		String[]updateOption = {"Name","Password","Cancel"};
 		
 		//create option dialog
 		int choice = JOptionPane.showOptionDialog(playerInfoPanel, 
@@ -283,7 +283,7 @@ public class PlayerProfile implements ActionListener{
 				name = newPlayerName;
 				
 				centerPanel.removeAll();
-				playerName.setText("Player name: " + name);
+				playerName.setText("Name: " + name);
 		        centerPanel.add(playerName);
 		        centerPanel.add(playerId);
 		        centerPanel.add(numOfcards);

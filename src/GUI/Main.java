@@ -9,7 +9,7 @@ public class Main {
 		new FirstPage();
 		//new PlayerProfile();
 //		new PokedexPage();
-		new PokedexPage(new Pokedex(new Player(8)));
+//		new PokedexPage(new Pokedex(new Player(8)));
 
 
 	}
