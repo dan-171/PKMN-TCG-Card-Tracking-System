@@ -17,7 +17,7 @@ public class Pokedex {
 		for (int i = 0; i < setSize; i++) {
 			String paddedNo = String.format("%03d", i+1);
 			String cardFileID = "BS" + paddedNo; //BS001, BS002, ...
-			String cardFilePath = "images/" + cardFileID; //image/BS001, image/BS002, ...
+			String cardFilePath = "resources/images/" + cardFileID; //image/BS001, image/BS002, ...
 			Card card = new Card(cardFileID, cardFilePath);
 			cards.add(card);
 			
@@ -44,18 +44,28 @@ public class Pokedex {
 		
 	}
 	
-	//return jpg path for overview display of card set
+	//return jpg path for overview display of full card set
 	public String fetchCardImg(int index) {
 		boolean missing = missingCard(cards.get(index).getCardID());
 		
 		if (missing) //show the card's back
-			return "images/PTCG_CardBack.jpg";
+			return "resources/images/PTCG_CardBack.jpg";
 		else
 			return cards.get(index).getCardFilePath();
 		
 	}
 	
-	//return label overview display of card set
+	//return jpg path for overview display of searched card
+	public String fetchCardImg(String cardId) {
+		boolean missing = missingCard(cardId);
+		
+		if (missing) //show the card's back
+			return "resources/images/PTCG_CardBack.jpg";
+		else
+			return cards.get(Integer.parseInt(cardId.replaceAll("\\D", ""))).getCardFilePath();
+	}
+	
+	//return label overview display of full card set
 	public String fetchCardLabel(String cardFileID) {
 		
 		try (Connection conn = JDBC.getConnection();
@@ -134,5 +144,23 @@ public class Pokedex {
 			
 		}
 	}
+	
+	//CardSearch -> return CardFileID
+	public String cardSearch(String cardName) {
+		try (Connection conn = JDBC.getConnection();
+				PreparedStatement fetchCardName = conn.prepareStatement("SELECT CardID FROM cards WHERE CardID LIKE ?")) {
+				fetchCardName.setString(1, cardName);
+				ResultSet rs = fetchCardName.executeQuery();
+			    if(rs.next())
+			    	return rs.getString("CardID");
+			    
+		} catch (Exception e) {
+	        e.printStackTrace();
+	        
+		}
+		return "CARD_NOT_FOUND";
+		
+	}
+	
 	
 }
