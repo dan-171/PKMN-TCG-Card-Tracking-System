@@ -15,12 +15,15 @@ public class FirstPage implements ActionListener{
 	private JButton signInButton, registerButton,passwordMenu, signInMenu, registerMenu, resetPasswordButton;
 	private JCheckBox showPasswordCheckBox;
 	
+	private int screenWidth, screenHeight;
+	
+	Dimension screenSize;
 	Fonts fonts = new Fonts();
 	SetUp setUp = new SetUp();
 	GridBagConstraints gbc = new GridBagConstraints();
 	
 	
-	public static final int breadth = 1920, length = 1080, Margin = 300;
+	public static final int Margin = 300;
 	
 	//Constructor
 	public FirstPage(){
@@ -33,8 +36,12 @@ public class FirstPage implements ActionListener{
 	}
 	
 	public void init(){
+		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		screenWidth = screenSize.width;
+		screenHeight = screenSize.height;
+		
 		frame = new JFrame();
-		frame.setSize(breadth,length);
+		frame.setSize(screenSize);
 		frame.setResizable(false);
 		frame.setTitle("Pokemon TCG Card Tracking System");
 		ImageIcon logo = new ImageIcon("resources/LOGO/logo.jpg");
