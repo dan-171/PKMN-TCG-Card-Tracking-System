@@ -3,10 +3,12 @@ package GUI;
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class testing extends JFrame implements ActionListener {
 
     private JPanel displayPanel;
+    private ArrayList<Card> allCards = new ArrayList<>();
 
     Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private int screenWidth = screenSize.width;

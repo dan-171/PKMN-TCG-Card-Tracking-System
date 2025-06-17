@@ -132,7 +132,9 @@ public class PokedexPage implements ActionListener {
 		String command = event.getActionCommand();
 	    switch (command) {
 	        case "Profile":
-	            //Clear the 
+	        	frame.dispose();
+	        	PlayerProfile playerProfile = new PlayerProfile();	           
+	        	//Clear the 
 	        	
 	        	
 	            break;
