@@ -1,19 +1,19 @@
 package GUI;
 
-import Database.JDBC;
+import Database.Player;
 
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Iterator;
 
 public class FirstPage implements ActionListener{
+	
 	private JFrame frame;
 	private JPanel northPanel, centralPanel, westPanel, centralRightPanel, centralLeftPanel;
-	private JTextField usernameField, userIDField;
+	private JTextField usernameField, playerIDField;
 	private JPasswordField  passwordField, passwordField1, passwordField2;
-	private JButton signInButton, registerButton,passwordMenu, signInMenu, registerMenu, savePasswordButton;
+	private JButton signInButton, registerButton,passwordMenu, signInMenu, registerMenu, resetPasswordButton;
 	private JCheckBox showPasswordCheckBox;
 	private Boolean showPasswordBoolean;
 	
@@ -26,30 +26,32 @@ public class FirstPage implements ActionListener{
 	
 	//Constructor
 	public FirstPage(){
-		
 		init();
 		NorthPanel();
 		CentralPanel();
 		WestPanel();
 		EastPanel();
 		frame.setVisible(true);
+		
 	}
 	
 	public void init(){
 		frame = new JFrame();
 		frame.setSize(breadth,length);
+		frame.setResizable(false);
+		frame.setTitle("Pokemon TCG Card Tracking System");
+		ImageIcon logo = new ImageIcon("resources/LOGO/logo.jpg");
+		frame.setIconImage(logo.getImage());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
 		centralRightPanel= setUp.gridBagLayout();
 		centralLeftPanel = setUp.gridBagLayout();
 		showPasswordBoolean = false;
 		showPasswordCheckBox = new JCheckBox("Show Password");
-		
-		
+
 	}
 	
 	public void NorthPanel() {
-		
 		northPanel = setUp.gridBagLayout();
 		JLabel Title = new JLabel("Welcome to the Pokemon TCG Card Tracking System");
 		fonts.HeaderFont(Title);
@@ -58,6 +60,7 @@ public class FirstPage implements ActionListener{
 		northPanel.add(Title, gbc);
 		
 		frame.add(northPanel, BorderLayout.NORTH);
+		
 	}
 	
 	public void CentralPanel() {
@@ -80,7 +83,6 @@ public class FirstPage implements ActionListener{
 		signInMenu.setPreferredSize(menuDimension);
 		centralLeftPanel.add(signInMenu, gbc);
 		
-		
 		//Register button
 		//Adjust gbc  
 		setUp.setGBC(gbc, 0, 1, 2, gbc.CENTER, gbc.NONE, new Insets(80, 0, 160, 100), 0);
@@ -89,13 +91,12 @@ public class FirstPage implements ActionListener{
 		registerMenu.setPreferredSize(menuDimension);
 		centralLeftPanel.add(registerMenu, gbc);
 		
-		
-		
 		//Add to centralPanel then add to frame
 		centralPanel.add(centralLeftPanel);
 		signInCentralPanel();
 		centralPanel.add(centralRightPanel);
 		frame.add(centralPanel, BorderLayout.CENTER);	
+		
 	}
 	
 	
@@ -134,7 +135,7 @@ public class FirstPage implements ActionListener{
 		passwordField.setEchoChar('*'); 
 		
 		//Sign In Button
-		signInButton = new JButton("Log In");
+		signInButton = new JButton("Sign In");
 		fonts.Heading2(signInButton);
 		signInButton.addActionListener(this);
 		setUp.setGBC(gbc, 0, 4, 2, gbc.CENTER, gbc.HORIZONTAL, new Insets(0, 0, 20, 0), 1);
@@ -145,6 +146,7 @@ public class FirstPage implements ActionListener{
 		setUp.setGBC(gbc, 0, 5, 2, gbc.CENTER, gbc.NONE, new Insets(0, 0, 0, 0), 1);
 		passwordMenu.addActionListener(this);
 		centralRightPanel.add(passwordMenu, gbc);
+		
 	} 
 	
 	public void registerCentralPanel() {
@@ -210,13 +212,13 @@ public class FirstPage implements ActionListener{
 		
 		//Username 
 		Insets userInsets = new Insets(-50, 0, 50, 0);
-		JLabel userIDJLabel = new JLabel("User ID: ");
+		JLabel playerIDJLabel = new JLabel("Player ID: ");
 		setUp.setGBC(gbc, 0, 1, 1, gbc.LINE_START, gbc.NONE, userInsets, 0);
-		centralRightPanel.add(userIDJLabel, gbc);
+		centralRightPanel.add(playerIDJLabel, gbc);
 
-		userIDField = new JTextField(10);
+		playerIDField = new JTextField(10);
 		setUp.setGBC(gbc, 1, 1, 1, gbc.LINE_START, gbc.HORIZONTAL, userInsets, 1);
-		centralRightPanel.add(userIDField, gbc);
+		centralRightPanel.add(playerIDField, gbc);
 		
 		//Password
 		Insets passwordInsets = new Insets(-20, 0, 30, 0);
@@ -244,28 +246,29 @@ public class FirstPage implements ActionListener{
         passwordField1.setEchoChar('*'); 
         passwordField2.setEchoChar('*');
 
-		//save Password Button
-         savePasswordButton = new JButton("Save Password");
-		 fonts.Heading2(savePasswordButton);
-		 savePasswordButton.addActionListener(this);
+		//reset Password Button
+         resetPasswordButton = new JButton("Reset Password");
+		 fonts.Heading2(resetPasswordButton);
+		 resetPasswordButton.addActionListener(this);
 		 setUp.setGBC(gbc, 0, 5, 2, gbc.CENTER, gbc.HORIZONTAL, new Insets(0, 0, 20, 0), 1);
-		 centralRightPanel.add(savePasswordButton, gbc);
+		 centralRightPanel.add(resetPasswordButton, gbc);
+		 
 	} 
 	
 	public void WestPanel() {
-		
 		westPanel = new JPanel();
 		westPanel.setPreferredSize(new Dimension(Margin, 0));
 		
 		frame.add(westPanel, BorderLayout.WEST);
+		
 	}
 	
 	public void EastPanel() {
-		
 		JPanel eastPanel = new JPanel();
 		eastPanel.setPreferredSize(new Dimension(Margin, 0));
 		
 		frame.add(eastPanel, BorderLayout.EAST);
+		
 	}
 	
 	public void actionPerformed(ActionEvent event) {
@@ -279,9 +282,8 @@ public class FirstPage implements ActionListener{
 		    
 		    //Reset the showPasswordCheckBox
 		    showPasswordCheckBox.setSelected(false);
-		}
-		
-		else if (event.getSource() == registerMenu) {
+		    
+		} else if (event.getSource() == registerMenu) {
 		    fonts.Heading1(registerMenu);    
 		    fonts.BodyFont(signInMenu);
 		    centralRightPanel.removeAll(); 
@@ -291,23 +293,22 @@ public class FirstPage implements ActionListener{
 		    
 		    //Reset the showPasswordCheckBox
 		    showPasswordCheckBox.setSelected(false);
-		}
-		
-		else if (event.getSource() == showPasswordCheckBox) {
+		    
+		} else if (event.getSource() == showPasswordCheckBox) {
 				// Show text
 				if (showPasswordCheckBox.isSelected()) {
 	                passwordField.setEchoChar((char) 0); 
 	                passwordField1.setEchoChar((char) 0); 
 	                passwordField2.setEchoChar((char) 0); 
+	                
 	            } else {
 	                passwordField.setEchoChar('*'); // Hide text
 	                passwordField1.setEchoChar('*'); 
 	                passwordField2.setEchoChar('*');
+	                
 	            }
-		}
-		
-
-		else if (event.getSource() == passwordMenu) {
+				
+		}	else if (event.getSource() == passwordMenu) {
 		    centralRightPanel.removeAll(); // Clear existing components
 		    forgotPasswordCentralPanel(); // Call the method to set up the forgot password UI
 		    centralRightPanel.revalidate(); // Refresh layout
@@ -315,74 +316,69 @@ public class FirstPage implements ActionListener{
 		    
 		    // Reset the showPasswordCheckBox
 		    showPasswordCheckBox.setSelected(false);
-		}
+		    
+		}	else if (event.getSource() == resetPasswordButton) {
+			// Handle reset password
 
-		
-		else if (event.getSource() == savePasswordButton) {
-			// Handle registration
-	        try {
-	            JDBC db = new JDBC();
-	            char[] passwordChars1 = passwordField1.getPassword();
-	            String password1 = new String(passwordChars1);
-	            char[] passwordChars2 = passwordField2.getPassword();
-	            String password2 = new String(passwordChars2);
-	            
-	            
-	            //Check to change to the forgot password function
-	            if (password1.equals(password2) &&
-	                !userIDField.getText().isEmpty()) {
-	            	
-	                int id = db.insertUser(userIDField.getText(), password1);
+		    char[] passwordChars1 = passwordField1.getPassword();
+		    String password1 = new String(passwordChars1);
+		    char[] passwordChars2 = passwordField2.getPassword();
+		    String password2 = new String(passwordChars2);
+		    String username = playerIDField.getText();
 
-	                if (id > 0) {
-	                    JOptionPane.showMessageDialog(frame,
-	                         "Registration successful!\nYour User ID: " + id + 
-	                         "\nUsername: " + usernameField.getText() + 
-	                         "\nPassword: " + password1);  
-	                } else {
-	                    JOptionPane.showMessageDialog(frame, "Registration failed.");
-	                }
-	            } else {
-	                JOptionPane.showMessageDialog(frame, "Passwords do not match or Username is empty.");
-	            }
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	            JOptionPane.showMessageDialog(frame, "Error while registering.");
-	        }
+		    if (username.isEmpty()) 
+		    {
+		        JOptionPane.showMessageDialog(frame, "Username cannot be empty.");
+		        return;
+		    }
+
+		    if (!password1.equals(password2)) 
+		    {
+		        JOptionPane.showMessageDialog(frame, "Passwords do not match.");
+		        return;
+		    }
+
+		    boolean updated = Player.resetPassword(username, password1);
+
+		    if ((updated)) 
+		    {
+		        JOptionPane.showMessageDialog(frame, "Password reset successfully.");
+		    } 
+		    else 
+		    {
+		        JOptionPane.showMessageDialog(frame, "ID not found or reset failed.");
+		    }
 		}
 		
 		else if (event.getSource() == signInButton) {
-			// Handle login
+			// Handle sign in
 	        try {
-	            JDBC db = new JDBC();
 	            char[] passwordChars = passwordField.getPassword();
 	            String password = new String(passwordChars);
 
-	            boolean isValid = db.validateLogin(usernameField.getText(), password);
+	            int PID = Player.validateSignIn(usernameField.getText(), password);
 
-	            if (isValid) {
+	            if (PID != 0) {
 	                JOptionPane.showMessageDialog(frame, "Login successful!");
-	                
-	                
+	                Player player = new Player(PID);
 	                
 	                // proceed to the main application
+	                //Need to add the cardlayout to the pokedex
 	                
 	                
-	                
-	            } else {
+	            } else
 	                JOptionPane.showMessageDialog(frame, "Invalid username or password.");
-	            }
+	            
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	            JOptionPane.showMessageDialog(frame, "Error while logging in.");
+	            
 	        }
 		}
 		
 		else if (event.getSource() == registerButton) {
 			// Handle registration
 	        try {
-
-	            JDBC db = new JDBC();
 	            char[] passwordChars1 = passwordField1.getPassword();
 	            String password1 = new String(passwordChars1);
 	            char[] passwordChars2 = passwordField2.getPassword();
@@ -390,26 +386,25 @@ public class FirstPage implements ActionListener{
 	            
 	            if (password1.equals(password2) &&
 	                !usernameField.getText().isEmpty()) {
-
-	                int id = db.insertUser(usernameField.getText(), password1);
+	                int id = Player.insertPlayer(usernameField.getText(), password1);
 
 	                if (id > 0) {
 	                    JOptionPane.showMessageDialog(frame,
-	                         "Registration successful!\nYour User ID: " + id + 
+	                         "Registration successful!\nYour Player ID: " + id + 
 	                         "\nUsername: " + usernameField.getText() + 
 	                         "\nPassword: " + password1);  
-	                } else {
+	                    
+	                } else
 	                    JOptionPane.showMessageDialog(frame, "Registration failed.");
-	                }
-	            } else {
+	                    
+	            } else
 	                JOptionPane.showMessageDialog(frame, "Passwords do not match or Username is empty.");
-	            }
+	                
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	            JOptionPane.showMessageDialog(frame, "Error while registering.");
+	            
 	        }
 		}
-		
-
 	}
 }
