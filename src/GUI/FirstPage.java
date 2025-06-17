@@ -35,6 +35,7 @@ public class FirstPage implements ActionListener{
 		CentralPanel();
 		WestPanel();
 		EastPanel();
+		
 		frame.setVisible(true);
 	}
 	
@@ -64,7 +65,6 @@ public class FirstPage implements ActionListener{
 		
 		setUp.setGBC(gbc, 0, 0, 1, gbc.CENTER, gbc.HORIZONTAL, new Insets(30, 0, 0, 0), 0);
 		northPanel.add(Title, gbc);
-		
 		frame.add(northPanel, BorderLayout.NORTH);
 		
 	}
@@ -112,7 +112,7 @@ public class FirstPage implements ActionListener{
 		setUp.setGBC(gbc, 0, 0, 2, gbc.CENTER, gbc.NONE, new Insets(-200, 0, 0, 0), 0);
 		fonts.Heading1(titleJLabel);
 		centralRightPanel.add(titleJLabel, gbc);
-
+		
 		//Username 
 		Insets userInsets = new Insets(-50, 0, 50, 0);
 		JLabel usernameJLabel = new JLabel("Username: ");
@@ -264,7 +264,6 @@ public class FirstPage implements ActionListener{
 	public void WestPanel() {
 		westPanel = new JPanel();
 		westPanel.setPreferredSize(new Dimension(Margin, 0));
-		
 		frame.add(westPanel, BorderLayout.WEST);
 		
 	}
@@ -272,7 +271,6 @@ public class FirstPage implements ActionListener{
 	public void EastPanel() {
 		JPanel eastPanel = new JPanel();
 		eastPanel.setPreferredSize(new Dimension(Margin, 0));
-		
 		frame.add(eastPanel, BorderLayout.EAST);
 		
 	}
@@ -377,9 +375,6 @@ public class FirstPage implements ActionListener{
 	            if (PID != 0) {
 	                JOptionPane.showMessageDialog(frame, "Login successful!");
 	                player = new Player(PID);
-	                
-	                successLogin = true;
-	                getSuccessLogin();
 	                frame.dispose();
 	                PokedexPage pokedex = new PokedexPage();
 	                
@@ -414,8 +409,7 @@ public class FirstPage implements ActionListener{
 	                    JOptionPane.showMessageDialog(frame,
 	                         "Registration successful!\nYour Player ID: " + id + 
 	                         "\nUsername: " + usernameField.getText() + 
-	                         "\nPassword: " + password1);  
-	                    
+	                         "\nPassword: " + password1);    
 	                } else
 	                    JOptionPane.showMessageDialog(frame, "Registration failed.");
 	                    
@@ -425,14 +419,8 @@ public class FirstPage implements ActionListener{
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	            JOptionPane.showMessageDialog(frame, "Error while registering.");
-	            
 	        }
 		}
 	}
 	
-	public boolean getSuccessLogin() {
-
-		return successLogin;
-	}
 }
-

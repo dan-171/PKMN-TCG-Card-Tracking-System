@@ -6,12 +6,12 @@ import java.awt.*;
 
 public class  Fonts{
 	private Font header,heading1, heading2,  bodyFont;
-	private final int headerFontSize = 50, heading1Size = 36 , heading2Size = 30,  bodyFontSize = 20; 
+	private final int headerFontSize = 70, heading1Size = 36 , heading2Size = 30,  bodyFontSize = 20; 
 	
 	public Fonts() {
-		this.header = new Font("Times New Roman", Font.BOLD, headerFontSize);
-		this.heading1 = new Font("Times New Roman", Font.BOLD, heading1Size);
-		this.heading2 = new Font("Times New Roman", Font.BOLD, heading2Size);
+		this.header = new Font("Rockwell", Font.BOLD, headerFontSize);
+		this.heading1 = new Font("Roboto", Font.BOLD, heading1Size);
+		this.heading2 = new Font("Roboto", Font.BOLD, heading2Size);
 		this.bodyFont = new Font("Times New Roman", Font.PLAIN, bodyFontSize);
 		
 		
