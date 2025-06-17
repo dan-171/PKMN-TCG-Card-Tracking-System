@@ -42,6 +42,7 @@ public class Player {
 	    				Statement.RETURN_GENERATED_KEYS)) {
 	        signUp.setString(1, username);
 	        signUp.setString(2, password);
+	        
 	        // Set registration date to current timestamp
 	        signUp.setTimestamp(3, new java.sql.Timestamp(System.currentTimeMillis()));
 

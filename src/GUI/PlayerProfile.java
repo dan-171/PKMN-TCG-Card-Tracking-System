@@ -22,9 +22,13 @@ public class PlayerProfile implements ActionListener{
 	private JButton updatePlayerInfo;
 	private RoundIconButton BackBtn;
 	
-	GridBagConstraints gbc = new GridBagConstraints();
 	String name ,playerID,registerDate;
 	int numOfCards;
+	
+	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	private int screenWidth = screenSize.width;
+	private int screenHeight = screenSize.height;
+
 	
 	public PlayerProfile(){
 		init();			
@@ -35,8 +39,9 @@ public class PlayerProfile implements ActionListener{
 		
 	}
 	public void init() {
+
 		playerProfile = new JFrame();
-		playerProfile.setSize(1920,1080);
+		playerProfile.setSize(screenSize);
 		playerProfile.setResizable(false);
 		playerProfile.setTitle("Pokemon TCG Card Tracking System");
 		ImageIcon logo = new ImageIcon("resources/LOGO/logo.jpg");
@@ -50,48 +55,48 @@ public class PlayerProfile implements ActionListener{
 		//create background
 		//left area
 		TriangleLabel topLeft2 = new TriangleLabel(new Color(0xFFAE42), TriangleLabel.Direction.TOP_LEFT);
-		topLeft2.setOpaque(true);	
-		topLeft2.setBounds(0, 0, 250, 500);
+		topLeft2.setOpaque(true);
+		topLeft2.setBounds(0, 0, screenWidth / 8, screenHeight / 2);
+		playerProfile.add(topLeft2);
 		
-		playerProfile.add(topLeft2);	TriangleLabel topLeft1 = new TriangleLabel(new Color(0xFFBF00), TriangleLabel.Direction.TOP_LEFT);
+		TriangleLabel topLeft1 = new TriangleLabel(new Color(0xFFBF00), TriangleLabel.Direction.TOP_LEFT);
 		topLeft1.setOpaque(true);	
-		topLeft1.setBounds(0, 0, 500, 1050);
-		playerProfile.add(topLeft1);	
+		topLeft1.setBounds(0, 0, screenWidth / 4, screenHeight);
+		playerProfile.add(topLeft1);
 		
 		//right area
 		TriangleLabel bottomRight2 = new TriangleLabel(new Color(0xFFAE42), TriangleLabel.Direction.BOTTOM_RIGHT);
 		bottomRight2.setOpaque(true);
-		bottomRight2.setBounds(1660, 543, 250, 500);
+		bottomRight2.setBounds(screenWidth - screenWidth / 8, screenHeight / 2, screenWidth / 8, screenHeight / 2);
 		playerProfile.add(bottomRight2);
 		
 		TriangleLabel bottomRight1 = new TriangleLabel(new Color(0xFFBF00), TriangleLabel.Direction.BOTTOM_RIGHT);
 		bottomRight1.setOpaque(true);
-		bottomRight1.setBounds(1407, 0, 500, 1050);
-		playerProfile.add(bottomRight1);	
+		bottomRight1.setBounds(screenWidth - screenWidth / 4, 0, screenWidth / 4, screenHeight);
+		playerProfile.add(bottomRight1);
 		
 		//center area
 		centerBg = new JPanel();
 		centerBg.setOpaque(true);
 		centerBg.setBackground(new Color(0xFFFF00));
-		centerBg.setBounds(0, 0, 1920, 1080);	
+		centerBg.setBounds(0, 0, screenWidth, screenHeight);
 		playerProfile.add(centerBg);
-	
 	}
 	public void headerPanel() {
 		//create header panel
 		panelHeader = new JPanel();
-		panelHeader.setBounds(0, 0, 1920, 100);
+        panelHeader.setBounds(0, 0, screenWidth, screenHeight / 10);
 		panelHeader.setOpaque(false);
 		panelHeader.setLayout(null);
 		
 		//rescaled the image icon
 		ImageIcon oriBackIcon = new ImageIcon("resources/profileUse/back-button.png");
-		Image scaledIcon = oriBackIcon.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+		Image scaledIcon = oriBackIcon.getImage().getScaledInstance(screenHeight / 18, screenHeight / 18, Image.SCALE_SMOOTH);
 		ImageIcon backIcon = new ImageIcon(scaledIcon);
 		
 		//create back button
 		BackBtn = new RoundIconButton(backIcon);
-		BackBtn.setBounds(0,0,60,60);
+		BackBtn.setBounds(0, 0, screenHeight / 18, screenHeight / 18);
 		BackBtn.setFocusable(false);
 		BackBtn.setBackground(new Color(255,77,77));
 		BackBtn.addActionListener(this);
@@ -99,14 +104,26 @@ public class PlayerProfile implements ActionListener{
 		
 		playerProfile.add(panelHeader);
 	}
+
 	public void playerInfo() {
+		int panelX = (int)(screenWidth * 0.17);
+	    int panelY = (int)(screenHeight * 0.14);
+	    int panelW = (int)(screenWidth * 0.64);
+	    int panelH = (int)(screenHeight * 0.74);
+	
 		//create profile picture
 		playerInfoPanel = new JPanel();
-		playerInfoPanel.setBounds(325,150,1225,800);
+		playerInfoPanel.setBounds(panelX, panelY, panelW, panelH);
 		playerInfoPanel.setLayout(null);
 		playerProfile.add(playerInfoPanel);
 		
-		ImageIcon profilePic = new ImageIcon("resources/profileUse/mcPic.png");
+		int panelPicW = (int)(screenWidth * 0.16);
+		int panelPicH = (int)(screenHeight * 0.72);
+		
+		//rescaled the profile Pic
+		ImageIcon oriProfilePic = new ImageIcon("resources/profileUse/mcPic.png");
+		Image scaledProfilePic = oriProfilePic.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
+		ImageIcon profilePic = new ImageIcon(scaledProfilePic);
 		
 		profileImage = new JLabel();
 		profileImage.setIcon(profilePic);
@@ -116,7 +133,8 @@ public class PlayerProfile implements ActionListener{
 		ImagePanel.setBackground(new Color(0x89CFF0));
 		ImagePanel.add(profileImage); //add profile into image panel
 		ImagePanel.setBorder(BorderFactory.createLineBorder(new Color(0xB3D9FF), 5));
-		ImagePanel.setBounds(0,0,400,800);
+
+		ImagePanel.setBounds(0, 0, panelW / 3, panelH);
 		playerInfoPanel.add(ImagePanel); //add image panel into center panel
 		
 		//create a panel for player info
@@ -124,7 +142,7 @@ public class PlayerProfile implements ActionListener{
 		playerInfoArea.setLayout(new BorderLayout());
 		playerInfoArea.setBorder(BorderFactory.createLineBorder(Color.white, 5));
 		playerInfoArea.setBackground(new Color(0xB3D9FF));
-		playerInfoArea.setBounds(400,0,825,800);
+		playerInfoArea.setBounds(panelW / 3, 0, panelW * 2 / 3, panelH);
 		playerInfoPanel.add(playerInfoArea);
 		
 		westPanel = new JPanel();
@@ -355,8 +373,8 @@ public class PlayerProfile implements ActionListener{
 	
 	//add here
 	public static void main(String[] args) {
-	    PlayerProfile profile = new PlayerProfile();
 
+		PlayerProfile profile = new PlayerProfile();
 	    //for example:
 	    profile.loadProfile(1);
 	    profile.playerProfile.setVisible(true);
