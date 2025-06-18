@@ -353,15 +353,12 @@ public class PlayerProfile implements ActionListener{
 			
             PokedexPage pokedex = new PokedexPage(px);
 		}
-		/*else if(e.getSource() == updatePlayerInfo) {
-		if(e.getSource() == BackBtn){
-		      playerProfile.dispose();
-		      PokedexPage pokedexPage = new PokedexPage(new Pokedex(new Player(1)));
-		}*/
+		
 		else if(e.getSource() == updatePlayerInfo) {
 			System.out.println("Update Player button clicked!");
 			updateInfo();
 		}
+
 	}
 	//add here
 	/*public static void main(String[] args) {
@@ -371,4 +368,11 @@ public class PlayerProfile implements ActionListener{
 	    profile.loadProfile(1);
 	    profile.playerProfile.setVisible(true);
 	}*/
+//	public static void main(String[] args) {
+//
+//		PlayerProfile profile = new PlayerProfile();
+//	    //for example:
+//	    profile.loadProfile(1);
+//	    profile.playerProfile.setVisible(true);
+//	}
 }
