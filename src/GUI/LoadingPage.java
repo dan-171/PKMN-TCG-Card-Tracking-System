@@ -26,7 +26,7 @@ public class LoadingPage {
 	     progressBar.setValue(0);
 	     progressBar.setStringPainted(true);
 	     progressBar.setForeground(new Color(0xFF9900));
-	     progressBar.setFont(new Font("MV Boli",Font.PLAIN,25));
+	     progressBar.setFont(new Font("Agency FB",Font.PLAIN,25));
 	     progressBar.setBackground(Color.WHITE);
 	     progressBar.setPreferredSize(new Dimension(400, 30));
 	     background.add(progressBar,BorderLayout.SOUTH);
@@ -46,7 +46,10 @@ public class LoadingPage {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			counter += 10;
+			if (counter == 0)
+				counter += 12;
+			else
+				counter += 24;
 		}
 		frame.dispose();
 		FirstPage firstPage = new FirstPage();	

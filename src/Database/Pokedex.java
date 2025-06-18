@@ -17,7 +17,7 @@ public class Pokedex {
 		for (int i = 0; i < setSize; i++) {
 			String paddedNo = String.format("%03d", i+1);
 			String cardFileID = "BS" + paddedNo; //BS001, BS002, ...
-			String cardFilePath = "resources/images/" + cardFileID + ".jpg"; //image/BS001, image/BS002, ...
+			String cardFilePath = "resources/images/" + cardFileID + ".jpg"; //image/BS001.jpg, image/BS002.jpg, ...
 			Card card = new Card(cardFileID, cardFilePath);
 			cards.add(card);
 			
@@ -55,17 +55,7 @@ public class Pokedex {
 		
 	}
 	
-	//return jpg path for overview display of searched card
-	public String fetchCardImg(String cardId) {
-		boolean missing = missingCard(cardId);
-		
-		if (missing) //show the card's back
-			return "resources/images/PTCG_CardBack.jpg";
-		else
-			return cards.get(Integer.parseInt(cardId.replaceAll("\\D", ""))).getCardFilePath();
-	}
-	
-	//return label overview display of full card set
+	//return card label
 	public String fetchCardLabel(String cardFileID) {
 		
 		try (Connection conn = JDBC.getConnection();
@@ -145,6 +135,7 @@ public class Pokedex {
 		}
 	}
 	
+	//Card Search
 	//CardSearch -> return CardFileID
 	public String cardSearch(String cardName) {
 		try (Connection conn = JDBC.getConnection();
@@ -162,5 +153,64 @@ public class Pokedex {
 		
 	}
 	
+	//return jpg path for overview display of searched card
+	public String fetchCardImg(String cardId) {
+		boolean missing = missingCard(cardId);
+		
+		if (missing) //show the card's back
+			return "resources/images/PTCG_CardBack.jpg";
+		else
+			return cards.get(Integer.parseInt(cardId.replaceAll("\\D", ""))).getCardFilePath();
+	}
 	
+	//Card Filter
+	//return filtered cardIDs
+	public ArrayList<String> filterCards(String cardType, String type, String stage) {
+	    ArrayList<String> filteredCardIDs = new ArrayList<>();
+	    
+	    StringBuilder sql = new StringBuilder("SELECT CardID FROM cards WHERE 1=1");
+	    
+	    if (cardType != null && !cardType.isEmpty())
+	        sql.append(" AND CardType = ?");
+	    if (type != null && !type.isEmpty())
+	        sql.append(" AND Type = ?");
+	    if (stage != null && !stage.isEmpty())
+	        sql.append(" AND Stage = ?");
+
+	    try (Connection conn = JDBC.getConnection();
+	         PreparedStatement fetchFilteredCardID = conn.prepareStatement(sql.toString())) {
+	        
+	        int i = 1;
+	        if (cardType != null && !cardType.isEmpty())
+	        	fetchFilteredCardID.setString(i++, cardType);
+	        if (type != null && !type.isEmpty())
+	            fetchFilteredCardID.setString(i++, type);
+	        if (stage != null && !stage.isEmpty())
+	            fetchFilteredCardID.setString(i++, stage);
+
+	        ResultSet rs = fetchFilteredCardID.executeQuery();
+	        while (rs.next()) {
+	            filteredCardIDs.add(rs.getString("CardID"));
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return filteredCardIDs;
+	}
+
+	//return jpg path for overview display of filtered card
+	public String fetchFilteredCardImg(String cardId) {
+		boolean missing = missingCard(cardId);
+	    if (missing)
+	        return "resources/images/PTCG_CardBack.jpg";
+	    
+	    for (Card card : cards) {
+	        if (card.getCardID().equals(cardId)) {
+	            return card.getCardFilePath();
+	        }
+	    }
+	    return "ERR_CardID_Not_Found";
+	}
 }

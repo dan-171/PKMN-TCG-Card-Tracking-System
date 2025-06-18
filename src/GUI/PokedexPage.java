@@ -100,13 +100,12 @@ public class PokedexPage implements ActionListener {
 		northPanel.add(leftMenuButton, gbc);
         
         
-		//Title
+		// Title
 		JLabel Title = new JLabel("Pokedex");
 		fonts.HeaderFont(Title);
 		setUp.setGBC(gbc, 1, 0, 1, gbc.CENTER, gbc.NONE, new Insets(top, 350, 0, 0), 1.0);
 		Title.setForeground(new Color(0xFFD700));
 		northPanel.add(Title, gbc);
-		
 
 
         // Create profile menu
