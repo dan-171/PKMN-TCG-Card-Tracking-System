@@ -24,6 +24,7 @@ public class PlayerProfile implements ActionListener{
 	
 	String name ,playerID,registerDate;
 	int numOfCards;
+	private Player player;
 	
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	private int screenWidth = screenSize.width;
@@ -342,6 +343,13 @@ public class PlayerProfile implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == BackBtn)  {
 			System.out.println("Back button clicked!");
+			
+			playerProfile.dispose();
+			Integer currentId = AppSession.getCurrentPlayerId();
+			player = new Player(currentId);
+	        
+			Pokedex px = new Pokedex(player);
+            PokedexPage pokedex = new PokedexPage(px);
 		}
 		else if(e.getSource() == updatePlayerInfo) {
 		if(e.getSource() == BackBtn){
