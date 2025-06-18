@@ -46,7 +46,10 @@ public class loadingPage {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			counter += 10;
+			if (counter == 0)
+				counter += 12;
+			else
+				counter += 24;
 		}
 		frame.dispose();
 		FirstPage firstPage = new FirstPage();	
