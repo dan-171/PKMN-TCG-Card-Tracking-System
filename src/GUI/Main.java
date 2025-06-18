@@ -9,12 +9,9 @@ public class Main {
 
 //		new loadingPage();
 //		new FirstPage();
-//		new PlayerProfile();
+		new PlayerProfile();
 //		new PokedexPage();
 
-		new PokedexPage(new Pokedex(new Player(1)));
-
-
-
+//		new PokedexPage(new Pokedex(new Player(1)));
 	}
 }
