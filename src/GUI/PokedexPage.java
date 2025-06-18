@@ -23,10 +23,7 @@ public class PokedexPage implements ActionListener{
     private Pokedex pokedex;
     private ArrayList<JButton> cardButton;
     
-    
-    private boolean showLeftMenu, showProfileMenu;
-    private boolean ignoreProfileMenuHide = false;
-    private boolean ignoreLeftMenuHide = false;
+
     
 	Fonts fonts = new Fonts();
 	SetUp setUp = new SetUp();
@@ -202,8 +199,8 @@ public class PokedexPage implements ActionListener{
         centralPanel.setBackground(Color.white);
         centralPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
-        int panelPicW = (int) (screenWidth * 0.07);
-        int panelPicH = (int) (screenHeight * 0.17);
+        int panelPicW = (int) (screenWidth * 0.08);
+        int panelPicH = (int) (screenHeight * 0.2);
 
         // Loop from BS001 to BS102
         for (int i = 1; i <= 102; i++) {
@@ -215,6 +212,7 @@ public class PokedexPage implements ActionListener{
             JButton cardButton = new JButton(pokedex.fetchCardLabel(String.format("BS%03d", cardIndex)), icon);
             cardButton.setVerticalTextPosition(SwingConstants.BOTTOM);
             cardButton.setHorizontalTextPosition(SwingConstants.CENTER);
+            cardButton.setFont(new Font("Roboto",Font.BOLD,14));
             cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
             
          // Add action listener to the cardButton

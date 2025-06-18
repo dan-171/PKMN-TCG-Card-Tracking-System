@@ -8,6 +8,7 @@ public class Main {
 
 
 //		new loadingPage();
+
 //		new FirstPage();
 		//new PlayerProfile();
 //		new PokedexPage();
