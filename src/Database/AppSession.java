@@ -10,4 +10,8 @@ public class AppSession {
     public static Integer getCurrentPlayerId() {
         return currentPlayerId;
     }
+    
+    public static void clearSession() {
+        currentPlayerId = null;
+    }
 }
