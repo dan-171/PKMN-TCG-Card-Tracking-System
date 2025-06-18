@@ -6,7 +6,9 @@ import Database.Pokedex;
 public class Main {
 	public static void main(String [] args) {
 
-//		new LoadingPage();
+
+//		new loadingPage();
+
 //		new FirstPage();
 		//new PlayerProfile();
 //		new PokedexPage();
