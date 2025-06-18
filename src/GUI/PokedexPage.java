@@ -90,23 +90,44 @@ public class PokedexPage implements ActionListener{
 		setUp.setGBC(gbc, 0, 1, 1, gbc.LINE_START, gbc.NONE, new Insets(top, 30, bottom, 0), 0);
 		northPanel.add(searchPanel,gbc);
 
-		
+		//filter panel
 		filterPanel = new JPanel(new FlowLayout(FlowLayout.LEADING)); 
-		filterPanel.setBackground(new Color(0xe70023));
+		filterPanel.setBackground(new Color(0xD94446));
 		
-		JLabel filterText = new JLabel ("Filter: Type:");
-		filterText.setForeground(Color.WHITE);
-		filterPanel.add(filterText);
+		//filter type
+		JLabel filterText1 = new JLabel ("Type:");
+		filterText1.setForeground(Color.WHITE);
+		filterPanel.add(filterText1);
 		
-		String[] type = {"all","colorless","fire","water","electric","grass","fighting","physic"};
+		String[] type = {"Any","Colorless","Fire","Water","Lightning","Grass","Fighting","Psychic"};
 		JComboBox<String> typeBox = new JComboBox<>(type);
-		searchButton.setActionCommand("FilterType");
+		typeBox.setActionCommand("FilterType");
 		typeBox.addActionListener(this);
 		filterPanel.add(typeBox);
 		
-		
-		
-		
+		// filter stage
+		JLabel filterText2 = new JLabel("Stage:");
+		filterText2.setForeground(Color.WHITE);
+		filterPanel.add(filterText2);
+
+		String[] stage = {"All", "Basic", "Stage 1", "Stage 2"};
+		JComboBox<String> stageBox = new JComboBox<>(stage);
+		stageBox.setActionCommand("FilterStage");
+		stageBox.addActionListener(this);
+		filterPanel.add(stageBox);
+
+		// filter acquired
+		JLabel filterText3 = new JLabel("Acquired:");
+		filterText3.setForeground(Color.WHITE);
+		filterPanel.add(filterText3);
+
+		String[] acquired = {"All", "Acquired", "Unacquired"};
+		JComboBox<String> acquiredBox = new JComboBox<>(acquired);
+		acquiredBox.setActionCommand("FilterAcquired");
+		acquiredBox.addActionListener(this);
+		filterPanel.add(acquiredBox);
+
+
 		setUp.setGBC(gbc, 1, 1, 1, gbc.LINE_START, gbc.NONE, new Insets(top, 30, bottom, 0), 0);
 		northPanel.add(filterPanel,gbc);
 
@@ -187,7 +208,7 @@ public class PokedexPage implements ActionListener{
 				return;
 			}
 
-			playerProfile.init();
+			//playerProfile.init();
 			playerProfile.loadProfile(currentId);
 
 			break;
@@ -282,6 +303,80 @@ public class PokedexPage implements ActionListener{
 			centralPanel.revalidate();
 			centralPanel.repaint();
 			break;
+		case "FilterStage":
+		    String selectedStage = (String) ((JComboBox<?>) event.getSource()).getSelectedItem();
+		    String stageFilter = selectedStage.equalsIgnoreCase("all") ? "" : selectedStage;
+
+		    ArrayList<String> filteredByStage = pokedex.filterCards(null, "", stageFilter);
+
+		    centralPanel.removeAll();
+
+		    for (String cardId : filteredByStage) {
+		        ImageIcon icon = new ImageIcon(pokedex.fetchFilteredCardImg(cardId));
+		        Image scaledImage = icon.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
+		        icon = new ImageIcon(scaledImage);
+
+		        String label = pokedex.fetchCardLabel(cardId);
+		        JButton cardButton = new JButton(label, icon);
+		        cardButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		        cardButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		        cardButton.setFont(new Font("Roboto", Font.BOLD, 14));
+		        cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
+
+		        cardButton.addActionListener(e -> {
+		            // navigateToCardDetails(cardId);
+		        });
+
+		        centralPanel.add(cardButton);
+		    }
+
+		    centralPanel.revalidate();
+		    centralPanel.repaint();
+		    break;
+
+		case "FilterAcquired":
+		    String selectedAcquired = (String) ((JComboBox<?>) event.getSource()).getSelectedItem();
+		    boolean filterAcquired = selectedAcquired.equalsIgnoreCase("Acquired");
+
+		    // Fetch all cards first (no SQL filtering here)
+		    ArrayList<String> allCards = pokedex.filterCards(null, "", "");
+
+		    // Then filter client-side by acquired status
+		    ArrayList<String> filteredByAcquired = new ArrayList<>();
+		    for (String cardId : allCards) {
+		        boolean isMissing = pokedex.missingCard(cardId);
+		        if (filterAcquired && !isMissing) {
+		            filteredByAcquired.add(cardId);
+		        } else if (!filterAcquired && isMissing) {
+		            filteredByAcquired.add(cardId);
+		        }
+		    }
+
+		    centralPanel.removeAll();
+
+		    for (String cardId : filteredByAcquired) {
+		        ImageIcon icon = new ImageIcon(pokedex.fetchFilteredCardImg(cardId));
+		        Image scaledImage = icon.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
+		        icon = new ImageIcon(scaledImage);
+
+		        String label = pokedex.fetchCardLabel(cardId);
+		        JButton cardButton = new JButton(label, icon);
+		        cardButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		        cardButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		        cardButton.setFont(new Font("Roboto", Font.BOLD, 14));
+		        cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
+
+		        cardButton.addActionListener(e -> {
+		            // navigateToCardDetails(cardId);
+		        });
+
+		        centralPanel.add(cardButton);
+		    }
+
+		    centralPanel.revalidate();
+		    centralPanel.repaint();
+		    break;
+
 		default:
 			System.out.println("Unknown action: " + command);
 			break;
