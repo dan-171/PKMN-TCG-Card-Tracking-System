@@ -77,7 +77,7 @@ public class PokedexPage implements ActionListener{
 		searchButton = new JButton("Search");
 		JLabel searchText = new JLabel ("Search:");
 		searchText.setForeground(Color.WHITE);
-		
+		 
 		searchPanel.add(searchText);
 		searchPanel.add(searchField);
 		searchPanel.add(searchButton);
