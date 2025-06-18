@@ -217,8 +217,16 @@ public class PokedexPage implements ActionListener{
 
 			break;
 		case "Logout":
-			//Username sets to null etc
+			// Clear the session
+			AppSession.clearSession();
 
+			// Show logout confirmation
+			JOptionPane.showMessageDialog(null, "You have been logged out successfully.");
+
+			// Dispose current frame
+			frame.dispose();
+			
+			FirstPage FP = new FirstPage();
 			break;
 		case "Search":
 			String CardName = searchField.getText().trim().toLowerCase();
