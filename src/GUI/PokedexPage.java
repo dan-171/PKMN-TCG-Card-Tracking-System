@@ -74,8 +74,8 @@ public class PokedexPage implements ActionListener{
 		//North Panel
 		northPanel = setUp.gridBagLayout();
 		northPanel.setPreferredSize(new Dimension(screenWidth,screenHeight/4));
-		northPanel.setBackground(new Color(0xe70023));
-
+		northPanel.setBackground(new Color(0xD94446));
+		
 		//create search function
 		searchPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
 		searchField = new JTextField(30);
@@ -83,7 +83,7 @@ public class PokedexPage implements ActionListener{
 		searchPanel.add(new JLabel("Search:"));
 		searchPanel.add(searchField);
 		searchPanel.add(searchButton);
-		searchPanel.setBackground(new Color(0xe70023));
+		searchPanel.setBackground(new Color(0xD94446));
 		searchButton.setActionCommand("Search");
 		searchButton.addActionListener(this);
 		//      setUp.setGBC(gbc, 0, 0, 0, gbc.LINE_START, gbc.NONE, new Insets(0, 30 , 30, 0), 1.0);
