@@ -1,5 +1,6 @@
 package GUI;
 
+import Database.AppSession;
 import Database.Player;
 import Database.Pokedex;
 
@@ -36,6 +37,7 @@ public class FirstPage implements ActionListener{
 		CentralPanel();
 		WestPanel();
 		EastPanel();
+		
 		frame.setVisible(true);
 	}
 	
@@ -56,16 +58,32 @@ public class FirstPage implements ActionListener{
 		centralRightPanel= setUp.gridBagLayout();
 		centralLeftPanel = setUp.gridBagLayout();
 		showPasswordCheckBox = new JCheckBox("Show Password");
+		showPasswordCheckBox.setBackground(new Color(0xFFFFFF));
 	}
 	
 	public void NorthPanel() {
-		northPanel = setUp.gridBagLayout();
-		JLabel Title = new JLabel("Pokemon TCG Card Tracking System");
-		fonts.HeaderFont(Title);
+//		northPanel = setUp.gridBagLayout();
+		northPanel = new JPanel();
+		northPanel.setPreferredSize(new Dimension(screenWidth,screenHeight/4));
+		northPanel.setBorder(BorderFactory.createLineBorder(Color.black));
+		
+		//rescaled the profile Pic
+		ImageIcon oriBgPic = new ImageIcon("resources/LOGO/banner.png");
+		Image scaledBgPic = oriBgPic.getImage().getScaledInstance(screenWidth, screenHeight/4, Image.SCALE_SMOOTH);
+		ImageIcon bgPic = new ImageIcon(scaledBgPic);
+		
+		JLabel bgImage = new JLabel(bgPic);
+		bgImage.setLayout(null);
+		northPanel.add(bgImage);
+		
+//		JLabel Title = new JLabel("Pokemon TCG Card Tracking System");
+//		Title.setOpaque(false);
+//		Title.setBounds(screenWidth/6,screenHeight/72,screenWidth,screenHeight/9);
+//		fonts.HeaderFont(Title);
+//		bgImage.add(Title);
 		
 		setUp.setGBC(gbc, 0, 0, 1, gbc.CENTER, gbc.HORIZONTAL, new Insets(30, 0, 0, 0), 0);
-		northPanel.add(Title, gbc);
-		
+//		northPanel.add(Title, gbc);
 		frame.add(northPanel, BorderLayout.NORTH);
 		
 	}
@@ -88,6 +106,7 @@ public class FirstPage implements ActionListener{
 		signInMenu.addActionListener(this);
 		fonts.Heading1(signInMenu);	
 		signInMenu.setPreferredSize(menuDimension);
+		centralLeftPanel.setBackground(new Color(0xFFFFFF));
 		centralLeftPanel.add(signInMenu, gbc);
 		
 		//Register button
@@ -112,8 +131,9 @@ public class FirstPage implements ActionListener{
 		JLabel titleJLabel = new JLabel("Please Sign In");
 		setUp.setGBC(gbc, 0, 0, 2, gbc.CENTER, gbc.NONE, new Insets(-200, 0, 0, 0), 0);
 		fonts.Heading1(titleJLabel);
+		centralRightPanel.setBackground(new Color(0xFFFFFF));
 		centralRightPanel.add(titleJLabel, gbc);
-
+		
 		//Username 
 		Insets userInsets = new Insets(-50, 0, 50, 0);
 		JLabel usernameJLabel = new JLabel("Username: ");
@@ -143,6 +163,7 @@ public class FirstPage implements ActionListener{
 		
 		//Sign In Button
 		signInButton = new JButton("Sign In");
+		signInButton.setFocusable(false);
 		fonts.Heading2(signInButton);
 		signInButton.addActionListener(this);
 		setUp.setGBC(gbc, 0, 4, 2, gbc.CENTER, gbc.HORIZONTAL, new Insets(0, 0, 20, 0), 1);
@@ -202,6 +223,7 @@ public class FirstPage implements ActionListener{
 
 		//Register Button
 		 registerButton = new JButton("Register");
+		 registerButton.setFocusable(false);
 		 fonts.Heading2(registerButton);
 		 registerButton.addActionListener(this);
 		 setUp.setGBC(gbc, 0, 5, 2, gbc.CENTER, gbc.HORIZONTAL, new Insets(0, 0, 20, 0), 1);
@@ -255,6 +277,7 @@ public class FirstPage implements ActionListener{
 
 		//reset Password Button
          resetPasswordButton = new JButton("Reset Password");
+         resetPasswordButton.setFocusable(false);
 		 fonts.Heading2(resetPasswordButton);
 		 resetPasswordButton.addActionListener(this);
 		 setUp.setGBC(gbc, 0, 5, 2, gbc.CENTER, gbc.HORIZONTAL, new Insets(0, 0, 20, 0), 1);
@@ -264,7 +287,20 @@ public class FirstPage implements ActionListener{
 	
 	public void WestPanel() {
 		westPanel = new JPanel();
+		westPanel.setLayout(new BorderLayout());
 		westPanel.setPreferredSize(new Dimension(Margin, 0));
+		westPanel.setBackground(new Color(0xFFFFFF));
+
+		
+		//rescaled the profile Pic
+		ImageIcon oriImage1 = new ImageIcon("resources/LOGO/pikachu2.png");
+		Image scaledImage1 = oriImage1.getImage().getScaledInstance(screenWidth/10, screenHeight/5, Image.SCALE_SMOOTH);
+		ImageIcon Image1 = new ImageIcon(scaledImage1);
+		
+		JLabel pic1 = new JLabel(Image1);
+		pic1.setHorizontalAlignment(JLabel.LEFT);
+		pic1.setVerticalAlignment(JLabel.BOTTOM);
+		westPanel.add(pic1,BorderLayout.SOUTH);
 		
 		frame.add(westPanel, BorderLayout.WEST);
 		
@@ -272,7 +308,19 @@ public class FirstPage implements ActionListener{
 	
 	public void EastPanel() {
 		JPanel eastPanel = new JPanel();
+		eastPanel.setLayout(new BorderLayout());
 		eastPanel.setPreferredSize(new Dimension(Margin, 0));
+		eastPanel.setBackground(new Color(0xFFFFFF));
+		
+		//rescaled the profile Pic
+		ImageIcon oriImage2 = new ImageIcon("resources/LOGO/eevee.png");
+		Image scaledImage2 = oriImage2.getImage().getScaledInstance(screenWidth/10, screenHeight/5, Image.SCALE_SMOOTH);
+		ImageIcon Image2 = new ImageIcon(scaledImage2);
+				
+		JLabel pic2 = new JLabel(Image2);
+		pic2.setHorizontalAlignment(JLabel.RIGHT);
+		pic2.setVerticalAlignment(JLabel.BOTTOM);
+		eastPanel.add(pic2,BorderLayout.SOUTH);
 		
 		frame.add(eastPanel, BorderLayout.EAST);
 		
@@ -289,6 +337,7 @@ public class FirstPage implements ActionListener{
 		    
 		    //Reset the showPasswordCheckBox
 		    showPasswordCheckBox.setSelected(false);
+		    
 		    
 		} else if (event.getSource() == registerMenu) {
 		    fonts.Heading1(registerMenu);    
@@ -378,11 +427,13 @@ public class FirstPage implements ActionListener{
 	            if (PID != 0) {
 	                JOptionPane.showMessageDialog(frame, "Login successful!");
 	                player = new Player(PID);
+        
+	                AppSession.setCurrentPlayerId(PID);
 	                
-	                successLogin = true;
-	                getSuccessLogin();
 	                frame.dispose();
-	                PokedexPage pokedex = new PokedexPage(new Pokedex(player));
+	                
+	                Pokedex px = new Pokedex(player);
+	                PokedexPage pokedex = new PokedexPage(px);
 	                
 	                // proceed to the main application
 	                //Need to add the cardlayout to the pokedex
@@ -415,8 +466,7 @@ public class FirstPage implements ActionListener{
 	                    JOptionPane.showMessageDialog(frame,
 	                         "Registration successful!\nYour Player ID: " + id + 
 	                         "\nUsername: " + usernameField.getText() + 
-	                         "\nPassword: " + password1);  
-	                    
+	                         "\nPassword: " + password1);    
 	                } else
 	                    JOptionPane.showMessageDialog(frame, "Registration failed.");
 	                    
@@ -426,14 +476,8 @@ public class FirstPage implements ActionListener{
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	            JOptionPane.showMessageDialog(frame, "Error while registering.");
-	            
 	        }
 		}
 	}
 	
-	public boolean getSuccessLogin() {
-
-		return successLogin;
-	}
 }
-

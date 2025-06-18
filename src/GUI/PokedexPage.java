@@ -1,5 +1,6 @@
 package GUI;
 
+import Database.AppSession;
 import Database.Player;
 import Database.Pokedex;
 
@@ -33,11 +34,13 @@ public class PokedexPage implements ActionListener {
 	//Constructor
 		public PokedexPage(Pokedex pokedex){
 			this.pokedex  = pokedex;
+			this.cardButton = new ArrayList<>();
 			init();
 			NorthPanel();
-			/*CentralPanel();
-			WestPanel();
-			EastPanel();*/
+			displayPanel();
+			//CentralPanel();
+			//WestPanel();
+			//EastPanel();*/
 			frame.setVisible(true);
 			
 		}
@@ -50,7 +53,7 @@ public class PokedexPage implements ActionListener {
 		frame = new JFrame();
 		frame.setSize(screenSize);
 		frame.setResizable(false);
-		frame.setTitle("Pokedex");
+		frame.setTitle("Pokemon TCG Card Tracking System");
 		ImageIcon logo = new ImageIcon("resources/LOGO/logo.jpg");
 		frame.setIconImage(logo.getImage());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -62,6 +65,7 @@ public class PokedexPage implements ActionListener {
 	
 	public void NorthPanel() {
 		northPanel = setUp.gridBagLayout();
+		northPanel.setBackground(new Color(0xe70023));
 		int top = 30;
 			
 		// Create left menu
@@ -90,6 +94,9 @@ public class PokedexPage implements ActionListener {
             }
         });
         setUp.setGBC(gbc, 0, 0, 1, gbc.LINE_START, gbc.NONE, new Insets(top, 50, 0, 0), 0);
+        leftMenuButton.setBackground(Color.WHITE);
+        leftMenuButton.setForeground(new Color(0x333333));
+        leftMenuButton.setFocusable(false);
 		northPanel.add(leftMenuButton, gbc);
         
         
@@ -97,6 +104,7 @@ public class PokedexPage implements ActionListener {
 		JLabel Title = new JLabel("Pokedex");
 		fonts.HeaderFont(Title);
 		setUp.setGBC(gbc, 1, 0, 1, gbc.CENTER, gbc.NONE, new Insets(top, 350, 0, 0), 1.0);
+		Title.setForeground(new Color(0xFFD700));
 		northPanel.add(Title, gbc);
 		
 
@@ -127,6 +135,10 @@ public class PokedexPage implements ActionListener {
             }
         });
         setUp.setGBC(gbc, 2, 0, 1, gbc.LINE_END, gbc.NONE, new Insets(top, 0, 0, 50), 1.0);
+        profileMenuButton.setBackground(Color.WHITE);
+        profileMenuButton.setForeground(new Color(0x333333));
+        profileMenuButton.setFocusable(false);
+
         northPanel.add(profileMenuButton, gbc);
 		
 		
@@ -141,7 +153,15 @@ public class PokedexPage implements ActionListener {
 	        	frame.dispose();
 	        	PlayerProfile playerProfile = new PlayerProfile();	           
 	        	//Clear the 
-	        	
+	        	Integer currentId = AppSession.getCurrentPlayerId();
+
+	            if (currentId == null) {
+	                JOptionPane.showMessageDialog(null, "No player is currently authenticated.");
+	                return;
+	            }
+
+	            playerProfile.init();
+	            playerProfile.loadProfile(currentId);
 	        	
 	            break;
 	        case "Logout":
@@ -160,26 +180,24 @@ public class PokedexPage implements ActionListener {
         int panelHeight = (int) (screenHeight * 0.85);
 
         centralPanel = new JPanel();
-        centralPanel.setBackground(Color.LIGHT_GRAY);
-        centralPanel.setLayout(new FlowLayout(FlowLayout.LEADING, 10, 10));
+        centralPanel.setBackground(Color.white);
+        centralPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
         int panelPicW = (int) (screenWidth * 0.07);
         int panelPicH = (int) (screenHeight * 0.17);
 
         // Loop from BS001 to BS102
         for (int i = 1; i <= 102; i++) {
-            String cardCode = String.format("BS%03d", i);
             ImageIcon icon = new ImageIcon(pokedex.fetchCardImg(i));
             Image scaledImage = icon.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
             icon = new ImageIcon(scaledImage);
 
+            cardButton.add(new JButton(pokedex.fetchCardLabel(String.format("BS%03d", i)), icon));
+            cardButton.get(i-1).setVerticalTextPosition(SwingConstants.BOTTOM);
+            cardButton.get(i-1).setHorizontalTextPosition(SwingConstants.CENTER);
+            cardButton.get(i-1).setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
 
-            cardButton.add(new JButton(String.format("BS%03d", i), icon));
-            cardButton.get(i).setVerticalTextPosition(SwingConstants.BOTTOM);
-            cardButton.get(i).setHorizontalTextPosition(SwingConstants.CENTER);
-            cardButton.get(i).setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
-
-            centralPanel.add(cardButton.get(i));
+            centralPanel.add(cardButton.get(i-1));
         }
         
         // Set preferred size larger than the visible area to trigger scroll
@@ -191,7 +209,7 @@ public class PokedexPage implements ActionListener {
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.getVerticalScrollBar().setUnitIncrement(50);
         frame.add(scrollPane);
-        frame.add(centralPanel);
+        //frame.add(centralPanel);
     }
 	
 	
