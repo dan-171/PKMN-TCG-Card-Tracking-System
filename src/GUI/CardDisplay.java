@@ -44,6 +44,7 @@ public class CardDisplay extends JPanel {
         	
         });
         headerPanel.add(backButton);
+        headerPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         add(headerPanel, BorderLayout.NORTH);
 
         
