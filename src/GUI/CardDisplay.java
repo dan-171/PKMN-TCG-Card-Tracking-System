@@ -22,7 +22,6 @@ public class CardDisplay extends JPanel {
     private PokedexPage pokedexPage;
     private Pokedex pokedex;
     
-    
     private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private int screenWidth = screenSize.width;
     private int screenHeight = screenSize.height;
@@ -34,7 +33,7 @@ public class CardDisplay extends JPanel {
     Fonts fonts = new Fonts();
     SetUp setUp = new SetUp();
 
-    public CardDisplay(int cardIndex, Player player, Pokedex pokedex, JFrame frame) {
+    public CardDisplay(int cardIndex, Pokedex pokedex, JFrame frame) {
     	this.pokedex = pokedex;
     	
         setLayout(new BorderLayout());

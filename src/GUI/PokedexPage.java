@@ -411,7 +411,7 @@ public class PokedexPage implements ActionListener{
 			// Add action listener to the cardButton
 			cardButton.addActionListener(e -> {
 
-				cardDisplay = new CardDisplay(cardIndex, player, pokedex, frame);
+				cardDisplay = new CardDisplay(cardIndex, pokedex, frame);
 				centralPanel.removeAll();
 				centralPanel.add(cardDisplay);
 				centralPanel.revalidate();
