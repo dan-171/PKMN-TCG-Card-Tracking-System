@@ -110,7 +110,6 @@ public class PokedexPage implements ActionListener{
         leftMenuButton.setFocusable(false);
 		northPanel.add(leftMenuButton, gbc);
         
-		
 		//Title
 		//rescaled the profile Pic
 		ImageIcon oriBgPic = new ImageIcon("resources/LOGO/pokedexTitle.png");
