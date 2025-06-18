@@ -344,29 +344,31 @@ public class PlayerProfile implements ActionListener{
 		if(e.getSource() == BackBtn)  {
 			System.out.println("Back button clicked!");
 			
-			playerProfile.dispose();
+			
 			Integer currentId = AppSession.getCurrentPlayerId();
 			player = new Player(currentId);
-	        
-			Pokedex px = new Pokedex(player);
+	      
+			Pokedex px = new Pokedex(player); 
+			playerProfile.dispose();
             PokedexPage pokedex = new PokedexPage(px);
 		}
 		else if(e.getSource() == updatePlayerInfo) {
-		if(e.getSource() == BackBtn){
-		      playerProfile.dispose();
-		      PokedexPage pokedexPage = new PokedexPage(new Pokedex(new Player(1)));
-		}
-		else if(e.getSource() == updatePlayerInfo)
+//		if(e.getSource() == BackBtn){
+//		      playerProfile.dispose();
+//		      PokedexPage pokedexPage = new PokedexPage(new Pokedex(new Player(1)));
+//		}
+//		else if(e.getSource() == updatePlayerInfo) {
 			System.out.println("Update Player button clicked!");
 			updateInfo();
 		}
+
 	}
 	//add here
-	public static void main(String[] args) {
-
-		PlayerProfile profile = new PlayerProfile();
-	    //for example:
-	    profile.loadProfile(1);
-	    profile.playerProfile.setVisible(true);
-	}
+//	public static void main(String[] args) {
+//
+//		PlayerProfile profile = new PlayerProfile();
+//	    //for example:
+//	    profile.loadProfile(1);
+//	    profile.playerProfile.setVisible(true);
+//	}
 }
