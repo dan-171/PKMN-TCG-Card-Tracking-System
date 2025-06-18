@@ -205,7 +205,7 @@ public class PokedexPage implements ActionListener{
 				return;
 			}
 
-			playerProfile.init();
+			//playerProfile.init();
 			playerProfile.loadProfile(currentId);
 
 			break;
