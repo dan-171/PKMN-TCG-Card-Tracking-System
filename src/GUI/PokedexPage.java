@@ -1,6 +1,7 @@
 package GUI;
 
 import Database.AppSession;
+import Database.JDBC;
 import Database.Player;
 import Database.Pokedex;
 
@@ -9,15 +10,19 @@ import javax.swing.event.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class PokedexPage implements ActionListener{
 	private JFrame frame;
-	private JPanel northPanel, centralPanel, westPanel;
+	private JPanel northPanel, centralPanel, westPanel,searchPanel;
 	private int screenWidth, screenHeight;
-	private JButton leftMenuButton, profileMenuButton;
+	private JButton leftMenuButton, profileMenuButton,searchButton;
     private JPopupMenu leftpopupMenu, profileMenu;
     private JMenuItem[]  leftJMenuItems,profileMenuItems;
+    JTextField searchField;
     
     private Player player;
     private Pokedex pokedex;
@@ -69,41 +74,31 @@ public class PokedexPage implements ActionListener{
 		//North Panel
 		northPanel = setUp.gridBagLayout();
 		northPanel.setPreferredSize(new Dimension(screenWidth,screenHeight/4));
-		northPanel.setBorder(BorderFactory.createLineBorder(Color.black));
 		northPanel.setBackground(new Color(0xe70023));
 			
-		// Create left menu
-		leftMenuButton = new JButton("Left Menu"); 
-		
-        fonts.Heading2(leftMenuButton);
-		leftpopupMenu = new JPopupMenu();
-        String[] leftpopupMenuLabel = {"Test 1", "Test 2", "Test 3"}; 
-        leftJMenuItems = new JMenuItem[leftpopupMenuLabel.length]; 
+		//create search function
+		searchPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
+        searchField = new JTextField(30);
+        searchButton = new JButton("Search");
+        searchPanel.add(new JLabel("Search:"));
+        searchPanel.add(searchField);
+        searchPanel.add(searchButton);
+        searchPanel.setBackground(new Color(0xe70023));
+        searchButton.setActionCommand("Search");
+        searchButton.addActionListener(this);
+//      setUp.setGBC(gbc, 0, 0, 0, gbc.LINE_START, gbc.NONE, new Insets(0, 30 , 30, 0), 1.0);
+        northPanel.add(searchPanel,gbc);
         
-        for (int i = 0; i < leftpopupMenuLabel.length; i++) {
-        	leftJMenuItems[i] = new JMenuItem(leftpopupMenuLabel[i]);
-            fonts.Heading2(leftJMenuItems[i]);
-            leftJMenuItems[i].addActionListener(this);
-            leftpopupMenu.add(leftJMenuItems[i]);
-        }
-
-     // Left Menu Button
-        leftMenuButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                if (leftpopupMenu.isShowing()) {
-                    leftpopupMenu.setVisible(false);
-                } else {
-                    leftpopupMenu.show(leftMenuButton, 0, leftMenuButton.getHeight());
-                }
-            }
-        });
         
-        setUp.setGBC(gbc, 0, 0, 1, gbc.LINE_START, gbc.NONE, new Insets(top, 20, bottom, 0), 0);
-        leftMenuButton.setBackground(Color.WHITE);
-        leftMenuButton.setForeground(new Color(0x333333));
-        leftMenuButton.setFocusable(false);
-		northPanel.add(leftMenuButton, gbc);
+        String[] type = {"all","colorless","fire","water","electric","grass","fighting","physic"};
+        
+        JComboBox<String> typeBox = new JComboBox<>(type);
+        searchButton.setActionCommand("FilterType");
+        typeBox.addActionListener(this);
+//      setUp.setGBC(gbc, 0, 1, 1, gbc.LINE_START, gbc.NONE, new Insets(0, 30 , 30, 0), 1.0);
+        northPanel.add(typeBox,gbc);
+       
+        
         
 		//Title
 		//rescaled the profile Pic
@@ -162,6 +157,8 @@ public class PokedexPage implements ActionListener{
 	}
 	
 	public void actionPerformed(ActionEvent event) {
+        int panelPicW = (int) (screenWidth * 0.08);
+        int panelPicH = (int) (screenHeight * 0.2);
 		String command = event.getActionCommand();
 	    switch (command) {
 	        case "Profile":
@@ -183,11 +180,95 @@ public class PokedexPage implements ActionListener{
 	        	//Username sets to null etc
 	        	
 	            break;
+	        case "Search":
+	        	String CardName = searchField.getText().trim().toLowerCase();
+	        	centralPanel.removeAll();
+	        	
+		    	if (CardName.isEmpty()) { // show all if empty
+		    		 for (int i = 1; i <= 102; i++) {
+		    	            final int cardIndex = i; // Create a final variable to hold the current index
+		    	            ImageIcon icon = new ImageIcon(pokedex.fetchCardImg(cardIndex));
+		    	            Image scaledImage = icon.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
+		    	            icon = new ImageIcon(scaledImage);
+
+		    	            JButton cardButton = new JButton(pokedex.fetchCardLabel(String.format("BS%03d", cardIndex)), icon);
+		    	            cardButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		    	            cardButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		    	            cardButton.setFont(new Font("Roboto",Font.BOLD,14));
+		    	            cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
+		    	            
+		    	         // Add action listener to the cardButton
+		    	            cardButton.addActionListener(e -> {
+		    	                // Insert your code here to navigate to the relative page based on the cardIndex
+		    	                // For example: navigateToCardDetails(cardIndex);
+		    	            });
+		    	            centralPanel.add(cardButton);
+		    		 }
+		    		 centralPanel.revalidate();
+		    		 centralPanel.repaint();
+		    		 System.out.println("Update successfully!");
+		    	}
+		    	else {
+		    		
+//		    		String cardId = pokedex.cardSearch(CardName); 
+//		    		ImageIcon icon = new ImageIcon(pokedex.fetchCardImg(cardId));
+//	    	        Image scaledImage = icon.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
+//	    	        icon = new ImageIcon(scaledImage);
+//
+//	    	        JButton cardButton = new JButton(pokedex.fetchCardLabel(String.format("BS%03d", cardId)), icon);
+//	    	        cardButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+//	    	        cardButton.setHorizontalTextPosition(SwingConstants.CENTER);
+//	    	        cardButton.setFont(new Font("Roboto",Font.BOLD,14));
+//	    	        cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
+//	    	        
+//	    	        cardButton.addActionListener(e -> {
+//    	                // Insert your code here to navigate to the relative page based on the cardIndex
+//    	                // For example: navigateToCardDetails(cardIndex);
+//    	            });
+//	    	        
+//	    	        centralPanel.add(cardButton);
+	    	        
+		    		centralPanel.revalidate();
+		    		centralPanel.repaint();
+					System.out.println("Find yourself=)");
+				}
+		    	break;
+	        case "FilterType":
+	        	
+	        	String selectedType = (String) ((JComboBox<?>) event.getSource()).getSelectedItem();
+
+	        	// Use the filter from Pokedex
+	            ArrayList<String> filteredCardIDs = pokedex.filterCards(null, selectedType.equals("all") ? "" : selectedType, null);
+
+	            centralPanel.removeAll(); // Clear previous cards
+
+	            for (String cardId : filteredCardIDs) {
+	                ImageIcon icon = new ImageIcon(pokedex.fetchFilteredCardImg(cardId));
+	                Image scaledImage = icon.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
+	                icon = new ImageIcon(scaledImage);
+
+	                String label = pokedex.fetchCardLabel(cardId); // Make sure this method supports cardId as String
+	                JButton cardButton = new JButton(label, icon);
+	                cardButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+	                cardButton.setHorizontalTextPosition(SwingConstants.CENTER);
+	                cardButton.setFont(new Font("Roboto", Font.BOLD, 14));
+	                cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
+
+	                cardButton.addActionListener(e -> {
+	                    // navigateToCardDetails(cardId); // Optional
+	                });
+
+	                centralPanel.add(cardButton);
+	            }
+
+	            centralPanel.revalidate();
+	            centralPanel.repaint();
+	            break;
 	        default:
 	            System.out.println("Unknown action: " + command);
 	            break;
 	    }
-	}
+	 }
 	
 	
     public void displayPanel() {
@@ -238,7 +319,7 @@ public class PokedexPage implements ActionListener{
     
         
         // Set preferred size larger than the visible area to trigger scroll
-        centralPanel.setPreferredSize(new Dimension(panelWidth, panelHeight * 3));
+        centralPanel.setPreferredSize(new Dimension(panelWidth, panelHeight * 4));
 
         // Wrap in scroll pane
         JScrollPane scrollPane = new JScrollPane(centralPanel,
@@ -255,4 +336,5 @@ public class PokedexPage implements ActionListener{
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
+	
 }

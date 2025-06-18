@@ -26,12 +26,12 @@ public class CardDisplay extends JPanel {
 
     public CardDisplay(int cardIndex, Player player) {
         pokedex = new Pokedex(player);
-        setLayout(new BorderLayout()); // Set layout to BorderLayout
+        setLayout(new BorderLayout());
 
         // Create header panel for the back button
         JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        headerPanel.setBackground(new Color(0xFFF44F)); // Set background color for header
+        headerPanel.setBackground(new Color(0xFFF44F));
 
         // Create back button
         backButton = new JButton("Back");
@@ -40,10 +40,13 @@ public class CardDisplay extends JPanel {
         backButton.setForeground(Color.WHITE);
         backButton.addActionListener(e -> {
             // Back to pokedex page 
+        	
+        	
         });
         headerPanel.add(backButton);
         add(headerPanel, BorderLayout.NORTH);
 
+        
         // Create center panel
         JPanel centreJPanel = new JPanel();
         centreJPanel.setLayout(new GridLayout(1, 2)); 
@@ -75,6 +78,8 @@ public class CardDisplay extends JPanel {
         // Quantity control
         JPanel quantityPanel = createQuantityControl(String.format("BS%03d", cardIndex));
         rightPanel.add(quantityPanel);
+        
+        
         
         centreJPanel.add(rightPanel);
         add(centreJPanel, BorderLayout.CENTER);
