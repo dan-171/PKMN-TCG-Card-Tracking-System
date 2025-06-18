@@ -96,7 +96,7 @@ public class PokedexPage implements ActionListener{
 		filterText1.setForeground(Color.WHITE);
 		filterPanel.add(filterText1);
 		
-		String[] type = {"all","colorless","fire","water","lightning","grass","fighting","physic"};
+		String[] type = {"Any","Colorless","Fire","Water","Lightning","Grass","Fighting","Psychic"};
 		JComboBox<String> typeBox = new JComboBox<>(type);
 		typeBox.setActionCommand("FilterType");
 		typeBox.addActionListener(this);
