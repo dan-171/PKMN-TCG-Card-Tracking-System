@@ -245,7 +245,30 @@ public class PokedexPage implements ActionListener{
 				System.out.println("Update successfully!");
 			}
 			else {
+				//String matchedCardID = pokedex.cardSearch(CardName);
+				ArrayList<String> matchedCardIDs = pokedex.cardSearch(CardName);
 
+			    if (!matchedCardIDs.isEmpty()) {
+			    	for (String matchedCardID : matchedCardIDs) {
+			    		ImageIcon icon = new ImageIcon(pokedex.fetchCardImg(matchedCardID));
+				        Image scaledImage = icon.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
+				        icon = new ImageIcon(scaledImage);
+
+				        
+				        JButton cardButton = new JButton(pokedex.fetchCardLabel(matchedCardID), icon);
+				        cardButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+				        cardButton.setHorizontalTextPosition(SwingConstants.CENTER);
+				        cardButton.setFont(new Font("Roboto", Font.BOLD, 14));
+				        cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
+
+				        // Add action listener if needed (e.g. show card details)
+				        cardButton.addActionListener(e -> {
+				            // You can open a detail view or popup here
+				        });
+				        
+				       	centralPanel.add(cardButton);
+			    	}
+			    }
 				//		    		String cardId = pokedex.cardSearch(CardName); 
 				//		    		ImageIcon icon = new ImageIcon(pokedex.fetchCardImg(cardId));
 				//	    	        Image scaledImage = icon.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);

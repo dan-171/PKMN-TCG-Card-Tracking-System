@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Pokedex {
 	private Player player;
@@ -137,19 +138,21 @@ public class Pokedex {
 	
 	//Card Search
 	//CardSearch -> return CardFileID
-	public String cardSearch(String cardName) {
+	public ArrayList<String> cardSearch(String cardName) {
+		ArrayList<String> matchingCardIDs = new ArrayList<>();
+		
 		try (Connection conn = JDBC.getConnection();
-				PreparedStatement fetchCardName = conn.prepareStatement("SELECT CardID FROM cards WHERE CardID LIKE ?")) {
-				fetchCardName.setString(1, cardName);
+				PreparedStatement fetchCardName = conn.prepareStatement("SELECT CardID FROM cards WHERE LOWER(CardName) LIKE ?")) {
+				fetchCardName.setString(1, "%" + cardName.toLowerCase() + "%");
 				ResultSet rs = fetchCardName.executeQuery();
-			    if(rs.next())
-			    	return rs.getString("CardID");
+			    while(rs.next())
+			    	matchingCardIDs.add(rs.getString("CardID"));
 			    
 		} catch (Exception e) {
 	        e.printStackTrace();
 	        
 		}
-		return "CARD NOT FOUND";
+		return matchingCardIDs;
 		
 	}
 	
@@ -160,7 +163,7 @@ public class Pokedex {
 		if (missing) //show the card's back
 			return "resources/images/PTCG_CardBack.jpg";
 		else
-			return cards.get(Integer.parseInt(cardId.replaceAll("\\D", ""))).getCardFilePath();
+			return cards.get(Integer.parseInt(cardId.replaceAll("\\D", ""))-1).getCardFilePath();
 	}
 	
 	//Card Filter
