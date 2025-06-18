@@ -20,8 +20,11 @@ public class PokedexPage implements ActionListener{
 	private JPopupMenu profileMenu;
 	private JMenuItem[]  profileMenuItems;
 	JTextField searchField;
-
-	private Player player;
+	
+	
+	private Integer currentId = AppSession.getCurrentPlayerId();
+	private Player player = new Player(currentId);
+	
 	private Pokedex pokedex;
 	private ArrayList<JButton> cardButton;
 
@@ -211,8 +214,8 @@ public class PokedexPage implements ActionListener{
 
 					// Add action listener to the cardButton
 					cardButton.addActionListener(e -> {
-						// Insert your code here to navigate to the relative page based on the cardIndex
-						// For example: navigateToCardDetails(cardIndex);
+						
+						
 					});
 					centralPanel.add(cardButton);
 				}
@@ -267,7 +270,10 @@ public class PokedexPage implements ActionListener{
 				cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
 
 				cardButton.addActionListener(e -> {
-					// navigateToCardDetails(cardId); // Optional
+					
+					
+					
+					
 				});
 
 				centralPanel.add(cardButton);
@@ -310,14 +316,22 @@ public class PokedexPage implements ActionListener{
 			// Add action listener to the cardButton
 			cardButton.addActionListener(e -> {
 
-				Player player = new Player(1);
-				cardDisplay = new CardDisplay(cardIndex, player);
+				cardDisplay = new CardDisplay(cardIndex, player, pokedex, frame);
 				centralPanel.removeAll();
 				centralPanel.add(cardDisplay);
 				centralPanel.revalidate();
 				centralPanel.repaint();
-				//            	System.out.println("Card button clicked: BS" + String.format("%03d", cardIndex));
-
+				
+//				if (cardDisplay.getBackBoolean() == true) {
+//					frame.dispose();
+//					System.out.println("Card button clicked: BS" + String.format("%03d", cardIndex));
+//				}
+//				else {
+//					centralPanel.removeAll();
+//					centralPanel.add(cardDisplay);
+//					centralPanel.revalidate();
+//					centralPanel.repaint();
+//				}
 
 
 			});
@@ -326,7 +340,8 @@ public class PokedexPage implements ActionListener{
 
 			centralPanel.add(cardButton);
 		}
-
+		
+		
 
 
 

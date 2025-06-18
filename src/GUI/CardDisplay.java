@@ -17,10 +17,13 @@ import java.util.ArrayList;
 
 public class CardDisplay extends JPanel {
     private String cardDescription;
-    private Pokedex pokedex;
     private JButton backButton;
-
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    private Boolean backBoolean = false;
+    private PokedexPage pokedexPage;
+    private Pokedex pokedex;
+    
+    
+    private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private int screenWidth = screenSize.width;
     private int screenHeight = screenSize.height;
 
@@ -31,8 +34,9 @@ public class CardDisplay extends JPanel {
     Fonts fonts = new Fonts();
     SetUp setUp = new SetUp();
 
-    public CardDisplay(int cardIndex, Player player) {
-        pokedex = new Pokedex(player);
+    public CardDisplay(int cardIndex, Player player, Pokedex pokedex, JFrame frame) {
+    	this.pokedex = pokedex;
+    	
         setLayout(new BorderLayout());
 
         // Create header panel for the back button
@@ -46,10 +50,9 @@ public class CardDisplay extends JPanel {
         backButton.setBackground(new Color(255, 77, 77));
         backButton.setForeground(Color.WHITE);
         backButton.addActionListener(e -> {
-            // Back to pokedex page 
-        	
-        	
+        	new PokedexPage(this.pokedex);
         });
+        
         headerPanel.add(backButton);
         headerPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         add(headerPanel, BorderLayout.NORTH);
@@ -97,7 +100,7 @@ public class CardDisplay extends JPanel {
         add(centreJPanel, BorderLayout.CENTER);
     }
 
-    private JPanel createQuantityControl(String cardID) {
+    public JPanel createQuantityControl(String cardID) {
         JPanel quantityPanel = new JPanel();
         quantityPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
 
@@ -151,4 +154,8 @@ public class CardDisplay extends JPanel {
 
         return quantityPanel;
     }	
+    
+    public boolean getBackBoolean () {
+    	return backBoolean;
+    }
 }

@@ -15,8 +15,9 @@ public class Main {
 			Connection conn = JDBC.getConnection();
 
 			//JOptionPane.showMessageDialog(null, "Database successfully connected!");
-			LoadingPage loadingPage = new LoadingPage();			
-//			FirstPage firstPage = new FirstPage();
+//			LoadingPage loadingPage = new LoadingPage();			
+			
+			FirstPage firstPage = new FirstPage();
 //			boolean login = firstPage.getSuccessLogin();
 //			if(login == true) {
 //				JOptionPane.showMessageDialog (null, "YEAH!!!!!!!!!");
