@@ -128,7 +128,7 @@ public class FirstPage implements ActionListener{
 	
 	public void signInCentralPanel() {
 		// Title Label
-		JLabel titleJLabel = new JLabel("Please Sign In");
+		JLabel titleJLabel = new JLabel("Sign In");
 		setUp.setGBC(gbc, 0, 0, 2, gbc.CENTER, gbc.NONE, new Insets(-200, 0, 0, 0), 0);
 		fonts.Heading1(titleJLabel);
 		centralRightPanel.setBackground(new Color(0xFFFFFF));
@@ -179,7 +179,7 @@ public class FirstPage implements ActionListener{
 	
 	public void registerCentralPanel() {
 		// Title Label
-		JLabel titleJLabel = new JLabel("Please Register");
+		JLabel titleJLabel = new JLabel("Create an Account");
 		setUp.setGBC(gbc, 0, 0, 2, gbc.CENTER, gbc.NONE, new Insets(-200, 0, 0, 0), 0);
 		fonts.Heading1(titleJLabel);
 		centralRightPanel.add(titleJLabel, gbc);
