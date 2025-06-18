@@ -17,10 +17,14 @@ import java.util.ArrayList;
 
 public class CardDisplay extends JPanel {
     private String cardDescription;
-    private Pokedex pokedex;
     private JButton backButton;
-
-    Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    private Boolean backBoolean = false;
+    private PokedexPage pokedexPage;
+    private Pokedex pokedex;
+    
+    private Color centraPanelColor = new Color(0xFFFF99);
+    
+    private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private int screenWidth = screenSize.width;
     private int screenHeight = screenSize.height;
 
@@ -31,14 +35,15 @@ public class CardDisplay extends JPanel {
     Fonts fonts = new Fonts();
     SetUp setUp = new SetUp();
 
-    public CardDisplay(int cardIndex, Player player) {
-        pokedex = new Pokedex(player);
+    public CardDisplay(int cardIndex, Pokedex pokedex, JFrame frame) {
+    	this.pokedex = pokedex;
+    	
         setLayout(new BorderLayout());
 
         // Create header panel for the back button
         JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-        headerPanel.setBackground(new Color(0xFFF44F));
+        headerPanel.setBackground(Color.orange);
 
         // Create back button
         backButton = new JButton("Back");
@@ -46,10 +51,10 @@ public class CardDisplay extends JPanel {
         backButton.setBackground(new Color(255, 77, 77));
         backButton.setForeground(Color.WHITE);
         backButton.addActionListener(e -> {
-            // Back to pokedex page 
-        	
-        	
+        	frame.dispose();
+        	new PokedexPage(this.pokedex);
         });
+        
         headerPanel.add(backButton);
         headerPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
         add(headerPanel, BorderLayout.NORTH);
@@ -58,7 +63,7 @@ public class CardDisplay extends JPanel {
         // Create center panel
         JPanel centreJPanel = new JPanel();
         centreJPanel.setLayout(new GridLayout(1, 2)); 
-        centreJPanel.setBackground(new Color(0xFFF44F)); 
+        centreJPanel.setBackground(centraPanelColor);
 
         // Card image
         ImageIcon icon = new ImageIcon(pokedex.fetchCardImg(cardIndex));
@@ -72,6 +77,7 @@ public class CardDisplay extends JPanel {
         
         // Card description and quantity control
         JPanel rightPanel = setUp.gridLayout(4, 1);
+        rightPanel.setBackground(centraPanelColor);
         JLabel pageTitle = new JLabel("Card's Profile", SwingConstants.CENTER);
         pageTitle.setForeground(Color.black);
         pageTitle.setFont(new Font("Times New Roman", Font.BOLD, 40));
@@ -97,8 +103,10 @@ public class CardDisplay extends JPanel {
         add(centreJPanel, BorderLayout.CENTER);
     }
 
-    private JPanel createQuantityControl(String cardID) {
+    public JPanel createQuantityControl(String cardID) {
         JPanel quantityPanel = new JPanel();
+        quantityPanel.setBackground(centraPanelColor);
+        quantityPanel.setForeground(Color.white);
         quantityPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
 
         // Fetch initial quantity from Pokedex
@@ -151,4 +159,8 @@ public class CardDisplay extends JPanel {
 
         return quantityPanel;
     }	
+    
+    public boolean getBackBoolean () {
+    	return backBoolean;
+    }
 }

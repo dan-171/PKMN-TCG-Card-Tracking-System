@@ -112,19 +112,19 @@ public class Pokedex {
 	}
 	
 	//CardQuantity ±1
-	public void changeCardCount(String cardFileID, int i) {
+	public void changeCardCount(String cardFileID, int change) {
 		
 		try (Connection conn = JDBC.getConnection()){
 			try(PreparedStatement check = conn.prepareStatement("SELECT CardQuantity FROM players_cards WHERE PlayerID = ? AND CardID = ?")){
-				check.setInt(1, i);
-				check.setInt(2, player.getPlayerID());
-				check.setString(3, cardFileID);
+				check.setInt(1, player.getPlayerID());
+				check.setString(2, cardFileID);
 				ResultSet rs = check.executeQuery();
 				if(rs.next()) { //if cardQuantity exist for logged-in playerID & selected cardID, increase by 1
 					try(PreparedStatement update = conn.prepareStatement(
 							"UPDATE players_cards SET CardQuantity = CardQuantity + ? WHERE PlayerID = ? AND CardID = ?")){
-						update.setInt(1, player.getPlayerID());
-						update.setString(2, cardFileID);
+						update.setInt(1, change);
+						update.setInt(2, player.getPlayerID());
+						update.setString(3, cardFileID);
 						update.executeUpdate();
 					}
 				}	
