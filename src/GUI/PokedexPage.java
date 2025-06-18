@@ -295,7 +295,7 @@ public class PokedexPage implements ActionListener{
 	    // Normalize filters
 	    String nameFilter = currentSearchKeyword.isEmpty() ? null : currentSearchKeyword;
 	    String typeFilter = selectedTypeFilter.equalsIgnoreCase("Any") ? "" : selectedTypeFilter;
-	    String stageFilter = selectedStageFilter.equalsIgnoreCase("Any") ? "" : selectedStageFilter;
+	    String stageFilter = selectedStageFilter.equalsIgnoreCase("All") ? "" : selectedStageFilter;
 
 	    // Filter by name + type + stage
 	    ArrayList<String> filteredCards = pokedex.filterCards(nameFilter, typeFilter, stageFilter);
