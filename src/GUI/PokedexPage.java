@@ -269,27 +269,6 @@ public class PokedexPage implements ActionListener{
 		// Loop from BS001 to BS102
 		for (int i = 1; i <= 102; i++) {
 			final int cardIndex = i; // Create a final variable to hold the current index
-			ImageIcon icon = new ImageIcon(pokedex.fetchCardImg(cardIndex));
-			Image scaledImage = icon.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
-			icon = new ImageIcon(scaledImage);
-
-			JButton cardButton = new JButton(pokedex.fetchCardLabel(String.format("BS%03d", cardIndex)), icon);
-			cardButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-			cardButton.setHorizontalTextPosition(SwingConstants.CENTER);
-			cardButton.setFont(new Font("Roboto",Font.BOLD,14));
-			cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
-
-			// Add action listener to the cardButton
-			cardButton.addActionListener(e -> {
-				scrollPane.getVerticalScrollBar().setValue(0);
-				disableScroll();
-				cardDisplay = new CardDisplay(cardIndex, pokedex, frame);
-				centralPanel.removeAll();
-				centralPanel.add(cardDisplay);
-				centralPanel.revalidate();
-				centralPanel.repaint();
-			});
-			centralPanel.add(cardButton);
 			generateCardButton(String.format("BS%03d", cardIndex), panelPicW, panelPicH);
 		}
 
@@ -303,16 +282,17 @@ public class PokedexPage implements ActionListener{
 		scrollPane.getVerticalScrollBar().setUnitIncrement(50);
 		frame.add(scrollPane);
 	}
-	 public void disableScroll() {
-	        scrollPane.setWheelScrollingEnabled(false);
-	        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-	    }
+	
+	public void disableScroll() {
+	     scrollPane.setWheelScrollingEnabled(false);
+	     scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+	}
 
 
-	    public void enableScroll() {
-	        scrollPane.setWheelScrollingEnabled(true);
-	        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-	    }
+	public void enableScroll() {
+	     scrollPane.setWheelScrollingEnabled(true);
+	     scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+	}
 
 	private void applyAllFilters(int panelPicW, int panelPicH) {
 	    // Normalize filters
