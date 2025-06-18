@@ -87,7 +87,7 @@ public class Pokedex {
 			e.printStackTrace();
 			
 		}
-		return "DESCRIPTION_NOT_FOUND";
+		return "DESCRIPTION NOT FOUND";
 		
 	}
 	
@@ -149,7 +149,7 @@ public class Pokedex {
 	        e.printStackTrace();
 	        
 		}
-		return "CARD_NOT_FOUND";
+		return "CARD NOT FOUND";
 		
 	}
 	

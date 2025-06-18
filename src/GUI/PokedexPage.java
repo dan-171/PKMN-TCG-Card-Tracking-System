@@ -219,9 +219,14 @@ public class PokedexPage implements ActionListener{
             
          // Add action listener to the cardButton
             cardButton.addActionListener(e -> {
-                // Insert your code here to navigate to the relative page based on the cardIndex
-                // For example: navigateToCardDetails(cardIndex);
+            	
+            	System.out.println("Card button clicked: BS" + String.format("%03d", cardIndex));
+            	
+            
+            
             });
+            
+            
             
             centralPanel.add(cardButton);
         }
