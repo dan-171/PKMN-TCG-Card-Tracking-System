@@ -27,6 +27,7 @@ public class PokedexPage implements ActionListener{
     
 	Fonts fonts = new Fonts();
 	SetUp setUp = new SetUp();
+	CardDisplay cardDisplay;
 	GridBagConstraints gbc = new GridBagConstraints();
 	
 	
@@ -60,8 +61,6 @@ public class PokedexPage implements ActionListener{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
 		
-		showLeftMenu= false;
-		showProfileMenu= false;
 	}
 	
 	public void NorthPanel() {
@@ -93,7 +92,6 @@ public class PokedexPage implements ActionListener{
             @Override
             public void mousePressed(MouseEvent e) {
                 if (leftpopupMenu.isShowing()) {
-                    ignoreLeftMenuHide = true;
                     leftpopupMenu.setVisible(false);
                 } else {
                     leftpopupMenu.show(leftMenuButton, 0, leftMenuButton.getHeight());
@@ -135,6 +133,7 @@ public class PokedexPage implements ActionListener{
             profileMenuItems[i].addActionListener(this);
             profileMenu.add(profileMenuItems[i]);
         }
+        
      // Profile Menu Button
         profileMenuButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -218,8 +217,14 @@ public class PokedexPage implements ActionListener{
          // Add action listener to the cardButton
             cardButton.addActionListener(e -> {
             	
-            	System.out.println("Card button clicked: BS" + String.format("%03d", cardIndex));
-            	
+            	Player player = new Player(1);
+            	cardDisplay = new CardDisplay(cardIndex, player);
+            	centralPanel.removeAll();
+            	centralPanel.add(cardDisplay);
+            	centralPanel.revalidate();
+                centralPanel.repaint();
+//            	System.out.println("Card button clicked: BS" + String.format("%03d", cardIndex));
+            		
             
             
             });
@@ -237,10 +242,11 @@ public class PokedexPage implements ActionListener{
 
         // Wrap in scroll pane
         JScrollPane scrollPane = new JScrollPane(centralPanel,
-                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.VERTICAL_SCROLLBAR_NEVER,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.getVerticalScrollBar().setUnitIncrement(50);
         frame.add(scrollPane);
+        
         //frame.add(centralPanel);
     }
 	
