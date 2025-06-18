@@ -425,7 +425,6 @@ public class FirstPage implements ActionListener{
 	            int PID = Player.validateSignIn(usernameField.getText(), password);
 
 	            if (PID != 0) {
-	                JOptionPane.showMessageDialog(frame, "Login successful!");
 	                player = new Player(PID);
         
 	                AppSession.setCurrentPlayerId(PID);

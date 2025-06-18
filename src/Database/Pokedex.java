@@ -168,30 +168,30 @@ public class Pokedex {
 	
 	//Card Filter
 	//return filtered cardIDs
-	public ArrayList<String> filterCards(String cardType, String type, String stage) {
+	public ArrayList<String> filterCards(String cardName, String type, String stage) {
 	    ArrayList<String> filteredCardIDs = new ArrayList<>();
-	    
+
 	    StringBuilder sql = new StringBuilder("SELECT CardID FROM cards WHERE 1=1");
-	    
-	    if (cardType != null && !cardType.isEmpty())
-	        sql.append(" AND CardType = ?");
+
+	    if (cardName != null && !cardName.isEmpty())
+	        sql.append(" AND LOWER(CardName) LIKE ?");
 	    if (type != null && !type.isEmpty())
 	        sql.append(" AND Type = ?");
 	    if (stage != null && !stage.isEmpty())
 	        sql.append(" AND Stage = ?");
 
 	    try (Connection conn = JDBC.getConnection();
-	         PreparedStatement fetchFilteredCardID = conn.prepareStatement(sql.toString())) {
-	        
-	        int i = 1;
-	        if (cardType != null && !cardType.isEmpty())
-	        	fetchFilteredCardID.setString(i++, cardType);
-	        if (type != null && !type.isEmpty())
-	            fetchFilteredCardID.setString(i++, type);
-	        if (stage != null && !stage.isEmpty())
-	            fetchFilteredCardID.setString(i++, stage);
+	         PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
 
-	        ResultSet rs = fetchFilteredCardID.executeQuery();
+	        int i = 1;
+	        if (cardName != null && !cardName.isEmpty())
+	            stmt.setString(i++, "%" + cardName.toLowerCase() + "%");
+	        if (type != null && !type.isEmpty())
+	            stmt.setString(i++, type);
+	        if (stage != null && !stage.isEmpty())
+	            stmt.setString(i++, stage);
+
+	        ResultSet rs = stmt.executeQuery();
 	        while (rs.next()) {
 	            filteredCardIDs.add(rs.getString("CardID"));
 	        }
@@ -202,6 +202,7 @@ public class Pokedex {
 
 	    return filteredCardIDs;
 	}
+	
 
 	//return jpg path for overview display of filtered card
 	public String fetchFilteredCardImg(String cardId) {
