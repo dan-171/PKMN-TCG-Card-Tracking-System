@@ -5,11 +5,11 @@ import javax.swing.Box.Filler;
 import java.awt.*;
 import java.util.concurrent.BrokenBarrierException;
 	
-public class loadingPage {
+public class LoadingPage {
 		JFrame frame;
 		JProgressBar progressBar;
 		
-	public loadingPage(){
+	public LoadingPage(){
 		
 		 frame = new JFrame("Pokemon TCG Card Tracking System");
 	     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
