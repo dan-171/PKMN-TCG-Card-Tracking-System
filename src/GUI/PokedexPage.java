@@ -19,8 +19,8 @@ public class PokedexPage implements ActionListener{
 	private JButton profileMenuButton,searchButton;
 	private JPopupMenu profileMenu;
 	private JMenuItem[]  profileMenuItems;
-	JTextField searchField;
-	
+	private JTextField searchField;
+	private JScrollPane scrollPane;
 	
 	private Integer currentId = AppSession.getCurrentPlayerId();
 	private Player player = new Player(currentId);
@@ -321,6 +321,8 @@ public class PokedexPage implements ActionListener{
 				cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
 
 				cardButton.addActionListener(e -> {
+					scrollPane.getVerticalScrollBar().setValue(0);
+					disableScroll();
 					cardDisplay = new CardDisplay(Integer.parseInt(cardId.substring(2)), pokedex, frame);
 					centralPanel.removeAll();
 					centralPanel.add(cardDisplay);
@@ -360,6 +362,8 @@ public class PokedexPage implements ActionListener{
 		        cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
 
 		        cardButton.addActionListener(e -> {
+		        	scrollPane.getVerticalScrollBar().setValue(0);
+		        	disableScroll();
 		        	cardDisplay = new CardDisplay(Integer.parseInt(cardId.substring(2)), pokedex, frame);
 					centralPanel.removeAll();
 					centralPanel.add(cardDisplay);
@@ -413,6 +417,8 @@ public class PokedexPage implements ActionListener{
 		        cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
 
 		        cardButton.addActionListener(e -> {
+		        	scrollPane.getVerticalScrollBar().setValue(0);
+		        	disableScroll();
 		        	cardDisplay = new CardDisplay(Integer.parseInt(cardId.substring(2)), pokedex, frame);
 					centralPanel.removeAll();
 					centralPanel.add(cardDisplay);
@@ -462,6 +468,8 @@ public class PokedexPage implements ActionListener{
 
 			// Add action listener to the cardButton
 			cardButton.addActionListener(e -> {
+				scrollPane.getVerticalScrollBar().setValue(0);
+				disableScroll();
 				cardDisplay = new CardDisplay(cardIndex, pokedex, frame);
 				centralPanel.removeAll();
 				centralPanel.add(cardDisplay);
@@ -475,12 +483,19 @@ public class PokedexPage implements ActionListener{
 		centralPanel.setPreferredSize(new Dimension(panelWidth, panelHeight * 4));
 
 		// Wrap in scroll pane
-		JScrollPane scrollPane = new JScrollPane(centralPanel,
-				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+		scrollPane = new JScrollPane(centralPanel,
+				JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(50);
 		frame.add(scrollPane);
 	}
+	 public void disableScroll() {
+	        scrollPane.setWheelScrollingEnabled(false);
+	        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+	    }
 
-
+	    public void enableScroll() {
+	        scrollPane.setWheelScrollingEnabled(true);
+	        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+	    }
 }

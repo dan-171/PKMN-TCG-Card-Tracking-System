@@ -51,8 +51,10 @@ public class CardDisplay extends JPanel {
         backButton.setBackground(new Color(255, 77, 77));
         backButton.setForeground(Color.WHITE);
         backButton.addActionListener(e -> {
+
         	frame.dispose();
-        	new PokedexPage(this.pokedex);
+        	new PokedexPage(this.pokedex).enableScroll();
+
         });
         
         headerPanel.add(backButton);
