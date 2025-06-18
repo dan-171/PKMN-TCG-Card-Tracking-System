@@ -13,6 +13,12 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 public class PokedexPage implements ActionListener{
+	private String selectedTypeFilter = "";
+	private String selectedStageFilter = "";
+	private String selectedAcquiredFilter = "All";
+	private String currentSearchKeyword = "";
+
+	
 	private JFrame frame;
 	private JPanel northPanel, centralPanel,searchPanel, filterPanel;
 	private int screenWidth, screenHeight;
@@ -220,82 +226,27 @@ public class PokedexPage implements ActionListener{
 			
 			FirstPage FP = new FirstPage();
 			break;
+
 		case "Search":
-			String CardName = searchField.getText().trim().toLowerCase();
-			centralPanel.removeAll();
-
-			if (CardName.isEmpty()) { // show all if empty
-				for (int i = 1; i <= 102; i++) {
-					final int cardIndex = i; // Create a final variable to hold the current index
-					generateCardButton(String.format("BS%03d", cardIndex), panelPicW, panelPicH);}
-			}
-			else {
-				//String matchedCardID = pokedex.cardSearch(CardName);
-				ArrayList<String> matchedCardIDs = pokedex.cardSearch(CardName);
-
-			    if (!matchedCardIDs.isEmpty()) {
-			    	for (String matchedCardID : matchedCardIDs) {
-			    		generateCardButton(matchedCardID, panelPicW, panelPicH);}
-
-			}}
+			currentSearchKeyword = searchField.getText().trim().toLowerCase();
+			applyAllFilters(panelPicW, panelPicH);
 			break;
-			
+
 		case "FilterType":
-
-			String selectedType = (String) ((JComboBox<?>) event.getSource()).getSelectedItem();
-
-			// Use the filter from Pokedex
-			//Check any exist or not
-			ArrayList<String> filteredCardIDs = pokedex.filterCards(null, selectedType.equals("all") ? "" : selectedType, null);
-
-			centralPanel.removeAll(); // Clear previous cards
-			
-			for (String cardId : filteredCardIDs) {
-				generateCardButton(cardId, panelPicW, panelPicH);}
-
+			selectedTypeFilter = ((String) ((JComboBox<?>) event.getSource()).getSelectedItem());
+			String typeFilter = selectedTypeFilter.equalsIgnoreCase("Any") ? "" : selectedTypeFilter;
+			applyAllFilters(panelPicW, panelPicH);
 			break;
-			
-			
-			//Check stage 1 &2 
+
 		case "FilterStage":
-		    String selectedStage = (String) ((JComboBox<?>) event.getSource()).getSelectedItem();
-		    String stageFilter = selectedStage.equalsIgnoreCase("all") ? "" : selectedStage;
+			selectedStageFilter = ((String) ((JComboBox<?>) event.getSource()).getSelectedItem());
+			applyAllFilters(panelPicW, panelPicH);
+			break;
 
-		    ArrayList<String> filteredByStage = pokedex.filterCards(null, "", stageFilter);
-
-		    centralPanel.removeAll();
-		    
-		  //Repeated Code
-		    for (String cardId : filteredByStage) {
-		    	generateCardButton(cardId, panelPicW, panelPicH);
-		    }
-		    
-		    break;
-		    
-		    //Done
 		case "FilterAcquired":
-			String selectedAcquired = (String) ((JComboBox<?>) event.getSource()).getSelectedItem();
-
-			ArrayList<String> allCards = pokedex.filterCards(null, "", "");  // No filter at DB level
-			ArrayList<String> filteredCards = new ArrayList<>();
-
-			for (String cardId : allCards) {
-			    boolean isMissing = pokedex.missingCard(cardId);
-
-			    if (selectedAcquired.equalsIgnoreCase("All")) {
-			        filteredCards.add(cardId);
-			    } else if (selectedAcquired.equalsIgnoreCase("Acquired") && !isMissing) {
-			        filteredCards.add(cardId);
-			    } else if (selectedAcquired.equalsIgnoreCase("Unacquired") && isMissing) {
-			        filteredCards.add(cardId);
-			    }
-			}
-
-			centralPanel.removeAll();
-		    for (String cardId : filteredCards) {
-		    	generateCardButton(cardId, panelPicW, panelPicH);}
-		    
-		    break;
+			selectedAcquiredFilter = ((String) ((JComboBox<?>) event.getSource()).getSelectedItem());
+			applyAllFilters(panelPicW, panelPicH);
+			break;
 
 		default:
 			System.out.println("Unknown action: " + command);
@@ -332,6 +283,39 @@ public class PokedexPage implements ActionListener{
 		frame.add(scrollPane);
 	}
 
+	private void applyAllFilters(int panelPicW, int panelPicH) {
+	    // Normalize filters
+	    String nameFilter = currentSearchKeyword.isEmpty() ? null : currentSearchKeyword;
+	    String typeFilter = selectedTypeFilter.equalsIgnoreCase("Any") ? "" : selectedTypeFilter;
+	    String stageFilter = selectedStageFilter.equalsIgnoreCase("Any") ? "" : selectedStageFilter;
+
+	    // Filter by name + type + stage
+	    ArrayList<String> filteredCards = pokedex.filterCards(nameFilter, typeFilter, stageFilter);
+
+	    // Apply acquisition filter (Acquired/Unacquired/All)
+	    ArrayList<String> finalFilteredCards = new ArrayList<>();
+	    for (String cardId : filteredCards) {
+	        boolean isMissing = pokedex.missingCard(cardId);
+
+	        if (selectedAcquiredFilter.equalsIgnoreCase("All")) {
+	            finalFilteredCards.add(cardId);
+	        } else if (selectedAcquiredFilter.equalsIgnoreCase("Acquired") && !isMissing) {
+	            finalFilteredCards.add(cardId);
+	        } else if (selectedAcquiredFilter.equalsIgnoreCase("Unacquired") && isMissing) {
+	            finalFilteredCards.add(cardId);
+	        }
+	    }
+
+	    // Step 3: Display cards
+	    centralPanel.removeAll();
+	    for (String cardId : finalFilteredCards) {
+	        generateCardButton(cardId, panelPicW, panelPicH);
+	    }
+	    centralPanel.revalidate();
+	    centralPanel.repaint();
+	}
+
+	
 	public void generateCardButton(String cardID, int w, int h){
 		ImageIcon icon = new ImageIcon(pokedex.fetchCardImg(cardID));
         Image scaledImage = icon.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
