@@ -10,18 +10,15 @@ import javax.swing.event.*;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class PokedexPage implements ActionListener{
 	private JFrame frame;
-	private JPanel northPanel, centralPanel, westPanel,searchPanel;
+	private JPanel northPanel, centralPanel,searchPanel, filterPanel;
 	private int screenWidth, screenHeight;
-	private JButton leftMenuButton, profileMenuButton,searchButton;
-	private JPopupMenu leftpopupMenu, profileMenu;
-	private JMenuItem[]  leftJMenuItems,profileMenuItems;
+	private JButton profileMenuButton,searchButton;
+	private JPopupMenu profileMenu;
+	private JMenuItem[]  profileMenuItems;
 	JTextField searchField;
 
 	private Player player;
@@ -45,9 +42,6 @@ public class PokedexPage implements ActionListener{
 		init();
 		NorthPanel();
 		displayPanel();
-		//CentralPanel();
-		//WestPanel();
-		//EastPanel();*/
 		frame.setVisible(true);
 
 	}
@@ -71,32 +65,47 @@ public class PokedexPage implements ActionListener{
 	public void NorthPanel() {
 		int top = 50;
 		int bottom = 0;
+		
 		//North Panel
 		northPanel = setUp.gridBagLayout();
 		northPanel.setPreferredSize(new Dimension(screenWidth,screenHeight/4));
-		northPanel.setBackground(new Color(0xe70023));
-
+		northPanel.setBackground(new Color(0xD94446));
+		
 		//create search function
 		searchPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
-		searchField = new JTextField(30);
+		searchField = new JTextField(10);
 		searchButton = new JButton("Search");
-		searchPanel.add(new JLabel("Search:"));
+		JLabel searchText = new JLabel ("Search:");
+		searchText.setForeground(Color.WHITE);
+		
+		searchPanel.add(searchText);
 		searchPanel.add(searchField);
 		searchPanel.add(searchButton);
-		searchPanel.setBackground(new Color(0xe70023));
+		searchPanel.setBackground(new Color(0xD94446));
 		searchButton.setActionCommand("Search");
 		searchButton.addActionListener(this);
-		//      setUp.setGBC(gbc, 0, 0, 0, gbc.LINE_START, gbc.NONE, new Insets(0, 30 , 30, 0), 1.0);
+		setUp.setGBC(gbc, 0, 1, 1, gbc.LINE_START, gbc.NONE, new Insets(top, 30, bottom, 0), 0);
 		northPanel.add(searchPanel,gbc);
 
-
+		
+		filterPanel = new JPanel(new FlowLayout(FlowLayout.LEADING)); 
+		filterPanel.setBackground(new Color(0xe70023));
+		
+		JLabel filterText = new JLabel ("Filter: Type:");
+		filterText.setForeground(Color.WHITE);
+		filterPanel.add(filterText);
+		
 		String[] type = {"all","colorless","fire","water","electric","grass","fighting","physic"};
-
 		JComboBox<String> typeBox = new JComboBox<>(type);
 		searchButton.setActionCommand("FilterType");
 		typeBox.addActionListener(this);
-		//      setUp.setGBC(gbc, 0, 1, 1, gbc.LINE_START, gbc.NONE, new Insets(0, 30 , 30, 0), 1.0);
-		northPanel.add(typeBox,gbc);
+		filterPanel.add(typeBox);
+		
+		
+		
+		
+		setUp.setGBC(gbc, 1, 1, 1, gbc.LINE_START, gbc.NONE, new Insets(top, 30, bottom, 0), 0);
+		northPanel.add(filterPanel,gbc);
 
 
 
@@ -110,7 +119,7 @@ public class PokedexPage implements ActionListener{
 		bgImage.setLayout(null);
 
 
-		setUp.setGBC(gbc, 1, 0, 1, gbc.CENTER, gbc.NONE, new Insets(0, screenWidth/9 +30, 0, 0), 1.0);
+		setUp.setGBC(gbc, 0, 0, 2, gbc.CENTER, gbc.NONE, new Insets(0, screenWidth/4+ 30, 0, 0), 1.0);
 		northPanel.add(bgImage, gbc);
 
 
@@ -122,27 +131,31 @@ public class PokedexPage implements ActionListener{
 		String[] menuLabels = {"Profile", "Logout"}; // Menu item labels
 		profileMenuItems = new JMenuItem[menuLabels.length]; 
 
+		Dimension buttonSize = profileMenuButton.getPreferredSize();
+
 		for (int i = 0; i < menuLabels.length; i++) {
-			profileMenuItems[i] = new JMenuItem(menuLabels[i]);
-			fonts.Heading2(profileMenuItems[i]);
-			profileMenuItems[i].addActionListener(this);
-			profileMenu.add(profileMenuItems[i]);
+		    profileMenuItems[i] = new JMenuItem(menuLabels[i]);
+		    fonts.Heading2(profileMenuItems[i]);
+		    profileMenuItems[i].addActionListener(this);
+		    profileMenuItems[i].setPreferredSize(buttonSize);
+		    profileMenu.add(profileMenuItems[i]);
 		}
 
 		// Profile Menu Button
 		profileMenuButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				if (profileMenu.isShowing()) {
-					profileMenu.setVisible(false);
-				} else {
-					profileMenu.show(profileMenuButton, 0, profileMenuButton.getHeight());
-				}
-			}
+		    public void mousePressed(MouseEvent e) {
+		        if (profileMenu.isShowing()) {
+		            profileMenu.setVisible(false);
+		        } else {
+		            // Show the popup menu below the button
+		            profileMenu.show(profileMenuButton, 0, profileMenuButton.getHeight());
+		        }
+		    }
 		});
 
 
-		setUp.setGBC(gbc, 2, 0, 1, gbc.LINE_END, gbc.NONE, new Insets(top, 0, bottom, 20), 1.0);
+
+		setUp.setGBC(gbc, 2, 1, 1, gbc.LINE_END, gbc.NONE, new Insets(top, 0, bottom, 20), 1.0);
 		profileMenuButton.setBackground(Color.WHITE);
 		profileMenuButton.setForeground(new Color(0x333333));
 		profileMenuButton.setFocusable(false);
@@ -151,7 +164,6 @@ public class PokedexPage implements ActionListener{
 
 
 
-		northPanel.setPreferredSize(new Dimension (screenWidth,screenHeight/7));
 
 		frame.add(northPanel, BorderLayout.NORTH);
 	}
