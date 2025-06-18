@@ -11,6 +11,7 @@ public class Main {
 //		new FirstPage();
 //		new PlayerProfile();
 //		new PokedexPage();
+
 		new PokedexPage(new Pokedex(new Player(1)));
 
 

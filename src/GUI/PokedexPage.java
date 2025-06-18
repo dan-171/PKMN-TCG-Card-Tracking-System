@@ -149,19 +149,21 @@ public class PokedexPage implements ActionListener{
 
 
 		// Create profile menu
-		profileMenuButton = new JButton("Profile Menu"); 
-		fonts.Heading2(profileMenuButton);
+		profileMenuButton = new JButton("≡"); 
+		
+		
+		fonts.BodyFont(profileMenuButton);
 		profileMenu = new JPopupMenu();
 		String[] menuLabels = {"Profile", "Logout"}; // Menu item labels
 		profileMenuItems = new JMenuItem[menuLabels.length]; 
-
-		Dimension buttonSize = profileMenuButton.getPreferredSize();
+		
 
 		for (int i = 0; i < menuLabels.length; i++) {
 		    profileMenuItems[i] = new JMenuItem(menuLabels[i]);
-		    fonts.Heading2(profileMenuItems[i]);
+		    fonts.BodyFont(profileMenuItems[i]);
+		    profileMenuItems[i].setBackground(new Color(0xD94446));
+		    profileMenuItems[i].setForeground(Color.WHITE);
 		    profileMenuItems[i].addActionListener(this);
-		    profileMenuItems[i].setPreferredSize(buttonSize);
 		    profileMenu.add(profileMenuItems[i]);
 		}
 
@@ -172,7 +174,9 @@ public class PokedexPage implements ActionListener{
 		            profileMenu.setVisible(false);
 		        } else {
 		            // Show the popup menu below the button
-		            profileMenu.show(profileMenuButton, 0, profileMenuButton.getHeight());
+		        	int x = profileMenuButton.getWidth() - profileMenu.getPreferredSize().width;
+		        	int y = profileMenuButton.getHeight();
+		        	profileMenu.show(profileMenuButton, x, y);
 		        }
 		    }
 		});
@@ -258,8 +262,7 @@ public class PokedexPage implements ActionListener{
 				//	    	        cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
 				//	    	        
 				//	    	        cardButton.addActionListener(e -> {
-				//    	                // Insert your code here to navigate to the relative page based on the cardIndex
-				//    	                // For example: navigateToCardDetails(cardIndex);
+				//    	              
 				//    	            });
 				//	    	        
 				//	    	        centralPanel.add(cardButton);
@@ -411,34 +414,14 @@ public class PokedexPage implements ActionListener{
 			// Add action listener to the cardButton
 			cardButton.addActionListener(e -> {
 
-				cardDisplay = new CardDisplay(cardIndex, player, pokedex, frame);
+				cardDisplay = new CardDisplay(cardIndex, pokedex, frame);
 				centralPanel.removeAll();
 				centralPanel.add(cardDisplay);
 				centralPanel.revalidate();
 				centralPanel.repaint();
-				
-//				if (cardDisplay.getBackBoolean() == true) {
-//					frame.dispose();
-//					System.out.println("Card button clicked: BS" + String.format("%03d", cardIndex));
-//				}
-//				else {
-//					centralPanel.removeAll();
-//					centralPanel.add(cardDisplay);
-//					centralPanel.revalidate();
-//					centralPanel.repaint();
-//				}
-
-
 			});
-
-
-
 			centralPanel.add(cardButton);
 		}
-		
-		
-
-
 
 		// Set preferred size larger than the visible area to trigger scroll
 		centralPanel.setPreferredSize(new Dimension(panelWidth, panelHeight * 4));
@@ -449,14 +432,7 @@ public class PokedexPage implements ActionListener{
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(50);
 		frame.add(scrollPane);
-
-		//frame.add(centralPanel);
 	}
 
-
-
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
 
 }
