@@ -5,11 +5,11 @@ import javax.swing.Box.Filler;
 import java.awt.*;
 import java.util.concurrent.BrokenBarrierException;
 	
-public class loadingPage {
+public class LoadingPage {
 		JFrame frame;
 		JProgressBar progressBar;
 		
-	public loadingPage(){
+	public LoadingPage(){
 		
 		 frame = new JFrame("Pokemon TCG Card Tracking System");
 	     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -26,7 +26,7 @@ public class loadingPage {
 	     progressBar.setValue(0);
 	     progressBar.setStringPainted(true);
 	     progressBar.setForeground(new Color(0xFF9900));
-	     progressBar.setFont(new Font("MV Boli",Font.PLAIN,25));
+	     progressBar.setFont(new Font("Agency FB",Font.PLAIN,25));
 	     progressBar.setBackground(Color.WHITE);
 	     progressBar.setPreferredSize(new Dimension(400, 30));
 	     background.add(progressBar,BorderLayout.SOUTH);
