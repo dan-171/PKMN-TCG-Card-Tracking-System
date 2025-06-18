@@ -1,12 +1,19 @@
 package GUI;
 
 import Database.AppSession;
+import Database.JDBC;
 import Database.Player;
 import Database.Pokedex;
 
 import javax.swing.*;
+import javax.swing.event.*;
+
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 
 public class CardDisplay extends JPanel {
     private String cardDescription;
@@ -70,11 +77,15 @@ public class CardDisplay extends JPanel {
         pageTitle.setFont(new Font("Times New Roman", Font.BOLD, 40));
         rightPanel.add(pageTitle);
         
+        
+        
         cardDescription = pokedex.fetchCardDescription(String.format("BS%03d", cardIndex));
         JLabel label1 = new JLabel(cardDescription, SwingConstants.CENTER);
         label1.setFont(new Font("Times New Roman", Font.BOLD, 30));
         label1.setForeground(Color.black);
         rightPanel.add(label1); 
+        
+        
         
         // Quantity control
         JPanel quantityPanel = createQuantityControl(String.format("BS%03d", cardIndex));
@@ -96,6 +107,7 @@ public class CardDisplay extends JPanel {
         JButton minusButton = new JButton("-");
         JLabel quantityLabel = new JLabel(String.valueOf(initialQuantity), SwingConstants.CENTER);
         JButton plusButton = new JButton("+");
+        JButton confirmButton = new JButton("Confirm");
 
         minusButton.setFont(new Font("Arial", Font.BOLD, 20));
         plusButton.setFont(new Font("Arial", Font.BOLD, 20));
@@ -129,10 +141,13 @@ public class CardDisplay extends JPanel {
                 minusButton.setEnabled(true);
             }
         });
-
+        
+        
+        
         quantityPanel.add(minusButton);
         quantityPanel.add(quantityLabel);
         quantityPanel.add(plusButton);
+        
 
         return quantityPanel;
     }	
