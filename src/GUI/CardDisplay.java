@@ -80,7 +80,7 @@ public class CardDisplay extends JPanel {
         // Card description and quantity control
         JPanel rightPanel = setUp.gridLayout(4, 1);
         rightPanel.setBackground(centraPanelColor);
-        JLabel pageTitle = new JLabel("Card's Profile", SwingConstants.CENTER);
+        JLabel pageTitle = new JLabel("", SwingConstants.CENTER);
         pageTitle.setForeground(Color.black);
         pageTitle.setFont(new Font("Times New Roman", Font.BOLD, 40));
         rightPanel.add(pageTitle);
@@ -88,7 +88,7 @@ public class CardDisplay extends JPanel {
         
         
         cardDescription = pokedex.fetchCardDescription(String.format("BS%03d", cardIndex));
-        JLabel label1 = new JLabel(cardDescription, SwingConstants.CENTER);
+        JLabel label1 = new JLabel("<html><div style='text-align:center'>" + cardDescription.replace("]", "]<br>") + "</div></html>", SwingConstants.CENTER);
         label1.setFont(new Font("Times New Roman", Font.BOLD, 30));
         label1.setForeground(Color.black);
         rightPanel.add(label1); 

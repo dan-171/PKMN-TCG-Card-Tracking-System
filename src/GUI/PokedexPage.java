@@ -132,7 +132,6 @@ public class PokedexPage implements ActionListener{
 		northPanel.add(filterPanel,gbc);
 
 
-
 		//Title
 		//rescaled the profile Pic
 		ImageIcon oriBgPic = new ImageIcon("resources/LOGO/pokedexTitle.png");
@@ -145,8 +144,6 @@ public class PokedexPage implements ActionListener{
 
 		setUp.setGBC(gbc, 0, 0, 2, gbc.CENTER, gbc.NONE, new Insets(0, screenWidth/4+ 30, 0, 0), 1.0);
 		northPanel.add(bgImage, gbc);
-
-
 
 		// Create profile menu
 		profileMenuButton = new JButton("≡"); 
@@ -181,17 +178,12 @@ public class PokedexPage implements ActionListener{
 		    }
 		});
 
-
-
 		setUp.setGBC(gbc, 2, 1, 1, gbc.LINE_END, gbc.NONE, new Insets(top, 0, bottom, 20), 1.0);
 		profileMenuButton.setBackground(Color.WHITE);
 		profileMenuButton.setForeground(new Color(0x333333));
 		profileMenuButton.setFocusable(false);
 
 		northPanel.add(profileMenuButton, gbc);
-
-
-
 
 		frame.add(northPanel, BorderLayout.NORTH);
 	}
@@ -217,8 +209,16 @@ public class PokedexPage implements ActionListener{
 
 			break;
 		case "Logout":
-			//Username sets to null etc
+			// Clear the session
+			AppSession.clearSession();
 
+			// Show logout confirmation
+			JOptionPane.showMessageDialog(null, "You have been logged out successfully.");
+
+			// Dispose current frame
+			frame.dispose();
+			
+			FirstPage FP = new FirstPage();
 			break;
 		case "Search":
 			String CardName = searchField.getText().trim().toLowerCase();
@@ -227,26 +227,7 @@ public class PokedexPage implements ActionListener{
 			if (CardName.isEmpty()) { // show all if empty
 				for (int i = 1; i <= 102; i++) {
 					final int cardIndex = i; // Create a final variable to hold the current index
-					ImageIcon icon = new ImageIcon(pokedex.fetchCardImg(cardIndex));
-					Image scaledImage = icon.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
-					icon = new ImageIcon(scaledImage);
-
-					JButton cardButton = new JButton(pokedex.fetchCardLabel(String.format("BS%03d", cardIndex)), icon);
-					cardButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-					cardButton.setHorizontalTextPosition(SwingConstants.CENTER);
-					cardButton.setFont(new Font("Roboto",Font.BOLD,14));
-					cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
-
-					// Add action listener to the cardButton
-					cardButton.addActionListener(e -> {
-						
-						
-					});
-					centralPanel.add(cardButton);
-				}
-				centralPanel.revalidate();
-				centralPanel.repaint();
-				System.out.println("Update successfully!");
+					generateCardButton(String.format("BS%03d", cardIndex), panelPicW, panelPicH);}
 			}
 			else {
 				//String matchedCardID = pokedex.cardSearch(CardName);
@@ -254,64 +235,22 @@ public class PokedexPage implements ActionListener{
 
 			    if (!matchedCardIDs.isEmpty()) {
 			    	for (String matchedCardID : matchedCardIDs) {
-			    		ImageIcon icon = new ImageIcon(pokedex.fetchCardImg(matchedCardID));
-				        Image scaledImage = icon.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
-				        icon = new ImageIcon(scaledImage);
+			    		generateCardButton(matchedCardID, panelPicW, panelPicH);}
 
-				        
-				        JButton cardButton = new JButton(pokedex.fetchCardLabel(matchedCardID), icon);
-				        cardButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-				        cardButton.setHorizontalTextPosition(SwingConstants.CENTER);
-				        cardButton.setFont(new Font("Roboto", Font.BOLD, 14));
-				        cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
-
-				        // Add action listener if needed (e.g. show card details)
-				        cardButton.addActionListener(e -> {
-				            // You can open a detail view or popup here
-				        });
-				        
-				       	centralPanel.add(cardButton);
-			    	}
-			    }
-				//		    		String cardId = pokedex.cardSearch(CardName); 
-				//		    		ImageIcon icon = new ImageIcon(pokedex.fetchCardImg(cardId));
-				//	    	        Image scaledImage = icon.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
-				//	    	        icon = new ImageIcon(scaledImage);
-				//
-				//	    	        JButton cardButton = new JButton(pokedex.fetchCardLabel(String.format("BS%03d", cardId)), icon);
-				//	    	        cardButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-				//	    	        cardButton.setHorizontalTextPosition(SwingConstants.CENTER);
-				//	    	        cardButton.setFont(new Font("Roboto",Font.BOLD,14));
-				//	    	        cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
-				//	    	        
-				//	    	        cardButton.addActionListener(e -> {
-				//    	              
-				//    	            });
-				//	    	        
-				//	    	        centralPanel.add(cardButton);
-
-				centralPanel.revalidate();
-				centralPanel.repaint();
-				System.out.println("Find yourself=)");
 			}
+			    }
 			break;
 			
 		case "FilterType":
 
 			String selectedType = (String) ((JComboBox<?>) event.getSource()).getSelectedItem();
 
-			// Use the filter from Pokedex
-			//Check any exist or not
 			ArrayList<String> filteredCardIDs = pokedex.filterCards(null, selectedType.equals("all") ? "" : selectedType, null);
 
 			centralPanel.removeAll(); // Clear previous cards
 			
-			
-			//Repeated Code
 			for (String cardId : filteredCardIDs) {
-				ImageIcon icon = new ImageIcon(pokedex.fetchFilteredCardImg(cardId));
-				Image scaledImage = icon.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
-				icon = new ImageIcon(scaledImage);
+				generateCardButton(cardId, panelPicW, panelPicH);}
 
 				String label = pokedex.fetchCardLabel(cardId); 
 				JButton cardButton = new JButton(label, icon);
@@ -335,11 +274,11 @@ public class PokedexPage implements ActionListener{
 
 			centralPanel.revalidate();
 			centralPanel.repaint();
+
 			break;
-			//Until here
 			
 			
-			//Check stage 1 &2 
+			
 		case "FilterStage":
 		    String selectedStage = (String) ((JComboBox<?>) event.getSource()).getSelectedItem();
 		    String stageFilter = selectedStage.equalsIgnoreCase("all") ? "" : selectedStage;
@@ -348,39 +287,17 @@ public class PokedexPage implements ActionListener{
 
 		    centralPanel.removeAll();
 		    
-		  //Repeated Code
+		  
 		    for (String cardId : filteredByStage) {
-		        ImageIcon icon = new ImageIcon(pokedex.fetchFilteredCardImg(cardId));
-		        Image scaledImage = icon.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
-		        icon = new ImageIcon(scaledImage);
-
-		        String label = pokedex.fetchCardLabel(cardId);
-		        JButton cardButton = new JButton(label, icon);
-		        cardButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		        cardButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		        cardButton.setFont(new Font("Roboto", Font.BOLD, 14));
-		        cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
-
-		        cardButton.addActionListener(e -> {
-		        	scrollPane.getVerticalScrollBar().setValue(0);
-		        	disableScroll();
-		        	cardDisplay = new CardDisplay(Integer.parseInt(cardId.substring(2)), pokedex, frame);
-					centralPanel.removeAll();
-					centralPanel.add(cardDisplay);
-					centralPanel.revalidate();
-					centralPanel.repaint();
-		        });
-
+		        
 		        centralPanel.add(cardButton);
-		    }
+		    	generateCardButton(cardId, panelPicW, panelPicH);
 
-		    centralPanel.revalidate();
-		    centralPanel.repaint();
-		    //Until here
+		    }
 		    
 		    break;
 		    
-		    //Done
+		    
 		case "FilterAcquired":
 			String selectedAcquired = (String) ((JComboBox<?>) event.getSource()).getSelectedItem();
 
@@ -399,42 +316,11 @@ public class PokedexPage implements ActionListener{
 			    }
 			}
 
-		    
-		    
-		    
-		    //Repeated Code
 			centralPanel.removeAll();
-		    for (String cardId : filteredCards) {
-		        ImageIcon icon = new ImageIcon(pokedex.fetchFilteredCardImg(cardId));
-		        Image scaledImage = icon.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
-		        icon = new ImageIcon(scaledImage);
-
-		        String label = pokedex.fetchCardLabel(cardId);
-		        JButton cardButton = new JButton(label, icon);
-		        cardButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		        cardButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		        cardButton.setFont(new Font("Roboto", Font.BOLD, 14));
-		        cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
-
-		        cardButton.addActionListener(e -> {
-		        	scrollPane.getVerticalScrollBar().setValue(0);
-		        	disableScroll();
-		        	cardDisplay = new CardDisplay(Integer.parseInt(cardId.substring(2)), pokedex, frame);
-					centralPanel.removeAll();
-					centralPanel.add(cardDisplay);
-					centralPanel.revalidate();
-					centralPanel.repaint();
-		        });
-
-		        centralPanel.add(cardButton);
-		    }
-
-		    centralPanel.revalidate();
-		    centralPanel.repaint();
-		    //UNtil here
-		    
+		    for (String cardId : filteredCards)
+		    	generateCardButton(cardId, panelPicW, panelPicH);
 		    break;
-
+		    
 		default:
 			System.out.println("Unknown action: " + command);
 			break;
@@ -477,6 +363,7 @@ public class PokedexPage implements ActionListener{
 				centralPanel.repaint();
 			});
 			centralPanel.add(cardButton);
+			generateCardButton(String.format("BS%03d", cardIndex), panelPicW, panelPicH);
 		}
 
 		// Set preferred size larger than the visible area to trigger scroll
@@ -494,8 +381,34 @@ public class PokedexPage implements ActionListener{
 	        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 	    }
 
+
 	    public void enableScroll() {
 	        scrollPane.setWheelScrollingEnabled(true);
 	        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 	    }
+
+	public void generateCardButton(String cardID, int w, int h){
+		ImageIcon icon = new ImageIcon(pokedex.fetchCardImg(cardID));
+        Image scaledImage = icon.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
+        icon = new ImageIcon(scaledImage);
+
+        
+        JButton cardButton = new JButton(pokedex.fetchCardLabel(cardID), icon);
+        cardButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+        cardButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        cardButton.setFont(new Font("Roboto", Font.BOLD, 14));
+        cardButton.setPreferredSize(new Dimension(w + 20, h + 40));
+
+        // Add action listener if needed (e.g. show card details)
+        cardButton.addActionListener(e -> {
+        	cardDisplay = new CardDisplay(Integer.parseInt(cardID.substring(2)), pokedex, frame);
+			centralPanel.removeAll();
+			centralPanel.add(cardDisplay);
+			centralPanel.revalidate();
+			centralPanel.repaint();
+	});
+	centralPanel.add(cardButton);
+	centralPanel.revalidate();
+	centralPanel.repaint();
+	}
 }
