@@ -360,19 +360,4 @@ public class PlayerProfile implements ActionListener{
 		}
 
 	}
-	//add here
-	/*public static void main(String[] args) {
-
-		PlayerProfile profile = new PlayerProfile();
-	    //for example:
-	    profile.loadProfile(1);
-	    profile.playerProfile.setVisible(true);
-	}*/
-//	public static void main(String[] args) {
-//
-//		PlayerProfile profile = new PlayerProfile();
-//	    //for example:
-//	    profile.loadProfile(1);
-//	    profile.playerProfile.setVisible(true);
-//	}
 }

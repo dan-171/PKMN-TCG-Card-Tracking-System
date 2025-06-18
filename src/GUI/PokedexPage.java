@@ -149,19 +149,21 @@ public class PokedexPage implements ActionListener{
 
 
 		// Create profile menu
-		profileMenuButton = new JButton("Profile Menu"); 
-		fonts.Heading2(profileMenuButton);
+		profileMenuButton = new JButton("≡"); 
+		
+		
+		fonts.BodyFont(profileMenuButton);
 		profileMenu = new JPopupMenu();
 		String[] menuLabels = {"Profile", "Logout"}; // Menu item labels
 		profileMenuItems = new JMenuItem[menuLabels.length]; 
-
-		Dimension buttonSize = profileMenuButton.getPreferredSize();
+		
 
 		for (int i = 0; i < menuLabels.length; i++) {
 		    profileMenuItems[i] = new JMenuItem(menuLabels[i]);
-		    fonts.Heading2(profileMenuItems[i]);
+		    fonts.BodyFont(profileMenuItems[i]);
+		    profileMenuItems[i].setBackground(new Color(0xD94446));
+		    profileMenuItems[i].setForeground(Color.WHITE);
 		    profileMenuItems[i].addActionListener(this);
-		    profileMenuItems[i].setPreferredSize(buttonSize);
 		    profileMenu.add(profileMenuItems[i]);
 		}
 
@@ -172,7 +174,9 @@ public class PokedexPage implements ActionListener{
 		            profileMenu.setVisible(false);
 		        } else {
 		            // Show the popup menu below the button
-		            profileMenu.show(profileMenuButton, 0, profileMenuButton.getHeight());
+		        	int x = profileMenuButton.getWidth() - profileMenu.getPreferredSize().width;
+		        	int y = profileMenuButton.getHeight();
+		        	profileMenu.show(profileMenuButton, x, y);
 		        }
 		    }
 		});
@@ -281,8 +285,7 @@ public class PokedexPage implements ActionListener{
 				//	    	        cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
 				//	    	        
 				//	    	        cardButton.addActionListener(e -> {
-				//    	                // Insert your code here to navigate to the relative page based on the cardIndex
-				//    	                // For example: navigateToCardDetails(cardIndex);
+				//    	              
 				//    	            });
 				//	    	        
 				//	    	        centralPanel.add(cardButton);
@@ -292,21 +295,25 @@ public class PokedexPage implements ActionListener{
 				System.out.println("Find yourself=)");
 			}
 			break;
+			
 		case "FilterType":
 
 			String selectedType = (String) ((JComboBox<?>) event.getSource()).getSelectedItem();
 
 			// Use the filter from Pokedex
+			//Check any exist or not
 			ArrayList<String> filteredCardIDs = pokedex.filterCards(null, selectedType.equals("all") ? "" : selectedType, null);
 
 			centralPanel.removeAll(); // Clear previous cards
-
+			
+			
+			//Repeated Code
 			for (String cardId : filteredCardIDs) {
 				ImageIcon icon = new ImageIcon(pokedex.fetchFilteredCardImg(cardId));
 				Image scaledImage = icon.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
 				icon = new ImageIcon(scaledImage);
 
-				String label = pokedex.fetchCardLabel(cardId); // Make sure this method supports cardId as String
+				String label = pokedex.fetchCardLabel(cardId); 
 				JButton cardButton = new JButton(label, icon);
 				cardButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 				cardButton.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -314,10 +321,11 @@ public class PokedexPage implements ActionListener{
 				cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
 
 				cardButton.addActionListener(e -> {
-					
-					
-					
-					
+					cardDisplay = new CardDisplay(Integer.parseInt(cardId.substring(2)), pokedex, frame);
+					centralPanel.removeAll();
+					centralPanel.add(cardDisplay);
+					centralPanel.revalidate();
+					centralPanel.repaint();
 				});
 
 				centralPanel.add(cardButton);
@@ -326,6 +334,10 @@ public class PokedexPage implements ActionListener{
 			centralPanel.revalidate();
 			centralPanel.repaint();
 			break;
+			//Until here
+			
+			
+			//Check stage 1 &2 
 		case "FilterStage":
 		    String selectedStage = (String) ((JComboBox<?>) event.getSource()).getSelectedItem();
 		    String stageFilter = selectedStage.equalsIgnoreCase("all") ? "" : selectedStage;
@@ -333,7 +345,8 @@ public class PokedexPage implements ActionListener{
 		    ArrayList<String> filteredByStage = pokedex.filterCards(null, "", stageFilter);
 
 		    centralPanel.removeAll();
-
+		    
+		  //Repeated Code
 		    for (String cardId : filteredByStage) {
 		        ImageIcon icon = new ImageIcon(pokedex.fetchFilteredCardImg(cardId));
 		        Image scaledImage = icon.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
@@ -347,7 +360,11 @@ public class PokedexPage implements ActionListener{
 		        cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
 
 		        cardButton.addActionListener(e -> {
-		            // navigateToCardDetails(cardId);
+		        	cardDisplay = new CardDisplay(Integer.parseInt(cardId.substring(2)), pokedex, frame);
+					centralPanel.removeAll();
+					centralPanel.add(cardDisplay);
+					centralPanel.revalidate();
+					centralPanel.repaint();
 		        });
 
 		        centralPanel.add(cardButton);
@@ -355,29 +372,35 @@ public class PokedexPage implements ActionListener{
 
 		    centralPanel.revalidate();
 		    centralPanel.repaint();
+		    //Until here
+		    
 		    break;
-
+		    
+		    //Done
 		case "FilterAcquired":
-		    String selectedAcquired = (String) ((JComboBox<?>) event.getSource()).getSelectedItem();
-		    boolean filterAcquired = selectedAcquired.equalsIgnoreCase("Acquired");
+			String selectedAcquired = (String) ((JComboBox<?>) event.getSource()).getSelectedItem();
 
-		    // Fetch all cards first (no SQL filtering here)
-		    ArrayList<String> allCards = pokedex.filterCards(null, "", "");
+			ArrayList<String> allCards = pokedex.filterCards(null, "", "");  // No filter at DB level
+			ArrayList<String> filteredCards = new ArrayList<>();
 
-		    // Then filter client-side by acquired status
-		    ArrayList<String> filteredByAcquired = new ArrayList<>();
-		    for (String cardId : allCards) {
-		        boolean isMissing = pokedex.missingCard(cardId);
-		        if (filterAcquired && !isMissing) {
-		            filteredByAcquired.add(cardId);
-		        } else if (!filterAcquired && isMissing) {
-		            filteredByAcquired.add(cardId);
-		        }
-		    }
+			for (String cardId : allCards) {
+			    boolean isMissing = pokedex.missingCard(cardId);
 
-		    centralPanel.removeAll();
+			    if (selectedAcquired.equalsIgnoreCase("All")) {
+			        filteredCards.add(cardId);
+			    } else if (selectedAcquired.equalsIgnoreCase("Acquired") && !isMissing) {
+			        filteredCards.add(cardId);
+			    } else if (selectedAcquired.equalsIgnoreCase("Unacquired") && isMissing) {
+			        filteredCards.add(cardId);
+			    }
+			}
 
-		    for (String cardId : filteredByAcquired) {
+		    
+		    
+		    
+		    //Repeated Code
+			centralPanel.removeAll();
+		    for (String cardId : filteredCards) {
 		        ImageIcon icon = new ImageIcon(pokedex.fetchFilteredCardImg(cardId));
 		        Image scaledImage = icon.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
 		        icon = new ImageIcon(scaledImage);
@@ -390,7 +413,11 @@ public class PokedexPage implements ActionListener{
 		        cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
 
 		        cardButton.addActionListener(e -> {
-		            // navigateToCardDetails(cardId);
+		        	cardDisplay = new CardDisplay(Integer.parseInt(cardId.substring(2)), pokedex, frame);
+					centralPanel.removeAll();
+					centralPanel.add(cardDisplay);
+					centralPanel.revalidate();
+					centralPanel.repaint();
 		        });
 
 		        centralPanel.add(cardButton);
@@ -398,6 +425,8 @@ public class PokedexPage implements ActionListener{
 
 		    centralPanel.revalidate();
 		    centralPanel.repaint();
+		    //UNtil here
+		    
 		    break;
 
 		default:
@@ -433,35 +462,14 @@ public class PokedexPage implements ActionListener{
 
 			// Add action listener to the cardButton
 			cardButton.addActionListener(e -> {
-
 				cardDisplay = new CardDisplay(cardIndex, pokedex, frame);
 				centralPanel.removeAll();
 				centralPanel.add(cardDisplay);
 				centralPanel.revalidate();
 				centralPanel.repaint();
-				
-//				if (cardDisplay.getBackBoolean() == true) {
-//					frame.dispose();
-//					System.out.println("Card button clicked: BS" + String.format("%03d", cardIndex));
-//				}
-//				else {
-//					centralPanel.removeAll();
-//					centralPanel.add(cardDisplay);
-//					centralPanel.revalidate();
-//					centralPanel.repaint();
-//				}
-
-
 			});
-
-
-
 			centralPanel.add(cardButton);
 		}
-		
-		
-
-
 
 		// Set preferred size larger than the visible area to trigger scroll
 		centralPanel.setPreferredSize(new Dimension(panelWidth, panelHeight * 4));
@@ -472,14 +480,7 @@ public class PokedexPage implements ActionListener{
 				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(50);
 		frame.add(scrollPane);
-
-		//frame.add(centralPanel);
 	}
 
-
-
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
 
 }
