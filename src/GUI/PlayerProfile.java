@@ -136,9 +136,9 @@ public class PlayerProfile implements ActionListener{
 		ImagePanel.setBounds(0, 0, panelW / 3, panelH);
 		playerInfoPanel.add(ImagePanel); //add image panel into center panel
 		
+		
 		//create a panel for player info
-		playerInfoArea = new JPanel();
-		playerInfoArea.setLayout(new BorderLayout());
+		playerInfoArea = new JPanel(new BorderLayout());
 		playerInfoArea.setBorder(BorderFactory.createLineBorder(Color.white, 5));
 		playerInfoArea.setBackground(new Color(0xB3D9FF));
 		playerInfoArea.setBounds(panelW / 3, 0, panelW * 2 / 3, panelH);
@@ -160,7 +160,7 @@ public class PlayerProfile implements ActionListener{
 		pageTitle = new JLabel();
 		pageTitle.setText("Trainer's Profile");
 		pageTitle.setForeground(Color.black);
-		pageTitle.setFont(new Font("Times New Roman",Font.BOLD,40));
+		pageTitle.setFont(new Font("Segoe UI", Font.BOLD, 40));
 		titleBg.add(pageTitle);
 		
 		northPanel.add(titleBg);
@@ -181,7 +181,7 @@ public class PlayerProfile implements ActionListener{
 
 		playerName = new JLabel();
 		playerName.setText("Name: "+name);
-		playerName.setFont(new Font("Times New Roman",Font.BOLD,30));
+		playerName.setFont(new Font("Segoe UI", Font.BOLD, 30));
 		playerName.setForeground(Color.black);
 		playerName.setVerticalTextPosition(JLabel.TOP);
 		playerName.setHorizontalTextPosition(JLabel.LEFT);
@@ -189,7 +189,7 @@ public class PlayerProfile implements ActionListener{
 		
 		playerId = new JLabel();
 		playerId.setText("Player ID: "+playerID);
-		playerId.setFont(new Font("Times New Roman",Font.BOLD,30));
+		playerId.setFont(new Font("Segoe UI", Font.BOLD, 30));
 		playerId.setForeground(Color.black);
 		playerId.setVerticalTextPosition(JLabel.TOP);
 		playerId.setHorizontalTextPosition(JLabel.LEFT);
@@ -197,7 +197,7 @@ public class PlayerProfile implements ActionListener{
 
 		numOfcards = new JLabel();
 		numOfcards.setText("Numbers of cards: "+numOfCards);
-		numOfcards.setFont(new Font("Times New Roman",Font.BOLD,30));
+		numOfcards.setFont(new Font("Segoe UI", Font.BOLD, 30));
 		numOfcards.setForeground(Color.black);
 		numOfcards.setVerticalTextPosition(JLabel.TOP);
 		numOfcards.setHorizontalTextPosition(JLabel.LEFT);
@@ -205,7 +205,7 @@ public class PlayerProfile implements ActionListener{
 
 		regDate = new JLabel();
 		regDate.setText("Registered date: "+registerDate);
-		regDate.setFont(new Font("Times New Roman",Font.BOLD,30));
+		regDate.setFont(new Font("Segoe UI", Font.BOLD, 30));
 		regDate.setForeground(Color.black);
 		regDate.setVerticalTextPosition(JLabel.TOP);
 		regDate.setHorizontalTextPosition(JLabel.LEFT);
@@ -218,8 +218,14 @@ public class PlayerProfile implements ActionListener{
 		southPanel.setLayout(new FlowLayout());
 		playerInfoArea.add(southPanel,BorderLayout.SOUTH);
 		
-		updatePlayerInfo = new JButton("Update Personal Info");
-		updatePlayerInfo.setFont(new Font("Times New Roman",Font.BOLD,30));
+		ImageIcon iconImage = new ImageIcon("");
+		//rescaled the profile Pic
+		ImageIcon oriIconImage = new ImageIcon("resources/profileUse/editIcon.png");
+		Image scaledIconImage = oriIconImage.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+		ImageIcon editIcon = new ImageIcon(scaledIconImage);
+		
+		updatePlayerInfo = new JButton("Update Info",editIcon);
+		updatePlayerInfo.setFont(new Font("Segoe UI", Font.BOLD, 24));
 		updatePlayerInfo.setFocusable(false);
 		updatePlayerInfo.setForeground(Color.black);
 		updatePlayerInfo.setBackground(Color.LIGHT_GRAY);
@@ -227,6 +233,8 @@ public class PlayerProfile implements ActionListener{
 		updatePlayerInfo.setBorder(BorderFactory.createLineBorder(Color.black,3));
 		updatePlayerInfo.addActionListener(this);
 		southPanel.add(updatePlayerInfo);
+		
+		
 	}
 	public void updateInfo() {
 		//define the option
