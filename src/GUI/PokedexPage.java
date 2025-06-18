@@ -1,55 +1,56 @@
 package GUI;
 
 import Database.AppSession;
+import Database.JDBC;
 import Database.Player;
 import Database.Pokedex;
 
 import javax.swing.*;
+import javax.swing.event.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class PokedexPage implements ActionListener {
+public class PokedexPage implements ActionListener{
 	private JFrame frame;
-	private JPanel northPanel, centralPanel, westPanel;
+	private JPanel northPanel, centralPanel,searchPanel, filterPanel;
 	private int screenWidth, screenHeight;
-	private JButton leftMenuButton, profileMenuButton;
-    private JPopupMenu leftpopupMenu, profileMenu;
-    private JMenuItem[]  leftJMenuItems,profileMenuItems;
-    
-    private Player player;
-    private Pokedex pokedex;
-    private ArrayList<JButton> cardButton;
-    
-    
-    private boolean showLeftMenu, showProfileMenu;
-    
+	private JButton profileMenuButton,searchButton;
+	private JPopupMenu profileMenu;
+	private JMenuItem[]  profileMenuItems;
+	JTextField searchField;
+
+	private Player player;
+	private Pokedex pokedex;
+	private ArrayList<JButton> cardButton;
+
+
+
 	Fonts fonts = new Fonts();
 	SetUp setUp = new SetUp();
+	CardDisplay cardDisplay;
 	GridBagConstraints gbc = new GridBagConstraints();
-	
-	
+
+
 	public static final int Margin = 300;
-	
+
 	//Constructor
-		public PokedexPage(Pokedex pokedex){
-			this.pokedex  = pokedex;
-			this.cardButton = new ArrayList<>();
-			init();
-			NorthPanel();
-			displayPanel();
-			//CentralPanel();
-			//WestPanel();
-			//EastPanel();*/
-			frame.setVisible(true);
-			
-		}
-	
+	public PokedexPage(Pokedex pokedex){
+		this.pokedex  = pokedex;
+		this.cardButton = new ArrayList<>();
+		init();
+		NorthPanel();
+		displayPanel();
+		frame.setVisible(true);
+
+	}
+
 	public void init(){
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		screenWidth = screenSize.width;
 		screenHeight = screenSize.height;
-		
+
 		frame = new JFrame();
 		frame.setSize(screenSize);
 		frame.setResizable(false);
@@ -58,162 +59,294 @@ public class PokedexPage implements ActionListener {
 		frame.setIconImage(logo.getImage());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new BorderLayout());
-		
-		showLeftMenu= false;
-		showProfileMenu= false;
+
 	}
-	
+
 	public void NorthPanel() {
+		int top = 50;
+		int bottom = 0;
+		
+		//North Panel
 		northPanel = setUp.gridBagLayout();
-		northPanel.setBackground(new Color(0xe70023));
-		int top = 30;
-			
-		// Create left menu
-		leftMenuButton = new JButton("Left Menu"); 
-        fonts.Heading2(leftMenuButton);
-		leftpopupMenu = new JPopupMenu();
-        String[] leftpopupMenuLabel = {"Test 1", "Test 2", "Test 3"}; 
-        leftJMenuItems = new JMenuItem[leftpopupMenuLabel.length]; 
-        
-        for (int i = 0; i < leftpopupMenuLabel.length; i++) {
-        	leftJMenuItems[i] = new JMenuItem(leftpopupMenuLabel[i]);
-            fonts.Heading2(leftJMenuItems[i]);
-            leftJMenuItems[i].addActionListener(this);
-            leftpopupMenu.add(leftJMenuItems[i]);
-        }
+		northPanel.setPreferredSize(new Dimension(screenWidth,screenHeight/4));
+		northPanel.setBackground(new Color(0xD94446));
+		
+		//create search function
+		searchPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
+		searchField = new JTextField(10);
+		searchButton = new JButton("Search");
+		JLabel searchText = new JLabel ("Search:");
+		searchText.setForeground(Color.WHITE);
+		
+		searchPanel.add(searchText);
+		searchPanel.add(searchField);
+		searchPanel.add(searchButton);
+		searchPanel.setBackground(new Color(0xD94446));
+		searchButton.setActionCommand("Search");
+		searchButton.addActionListener(this);
+		setUp.setGBC(gbc, 0, 1, 1, gbc.LINE_START, gbc.NONE, new Insets(top, 30, bottom, 0), 0);
+		northPanel.add(searchPanel,gbc);
 
-        // Show profile menu on button click
-        leftMenuButton.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-            	showLeftMenu = !showLeftMenu; 
-            	if (showLeftMenu) {
-            		leftpopupMenu.show(leftMenuButton, 0, leftMenuButton.getHeight()); // Show menu
-            	} else {
-            		leftpopupMenu.setVisible(false); // Hide menu
-            	}
-            }
-        });
-        setUp.setGBC(gbc, 0, 0, 1, gbc.LINE_START, gbc.NONE, new Insets(top, 50, 0, 0), 0);
-        leftMenuButton.setBackground(Color.WHITE);
-        leftMenuButton.setForeground(new Color(0x333333));
-        leftMenuButton.setFocusable(false);
-		northPanel.add(leftMenuButton, gbc);
-        
-        
-		// Title
-		JLabel Title = new JLabel("Pokedex");
-		fonts.HeaderFont(Title);
-		setUp.setGBC(gbc, 1, 0, 1, gbc.CENTER, gbc.NONE, new Insets(top, 350, 0, 0), 1.0);
-		Title.setForeground(new Color(0xFFD700));
-		northPanel.add(Title, gbc);
+		
+		filterPanel = new JPanel(new FlowLayout(FlowLayout.LEADING)); 
+		filterPanel.setBackground(new Color(0xe70023));
+		
+		JLabel filterText = new JLabel ("Filter: Type:");
+		filterText.setForeground(Color.WHITE);
+		filterPanel.add(filterText);
+		
+		String[] type = {"all","colorless","fire","water","electric","grass","fighting","physic"};
+		JComboBox<String> typeBox = new JComboBox<>(type);
+		searchButton.setActionCommand("FilterType");
+		typeBox.addActionListener(this);
+		filterPanel.add(typeBox);
+		
+		
+		
+		
+		setUp.setGBC(gbc, 1, 1, 1, gbc.LINE_START, gbc.NONE, new Insets(top, 30, bottom, 0), 0);
+		northPanel.add(filterPanel,gbc);
 
 
-        // Create profile menu
+
+		//Title
+		//rescaled the profile Pic
+		ImageIcon oriBgPic = new ImageIcon("resources/LOGO/pokedexTitle.png");
+		Image scaledBgPic = oriBgPic.getImage().getScaledInstance(screenWidth/3, screenHeight/10, Image.SCALE_SMOOTH);
+		ImageIcon bgPic = new ImageIcon(scaledBgPic);
+
+		JLabel bgImage = new JLabel(bgPic);
+		bgImage.setLayout(null);
+
+
+		setUp.setGBC(gbc, 0, 0, 2, gbc.CENTER, gbc.NONE, new Insets(0, screenWidth/4+ 30, 0, 0), 1.0);
+		northPanel.add(bgImage, gbc);
+
+
+
+		// Create profile menu
 		profileMenuButton = new JButton("Profile Menu"); 
-        fonts.Heading2(profileMenuButton);
-        profileMenu = new JPopupMenu();
-        String[] menuLabels = {"Profile", "Logout"}; // Menu item labels
-        profileMenuItems = new JMenuItem[menuLabels.length]; 
-        
-        for (int i = 0; i < menuLabels.length; i++) {
-        	profileMenuItems[i] = new JMenuItem(menuLabels[i]);
-            fonts.Heading2(profileMenuItems[i]);
-            profileMenuItems[i].addActionListener(this);
-            profileMenu.add(profileMenuItems[i]);
-        }
+		fonts.Heading2(profileMenuButton);
+		profileMenu = new JPopupMenu();
+		String[] menuLabels = {"Profile", "Logout"}; // Menu item labels
+		profileMenuItems = new JMenuItem[menuLabels.length]; 
 
-        // Show profile menu on button click
-        profileMenuButton.addMouseListener(new MouseAdapter() {
-            public void mousePressed(MouseEvent e) {
-            	showProfileMenu = !showProfileMenu; 
-            	if (showProfileMenu) {
-            		profileMenu.show(profileMenuButton, 0, profileMenuButton.getHeight()); // Show menu
-            	} else {
-            		profileMenu.setVisible(false); // Hide menu
-            	}
-            }
-        });
-        setUp.setGBC(gbc, 2, 0, 1, gbc.LINE_END, gbc.NONE, new Insets(top, 0, 0, 50), 1.0);
-        profileMenuButton.setBackground(Color.WHITE);
-        profileMenuButton.setForeground(new Color(0x333333));
-        profileMenuButton.setFocusable(false);
+		Dimension buttonSize = profileMenuButton.getPreferredSize();
 
-        northPanel.add(profileMenuButton, gbc);
-		
-		
-		
+		for (int i = 0; i < menuLabels.length; i++) {
+		    profileMenuItems[i] = new JMenuItem(menuLabels[i]);
+		    fonts.Heading2(profileMenuItems[i]);
+		    profileMenuItems[i].addActionListener(this);
+		    profileMenuItems[i].setPreferredSize(buttonSize);
+		    profileMenu.add(profileMenuItems[i]);
+		}
+
+		// Profile Menu Button
+		profileMenuButton.addMouseListener(new MouseAdapter() {
+		    public void mousePressed(MouseEvent e) {
+		        if (profileMenu.isShowing()) {
+		            profileMenu.setVisible(false);
+		        } else {
+		            // Show the popup menu below the button
+		            profileMenu.show(profileMenuButton, 0, profileMenuButton.getHeight());
+		        }
+		    }
+		});
+
+
+
+		setUp.setGBC(gbc, 2, 1, 1, gbc.LINE_END, gbc.NONE, new Insets(top, 0, bottom, 20), 1.0);
+		profileMenuButton.setBackground(Color.WHITE);
+		profileMenuButton.setForeground(new Color(0x333333));
+		profileMenuButton.setFocusable(false);
+
+		northPanel.add(profileMenuButton, gbc);
+
+
+
+
 		frame.add(northPanel, BorderLayout.NORTH);
 	}
-	
+
 	public void actionPerformed(ActionEvent event) {
+		int panelPicW = (int) (screenWidth * 0.08);
+		int panelPicH = (int) (screenHeight * 0.2);
 		String command = event.getActionCommand();
-	    switch (command) {
-	        case "Profile":
-	        	frame.dispose();
-	        	PlayerProfile playerProfile = new PlayerProfile();	           
-	        	//Clear the 
-	        	Integer currentId = AppSession.getCurrentPlayerId();
+		switch (command) {
+		case "Profile":
+			frame.dispose();
+			PlayerProfile playerProfile = new PlayerProfile();	           
+			//Clear the 
+			Integer currentId = AppSession.getCurrentPlayerId();
 
-	            if (currentId == null) {
-	                JOptionPane.showMessageDialog(null, "No player is currently authenticated.");
-	                return;
-	            }
+			if (currentId == null) {
+				JOptionPane.showMessageDialog(null, "No player is currently authenticated.");
+				return;
+			}
 
-	            playerProfile.init();
-	            playerProfile.loadProfile(currentId);
-	        	
-	            break;
-	        case "Logout":
-	        	//Username sets to null etc
-	        	
-	            break;
-	        default:
-	            System.out.println("Unknown action: " + command);
-	            break;
-	    }
+			playerProfile.init();
+			playerProfile.loadProfile(currentId);
+
+			break;
+		case "Logout":
+			//Username sets to null etc
+
+			break;
+		case "Search":
+			String CardName = searchField.getText().trim().toLowerCase();
+			centralPanel.removeAll();
+
+			if (CardName.isEmpty()) { // show all if empty
+				for (int i = 1; i <= 102; i++) {
+					final int cardIndex = i; // Create a final variable to hold the current index
+					ImageIcon icon = new ImageIcon(pokedex.fetchCardImg(cardIndex));
+					Image scaledImage = icon.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
+					icon = new ImageIcon(scaledImage);
+
+					JButton cardButton = new JButton(pokedex.fetchCardLabel(String.format("BS%03d", cardIndex)), icon);
+					cardButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+					cardButton.setHorizontalTextPosition(SwingConstants.CENTER);
+					cardButton.setFont(new Font("Roboto",Font.BOLD,14));
+					cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
+
+					// Add action listener to the cardButton
+					cardButton.addActionListener(e -> {
+						// Insert your code here to navigate to the relative page based on the cardIndex
+						// For example: navigateToCardDetails(cardIndex);
+					});
+					centralPanel.add(cardButton);
+				}
+				centralPanel.revalidate();
+				centralPanel.repaint();
+				System.out.println("Update successfully!");
+			}
+			else {
+
+				//		    		String cardId = pokedex.cardSearch(CardName); 
+				//		    		ImageIcon icon = new ImageIcon(pokedex.fetchCardImg(cardId));
+				//	    	        Image scaledImage = icon.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
+				//	    	        icon = new ImageIcon(scaledImage);
+				//
+				//	    	        JButton cardButton = new JButton(pokedex.fetchCardLabel(String.format("BS%03d", cardId)), icon);
+				//	    	        cardButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+				//	    	        cardButton.setHorizontalTextPosition(SwingConstants.CENTER);
+				//	    	        cardButton.setFont(new Font("Roboto",Font.BOLD,14));
+				//	    	        cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
+				//	    	        
+				//	    	        cardButton.addActionListener(e -> {
+				//    	                // Insert your code here to navigate to the relative page based on the cardIndex
+				//    	                // For example: navigateToCardDetails(cardIndex);
+				//    	            });
+				//	    	        
+				//	    	        centralPanel.add(cardButton);
+
+				centralPanel.revalidate();
+				centralPanel.repaint();
+				System.out.println("Find yourself=)");
+			}
+			break;
+		case "FilterType":
+
+			String selectedType = (String) ((JComboBox<?>) event.getSource()).getSelectedItem();
+
+			// Use the filter from Pokedex
+			ArrayList<String> filteredCardIDs = pokedex.filterCards(null, selectedType.equals("all") ? "" : selectedType, null);
+
+			centralPanel.removeAll(); // Clear previous cards
+
+			for (String cardId : filteredCardIDs) {
+				ImageIcon icon = new ImageIcon(pokedex.fetchFilteredCardImg(cardId));
+				Image scaledImage = icon.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
+				icon = new ImageIcon(scaledImage);
+
+				String label = pokedex.fetchCardLabel(cardId); // Make sure this method supports cardId as String
+				JButton cardButton = new JButton(label, icon);
+				cardButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+				cardButton.setHorizontalTextPosition(SwingConstants.CENTER);
+				cardButton.setFont(new Font("Roboto", Font.BOLD, 14));
+				cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
+
+				cardButton.addActionListener(e -> {
+					// navigateToCardDetails(cardId); // Optional
+				});
+
+				centralPanel.add(cardButton);
+			}
+
+			centralPanel.revalidate();
+			centralPanel.repaint();
+			break;
+		default:
+			System.out.println("Unknown action: " + command);
+			break;
+		}
 	}
-	
-	
-    public void displayPanel() {
-        int panelWidth = (int) (screenWidth * 0.9);
-        int panelHeight = (int) (screenHeight * 0.85);
 
-        centralPanel = new JPanel();
-        centralPanel.setBackground(Color.white);
-        centralPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
-        int panelPicW = (int) (screenWidth * 0.07);
-        int panelPicH = (int) (screenHeight * 0.17);
+	public void displayPanel() {
+		int panelWidth = (int) (screenWidth * 0.9);
+		int panelHeight = (int) (screenHeight * 0.85);
 
-        // Loop from BS001 to BS102
-        for (int i = 1; i <= 102; i++) {
-            ImageIcon icon = new ImageIcon(pokedex.fetchCardImg(i));
-            Image scaledImage = icon.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
-            icon = new ImageIcon(scaledImage);
+		centralPanel = new JPanel();
+		centralPanel.setBackground(Color.white);
+		centralPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
 
-            cardButton.add(new JButton(pokedex.fetchCardLabel(String.format("BS%03d", i)), icon));
-            cardButton.get(i-1).setVerticalTextPosition(SwingConstants.BOTTOM);
-            cardButton.get(i-1).setHorizontalTextPosition(SwingConstants.CENTER);
-            cardButton.get(i-1).setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
+		int panelPicW = (int) (screenWidth * 0.08);
+		int panelPicH = (int) (screenHeight * 0.2);
 
-            centralPanel.add(cardButton.get(i-1));
-        }
-        
-        // Set preferred size larger than the visible area to trigger scroll
-        centralPanel.setPreferredSize(new Dimension(panelWidth, panelHeight * 3));
+		// Loop from BS001 to BS102
+		for (int i = 1; i <= 102; i++) {
+			final int cardIndex = i; // Create a final variable to hold the current index
+			ImageIcon icon = new ImageIcon(pokedex.fetchCardImg(cardIndex));
+			Image scaledImage = icon.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
+			icon = new ImageIcon(scaledImage);
 
-        // Wrap in scroll pane
-        JScrollPane scrollPane = new JScrollPane(centralPanel,
-                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(50);
-        frame.add(scrollPane);
-        //frame.add(centralPanel);
-    }
-	
-	
-	
+			JButton cardButton = new JButton(pokedex.fetchCardLabel(String.format("BS%03d", cardIndex)), icon);
+			cardButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+			cardButton.setHorizontalTextPosition(SwingConstants.CENTER);
+			cardButton.setFont(new Font("Roboto",Font.BOLD,14));
+			cardButton.setPreferredSize(new Dimension(panelPicW + 20, panelPicH + 40));
+
+			// Add action listener to the cardButton
+			cardButton.addActionListener(e -> {
+
+				Player player = new Player(1);
+				cardDisplay = new CardDisplay(cardIndex, player);
+				centralPanel.removeAll();
+				centralPanel.add(cardDisplay);
+				centralPanel.revalidate();
+				centralPanel.repaint();
+				//            	System.out.println("Card button clicked: BS" + String.format("%03d", cardIndex));
+
+
+
+			});
+
+
+
+			centralPanel.add(cardButton);
+		}
+
+
+
+
+		// Set preferred size larger than the visible area to trigger scroll
+		centralPanel.setPreferredSize(new Dimension(panelWidth, panelHeight * 4));
+
+		// Wrap in scroll pane
+		JScrollPane scrollPane = new JScrollPane(centralPanel,
+				JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(50);
+		frame.add(scrollPane);
+
+		//frame.add(centralPanel);
+	}
+
+
+
 	public void setPlayer(Player player) {
 		this.player = player;
 	}
+
 }

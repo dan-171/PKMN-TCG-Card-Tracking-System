@@ -13,6 +13,7 @@ public class Main {
 		{
 			//Create a connection to the database
 			Connection conn = JDBC.getConnection();
+
 			//JOptionPane.showMessageDialog(null, "Database successfully connected!");
 			LoadingPage loadingPage = new LoadingPage();			
 //			FirstPage firstPage = new FirstPage();
