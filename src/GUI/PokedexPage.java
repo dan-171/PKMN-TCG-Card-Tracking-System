@@ -264,7 +264,7 @@ public class PokedexPage implements ActionListener{
 		int panelPicH = (int) (screenHeight * 0.2);
 
 		// Loop from BS001 to BS102
-		for (int i = 1; i <= 102; i++) {
+		for (int i = 1; i <= pokedex.getSetSize(); i++) {
 			final int cardIndex = i; // Create a final variable to hold the current index
 			generateCardButton(String.format("BS%03d", cardIndex), panelPicW, panelPicH);
 		}

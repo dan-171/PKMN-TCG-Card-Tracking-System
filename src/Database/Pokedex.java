@@ -26,6 +26,10 @@ public class Pokedex {
 		
 	}
 	
+	public int getSetSize() {
+		return setSize;
+	}
+	
 	//indicate cards not yet acquired
 	public boolean missingCard(String cardFileID) {
 		
