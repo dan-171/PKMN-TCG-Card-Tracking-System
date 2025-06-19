@@ -188,7 +188,7 @@ public class PlayerProfile implements ActionListener{
 
 		playerName = new JLabel();
 		playerName.setText("Name: "+name);
-		playerName.setFont(new Font("Segoe UI", Font.BOLD, 30));
+		playerName.setFont(new Font("Segoe UI", Font.BOLD, 28));
 		playerName.setForeground(Color.black);
 		playerName.setVerticalTextPosition(JLabel.TOP);
 		playerName.setHorizontalTextPosition(JLabel.LEFT);
@@ -196,7 +196,7 @@ public class PlayerProfile implements ActionListener{
 		
 		playerId = new JLabel();
 		playerId.setText("Player ID: "+playerID);
-		playerId.setFont(new Font("Segoe UI", Font.BOLD, 30));
+		playerId.setFont(new Font("Segoe UI", Font.BOLD, 28));
 		playerId.setForeground(Color.black);
 		playerId.setVerticalTextPosition(JLabel.TOP);
 		playerId.setHorizontalTextPosition(JLabel.LEFT);
@@ -204,7 +204,7 @@ public class PlayerProfile implements ActionListener{
 
 		numOfcards = new JLabel();
 		numOfcards.setText("Numbers of cards: "+numOfCards);
-		numOfcards.setFont(new Font("Segoe UI", Font.BOLD, 30));
+		numOfcards.setFont(new Font("Segoe UI", Font.BOLD, 28));
 		numOfcards.setForeground(Color.black);
 		numOfcards.setVerticalTextPosition(JLabel.TOP);
 		numOfcards.setHorizontalTextPosition(JLabel.LEFT);
@@ -212,7 +212,7 @@ public class PlayerProfile implements ActionListener{
 
 		regDate = new JLabel();
 		regDate.setText("Registered date: "+registerDate);
-		regDate.setFont(new Font("Segoe UI", Font.BOLD, 30));
+		regDate.setFont(new Font("Segoe UI", Font.BOLD, 28));
 		regDate.setForeground(Color.black);
 		regDate.setVerticalTextPosition(JLabel.TOP);
 		regDate.setHorizontalTextPosition(JLabel.LEFT);

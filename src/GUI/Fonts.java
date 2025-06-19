@@ -89,11 +89,5 @@ public class  Fonts{
 	}
 	
 	
-	//TRING
-	public Font fontOfText() {
-		return header;
-	}
-	
-	
 	
 }
