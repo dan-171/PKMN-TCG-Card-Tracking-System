@@ -175,6 +175,27 @@ public class Player {
 
 	    return player;
 	}
+	
+	//delete player
+	public static boolean delPlayer(int playerId, String password) {
+	    try (Connection conn = JDBC.getConnection();
+	    	PreparedStatement validate = conn.prepareStatement("SELECT * FROM players WHERE PlayerID = ? AND Password = ?")) {
+	    	validate.setInt(1, playerId);
+	    	validate.setString(2, password);
+	        ResultSet rs = validate.executeQuery();
+	        if(rs.next()) {
+	        	PreparedStatement delete = conn.prepareStatement("DELTE FROM players WHERE PlayerID = ? AND Password = ?");
+	        	delete.setInt(1, playerId);
+	        	delete.setString(2, password);
+	        	return true;
+	        }
+	    } 
+	    catch (Exception e) 
+	    {
+	        e.printStackTrace();
+	    }
+        return false;
+	}
 
 	
 }
