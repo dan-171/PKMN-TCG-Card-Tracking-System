@@ -184,7 +184,7 @@ public class Player {
 	    	validate.setString(2, password);
 	        ResultSet rs = validate.executeQuery();
 	        if(rs.next()) {
-	        	PreparedStatement delete = conn.prepareStatement("DELTE FROM players WHERE PlayerID = ? AND Password = ?");
+	        	PreparedStatement delete = conn.prepareStatement("DELETE FROM players WHERE PlayerID = ? AND Password = ?");
 	        	delete.setInt(1, playerId);
 	        	delete.setString(2, password);
 	        	return true;
