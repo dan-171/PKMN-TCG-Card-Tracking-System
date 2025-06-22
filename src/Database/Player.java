@@ -179,17 +179,15 @@ public class Player {
 	//delete player
 	public static boolean delPlayer(int playerId, String password) {
 	    try (Connection conn = JDBC.getConnection();
-	    	PreparedStatement validate = conn.prepareStatement("SELECT * FROM players WHERE PlayerID = ? AND Password = ?")) {
-	    	validate.setInt(1, playerId);
-	    	validate.setString(2, password);
-	        ResultSet rs = validate.executeQuery();
-	        if(rs.next()) {
-	        	PreparedStatement delete = conn.prepareStatement("DELETE FROM players WHERE PlayerID = ? AND Password = ?");
+	    	PreparedStatement deletePlayerCards = conn.prepareStatement("DELETE FROM players_cards WHERE PlayerID = ?");
+	    	PreparedStatement delete = conn.prepareStatement("DELETE FROM players WHERE PlayerID = ? AND Password = ?")) {
+	    		deletePlayerCards.setInt(1, playerId);
+	    		deletePlayerCards.executeUpdate();
 	        	delete.setInt(1, playerId);
 	        	delete.setString(2, password);
-	        	return true;
+	        	int rowsAffected = delete.executeUpdate();
+	        	return rowsAffected > 0;
 	        }
-	    } 
 	    catch (Exception e) 
 	    {
 	        e.printStackTrace();
