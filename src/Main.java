@@ -17,14 +17,6 @@ public class Main {
 			//JOptionPane.showMessageDialog(null, "Database successfully connected!");
 			LoadingPage loadingPage = new LoadingPage();			
 			
-			//FirstPage firstPage = new FirstPage();
-//			boolean login = firstPage.getSuccessLogin();
-//			if(login == true) {
-//				JOptionPane.showMessageDialog (null, "YEAH!!!!!!!!!");
-//				JFrame frame = new JFrame();
-//				PokedexPage pokedexPage = new PokedexPage();
-//				pokedexPage.setPlayer(firstPage.player);
-//			}
 		}
 		catch (Exception e) {
 			JOptionPane.showMessageDialog(null, "Failed to connect to database:\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
