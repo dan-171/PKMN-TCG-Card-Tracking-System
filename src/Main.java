@@ -7,22 +7,17 @@ import java.sql.Statement;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-public class Main {
-	public static void main(String[] args) {
-		try 
-		{
+public class Main{
+	public static void main(String[] args) throws DBConnectionFailException {
+		try {
 			//Create a connection to the database
 			Connection conn = JDBC.getConnection();
-
 			//JOptionPane.showMessageDialog(null, "Database successfully connected!");
 			LoadingPage loadingPage = new LoadingPage();			
 			
 		}
 		catch (Exception e) {
-			JOptionPane.showMessageDialog(null, "Failed to connect to database:\n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-			
+			throw new DBConnectionFailException("Fail to connect to database or access loading page!");
 		}
-		
 	}
-
 }
