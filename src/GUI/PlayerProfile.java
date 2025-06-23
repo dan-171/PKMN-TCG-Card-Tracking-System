@@ -3,12 +3,17 @@ package GUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.InputStream;
+import java.sql.Connection;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import Database.CurrentPlayer;
+import Database.JDBC;
 import Database.Player;
 import Database.Pokedex;
 import GUI.TriangleLabel.Direction;
@@ -19,9 +24,10 @@ public class PlayerProfile implements ActionListener{
 	private JPanel panelHeader,centerBg,titleBg,playerInfoPanel,
 	playerInfoArea,centerPanel,westPanel,northPanel,eastPanel,southPanel;
 	private JLabel pageTitle,profileImage,playerName,playerId,numOfcards,regDate;
-	private JButton updatePlayerInfo;
-	private RoundIconButton BackBtn;
-	
+	private JButton updatePlayerInfo, delPlayerAcc;
+	private RoundIconButton BackBtn;	
+	private JDesktopPane desktopPane;
+
 	String name ,playerID,registerDate;
 	int numOfCards;
 	private Player player;
@@ -119,7 +125,7 @@ public class PlayerProfile implements ActionListener{
 		
 		int panelPicW = (int)(screenWidth * 0.2);
 		int panelPicH = (int)(screenHeight * 0.7);
-		
+	
 		//rescaled the profile Pic
 		ImageIcon oriProfilePic = new ImageIcon("resources/profileUse/mcPic.png");
 		Image scaledProfilePic = oriProfilePic.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
@@ -131,16 +137,12 @@ public class PlayerProfile implements ActionListener{
 		//locate panel for profile picture
 		RoundedSidePanel ImagePanel = new RoundedSidePanel(new Color(0x89CFF0), 30, true);
 		ImagePanel.setLayout(new BorderLayout());
-		ImagePanel.setBounds(0, 0, panelW / 3, panelH);
-
-
-		
+		ImagePanel.setBounds(0, 0, panelW / 3, panelH);	
 		ImagePanel.setBackground(new Color(0x89CFF0));
 		ImagePanel.add(profileImage); //add profile into image panel
 
 		ImagePanel.setBounds(0, 0, panelW / 3, panelH);
 		playerInfoPanel.add(ImagePanel); //add image panel into center panel
-		
 		
 		//create a panel for player info
 		RoundedSidePanel playerInfoArea = new RoundedSidePanel(new Color(0xB3D9FF), 30, false);
@@ -225,11 +227,11 @@ public class PlayerProfile implements ActionListener{
 		southPanel.setLayout(new FlowLayout());
 		playerInfoArea.add(southPanel,BorderLayout.SOUTH);
 		
-		
 		ImageIcon oriIconImage = new ImageIcon("resources/profileUse/editIcon.png");
 		Image scaledIconImage = oriIconImage.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
 		ImageIcon editIcon = new ImageIcon(scaledIconImage);
 		
+		//button for update info
 		updatePlayerInfo = new JButton("Update Info",editIcon);
 		updatePlayerInfo.setFont(new Font("Segoe UI", Font.BOLD, 24));
 		updatePlayerInfo.setFocusable(false);
@@ -240,6 +242,16 @@ public class PlayerProfile implements ActionListener{
 		updatePlayerInfo.addActionListener(this);
 		southPanel.add(updatePlayerInfo);
 		
+		//button for delete player's account
+		delPlayerAcc = new JButton("Delete Account");
+		delPlayerAcc.setFont(new Font("Segoe UI", Font.BOLD, 24));
+		delPlayerAcc.setFocusable(false);
+		delPlayerAcc.setForeground(Color.red);
+		delPlayerAcc.setBackground(Color.LIGHT_GRAY);
+		delPlayerAcc.setPreferredSize(new Dimension (350,50));
+		delPlayerAcc.setBorder(BorderFactory.createLineBorder(Color.black,3));
+		delPlayerAcc.addActionListener(this);
+		southPanel.add(delPlayerAcc);
 		
 	}
 	public void updateInfo() {
@@ -335,13 +347,21 @@ public class PlayerProfile implements ActionListener{
 	}
 
 	public void loadProfile() {
+	    // Reload current player from session
 	    Player player = CurrentPlayer.getCurrentPlayer();
 
 	    if (player != null) {
-	        playerName.setText("Name: " + player.getPlayerName());
-	        playerId.setText("Player ID: " + player.getPlayerID());
-	        numOfcards.setText("Numbers of cards: " + player.getCardQuantity());
-	        regDate.setText("Registered date: " + player.getRegistrationDate().toString());
+	        // Reload full fresh data from database to ensure it's updated
+	        Player freshPlayer = Player.loadPlayerProfile(player.getPlayerID());
+	        if (freshPlayer != null) {
+	            // Update the CurrentPlayer session too with fresh data
+	            CurrentPlayer.setCurrentPlayer(freshPlayer);
+
+	            playerName.setText("Name: " + freshPlayer.getPlayerName());
+	            playerId.setText("Player ID: " + freshPlayer.getPlayerID());
+	            numOfcards.setText("Numbers of cards: " + freshPlayer.getCardQuantity());
+	            regDate.setText("Registered date: " + freshPlayer.getRegistrationDate().toString());
+	        }
 	    } else {
 	        JOptionPane.showMessageDialog(playerProfile, "Player not found.");
 	    }
@@ -349,20 +369,19 @@ public class PlayerProfile implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	    // Get the current player directly
 	    Player player = CurrentPlayer.getCurrentPlayer();
 
+	    Pokedex px = new Pokedex(player);
+
 	    if (e.getSource() == BackBtn) {
-	        System.out.println("Back button clicked!");
 	        playerProfile.dispose();
-
-	        Pokedex px = new Pokedex(player);
-	        PokedexPage pokedex = new PokedexPage(px);
-	    }
-
-	    else if (e.getSource() == updatePlayerInfo) {
-	        System.out.println("Update Player button clicked!");
-	        updateInfo();
+	        new PokedexPage(px);
+	    } else if (e.getSource() == updatePlayerInfo) {
+	        // Open the updateInfo window
+	        new updateInfo(playerProfile, this, player.getPlayerID());
+	    } else if (e.getSource() == delPlayerAcc) {
+	        new deleteAccount(playerProfile, player.getPlayerID());
 	    }
 	}
 }
+

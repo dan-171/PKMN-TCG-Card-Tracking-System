@@ -439,8 +439,6 @@ public class FirstPage implements ActionListener{
 	                Pokedex px = new Pokedex(player);
 	                PokedexPage pokedex = new PokedexPage(px);
 	                
-	                
-	                
 	            } else
 	                JOptionPane.showMessageDialog(frame, "Invalid username or password.");
 	            
