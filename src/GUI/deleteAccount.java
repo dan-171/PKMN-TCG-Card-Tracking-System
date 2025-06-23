@@ -25,7 +25,8 @@ public class deleteAccount extends JFrame {
 	        setLayout(new BorderLayout());
 	        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-	        JLabel label = new JLabel("Enter your password to delete the account:", SwingConstants.CENTER);
+	        JLabel label = new JLabel("Enter your password to delete the account:", 
+	        		SwingConstants.CENTER);
 	        add(label, BorderLayout.NORTH);
 
 	        JPanel inputPanel = new JPanel(new GridLayout(2, 2, 10, 10));
@@ -53,7 +54,9 @@ public class deleteAccount extends JFrame {
 	            public void actionPerformed(ActionEvent e) {
 	                String password = new String(passwordField.getPassword());
 	                if (password.isEmpty()) {
-	                    JOptionPane.showMessageDialog(deleteAccount.this, "Password cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
+	                    JOptionPane.showMessageDialog(deleteAccount.this, 
+	                    		"Password cannot be empty.", "Error", 
+	                    		JOptionPane.ERROR_MESSAGE);
 	                    return;
 	                }
 
@@ -64,7 +67,9 @@ public class deleteAccount extends JFrame {
 	                    parentFrame.dispose();
 	                    new FirstPage();
 	                } else {
-	                    JOptionPane.showMessageDialog(deleteAccount.this, "Failed to delete account. Check password.", "Error", JOptionPane.ERROR_MESSAGE);
+	                    JOptionPane.showMessageDialog(deleteAccount.this, 
+	                    		"Failed to delete account. Check password.", 
+	                    		"Error", JOptionPane.ERROR_MESSAGE);
 	                }
 	            }
 	        });
