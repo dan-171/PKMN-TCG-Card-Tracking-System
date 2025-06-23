@@ -41,7 +41,7 @@ public class updateInfo extends JFrame {
 
         add(cardPanel, BorderLayout.CENTER);
         cardLayout.show(cardPanel, "MENU");
-
+        pack();
         setVisible(true);
     }
 
@@ -164,7 +164,7 @@ public class updateInfo extends JFrame {
         buttonPanel.add(backBtn);
         buttonPanel.add(saveBtn);
         panel.add(buttonPanel, BorderLayout.SOUTH);
-
+        
         return panel;
     }
 }
