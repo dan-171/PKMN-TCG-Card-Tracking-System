@@ -7,35 +7,44 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 
 public class Player {
-	private int playerID;
-	private String playerName;
-	private int cardQuantity;
-	private Timestamp registerDate;
-	private String password;
-
+	
+	protected int playerID;
+    protected String playerName;
+    protected int cardQuantity;
+    protected Timestamp registerDate;
+    protected String password;
+	
 	public Player(int playerID) {
-		this.playerID = playerID;
-	}
-	
-	public int getPlayerID() {
-		return playerID;
-	}
-	
-	public String getPlayerName(){
-	    return playerName;
-	}
+        this.playerID = playerID;
+    }
 
-	public int getCardQuantity(){
-	    return cardQuantity;
-	}
+    public int getPlayerID() {
+        return playerID;
+    }
 
-	public Timestamp getRegistrationDate(){
-	    return registerDate;
-	}
-	
-	public String getPassword(){
-	    return password;
-	}
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+    
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public int getCardQuantity() {
+        return cardQuantity;
+    }
+
+    public Timestamp getRegistrationDate() {
+        return registerDate;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    
+    public String getPassword() {
+        return password;
+    }
 	
 	//register player
 	public static int insertPlayer(String username, String password) {

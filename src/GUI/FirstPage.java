@@ -1,6 +1,6 @@
 package GUI;
 
-import Database.AppSession;
+import Database.CurrentPlayer;
 import Database.Player;
 import Database.Pokedex;
 
@@ -425,15 +425,19 @@ public class FirstPage implements ActionListener{
 	            int PID = Player.validateSignIn(usernameField.getText(), password);
 
 	            if (PID != 0) {
-	                player = new Player(PID);
-        
-	                AppSession.setCurrentPlayerId(PID);
-	                
+	            	Player player = Player.loadPlayerProfile(PID);
+	                if (player == null) {
+	                    JOptionPane.showMessageDialog(frame, "Failed to load player profile.", "Error", JOptionPane.ERROR_MESSAGE);
+	                    return;
+	                }
+
+	                // Set the current player session with the full Player object
+	                CurrentPlayer.setCurrentPlayer(player);
+
 	                frame.dispose();
-	                
+
 	                Pokedex px = new Pokedex(player);
 	                PokedexPage pokedex = new PokedexPage(px);
-
 	                
 	            } else
 	                JOptionPane.showMessageDialog(frame, "Invalid username or password.");

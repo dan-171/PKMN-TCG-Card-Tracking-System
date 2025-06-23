@@ -1,6 +1,6 @@
 package GUI;
 
-import Database.AppSession;
+import Database.CurrentPlayer;
 import Database.JDBC;
 import Database.Player;
 import Database.Pokedex;

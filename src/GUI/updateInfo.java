@@ -2,10 +2,7 @@ package GUI;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import Database.AppSession;
 import Database.Player;
 
 public class updateInfo extends JFrame {
@@ -14,11 +11,11 @@ public class updateInfo extends JFrame {
     private CardLayout cardLayout;
     private JPanel cardPanel;
     private PlayerProfile profileRef;
-    
-    public updateInfo(JFrame parentFrame,PlayerProfile profileRef, int playerId) {
+
+    public updateInfo(JFrame parentFrame, PlayerProfile profileRef, int playerId) {
         super("Update Account Info");
         this.profileRef = profileRef;
-        this.playerId = playerId;      
+        this.playerId = playerId;
         this.player = Player.loadPlayerProfile(playerId);
 
         if (this.player == null) {
@@ -35,11 +32,9 @@ public class updateInfo extends JFrame {
         ImageIcon logo = new ImageIcon("resources/LOGO/logo.jpg");
         setIconImage(logo.getImage());
 
-        // CardLayout panel
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
 
-        // Main menu
         cardPanel.add(createMainMenu(), "MENU");
         cardPanel.add(createUsernamePanel(), "USERNAME");
         cardPanel.add(createPasswordPanel(), "PASSWORD");
@@ -54,7 +49,7 @@ public class updateInfo extends JFrame {
         JPanel panel = new JPanel(new GridLayout(4, 1, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 40, 20, 40));
 
-        JLabel label = new JLabel("Which personal info you want update?", SwingConstants.CENTER);
+        JLabel label = new JLabel("Which personal info do you want to update?", SwingConstants.CENTER);
         panel.add(label);
 
         JButton updateNameBtn = new JButton("Name");
@@ -63,7 +58,7 @@ public class updateInfo extends JFrame {
         updatePasswordBtn.setFocusable(false);
         JButton cancelBtn = new JButton("Cancel");
         cancelBtn.setFocusable(false);
-        
+
         updateNameBtn.addActionListener(e -> cardLayout.show(cardPanel, "USERNAME"));
         updatePasswordBtn.addActionListener(e -> cardLayout.show(cardPanel, "PASSWORD"));
         cancelBtn.addActionListener(e -> dispose());
@@ -103,9 +98,10 @@ public class updateInfo extends JFrame {
                 boolean updated = player.resetUsername(playerId, newUsername);
                 if (updated) {
                     JOptionPane.showMessageDialog(this, "Username updated successfully!");
-                    profileRef.loadProfile(playerId);
+                    profileRef.loadProfile();  // reload profile data
+                    // Update session's playerName as well
+                    player.setPlayerName(newUsername);
                     dispose();
-                    
                 } else {
                     JOptionPane.showMessageDialog(this, "Failed to update username.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -154,6 +150,8 @@ public class updateInfo extends JFrame {
                 boolean updated = player.resetPassword(playerId, newPwd);
                 if (updated) {
                     JOptionPane.showMessageDialog(this, "Password updated successfully!");
+                    // Update session password
+                    player.setPassword(newPwd);
                     dispose();
                 } else {
                     JOptionPane.showMessageDialog(this, "Failed to update password.", "Error", JOptionPane.ERROR_MESSAGE);
