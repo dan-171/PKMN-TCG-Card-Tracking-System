@@ -1,6 +1,6 @@
 package GUI;
 
-import Database.AppSession;
+import Database.CurrentPlayer;
 import Database.JDBC;
 import Database.Player;
 import Database.Pokedex;
@@ -28,8 +28,7 @@ public class PokedexPage implements ActionListener{
 	private JTextField searchField;
 	private JScrollPane scrollPane;
 	
-	private Integer currentId = AppSession.getCurrentPlayerId();
-	private Player player = new Player(currentId);
+	private Player player = CurrentPlayer.getCurrentPlayer();
 	
 	private Pokedex pokedex;
 	private ArrayList<JButton> cardButton;
@@ -193,63 +192,63 @@ public class PokedexPage implements ActionListener{
 	}
 
 	public void actionPerformed(ActionEvent event) {
-		int panelPicW = (int) (screenWidth * 0.08);
-		int panelPicH = (int) (screenHeight * 0.2);
-		String command = event.getActionCommand();
-		switch (command) {
-		case "Profile":
-			frame.dispose();
-			PlayerProfile playerProfile = new PlayerProfile();	           
-			//Clear the 
-			Integer currentId = AppSession.getCurrentPlayerId();
+	    int panelPicW = (int) (screenWidth * 0.08);
+	    int panelPicH = (int) (screenHeight * 0.2);
+	    String command = event.getActionCommand();
 
-			if (currentId == null) {
-				JOptionPane.showMessageDialog(null, "No player is currently authenticated.");
-				return;
-			}
+	    switch (command) {
+	        case "Profile":
+	            frame.dispose();
+	            PlayerProfile playerProfile = new PlayerProfile();
 
-			//playerProfile.init();
-			playerProfile.loadProfile(currentId);
+	            Player currentPlayer = CurrentPlayer.getCurrentPlayer();
+	            if (currentPlayer == null) {
+	                JOptionPane.showMessageDialog(null, "No player is currently authenticated.");
+	                return;
+	            }
 
-			break;
-		case "Logout":
-			// Clear the session
-			AppSession.clearSession();
+	            // Load profile using the session player
+	            playerProfile.loadProfile(); // You can now simplify loadProfile() to use CurrentPlayer directly
+	            break;
 
-			// Show logout confirmation
-			JOptionPane.showMessageDialog(null, "You have been logged out successfully.");
+	        case "Logout":
+	            // Clear the session
+	            CurrentPlayer.clearSession();
 
-			// Dispose current frame
-			frame.dispose();
-			
-			FirstPage FP = new FirstPage();
-			break;
+	            // Show logout confirmation
+	            JOptionPane.showMessageDialog(null, "You have been logged out successfully.");
 
-		case "Search":
-			currentSearchKeyword = searchField.getText().trim().toLowerCase();
-			applyAllFilters(panelPicW, panelPicH);
-			break;
+	            // Dispose current frame
+	            frame.dispose();
 
-		case "FilterType":
-			selectedTypeFilter = ((String) ((JComboBox<?>) event.getSource()).getSelectedItem());
-			String typeFilter = selectedTypeFilter.equalsIgnoreCase("Any") ? "" : selectedTypeFilter;
-			applyAllFilters(panelPicW, panelPicH);
-			break;
-			
-		case "FilterStage":
-			selectedStageFilter = ((String) ((JComboBox<?>) event.getSource()).getSelectedItem());
-			applyAllFilters(panelPicW, panelPicH);
-			break;
-			
-		case "FilterAcquired":
-			selectedAcquiredFilter = ((String) ((JComboBox<?>) event.getSource()).getSelectedItem());
-			applyAllFilters(panelPicW, panelPicH);
-			break;
-			
-		default:
-			System.out.println("Unknown action: " + command);
-			break;
-		}
+	            // Redirect to first page
+	            FirstPage FP = new FirstPage();
+	            break;
+
+	        case "Search":
+	            currentSearchKeyword = searchField.getText().trim().toLowerCase();
+	            applyAllFilters(panelPicW, panelPicH);
+	            break;
+
+	        case "FilterType":
+	            selectedTypeFilter = ((String) ((JComboBox<?>) event.getSource()).getSelectedItem());
+	            applyAllFilters(panelPicW, panelPicH);
+	            break;
+
+	        case "FilterStage":
+	            selectedStageFilter = ((String) ((JComboBox<?>) event.getSource()).getSelectedItem());
+	            applyAllFilters(panelPicW, panelPicH);
+	            break;
+
+	        case "FilterAcquired":
+	            selectedAcquiredFilter = ((String) ((JComboBox<?>) event.getSource()).getSelectedItem());
+	            applyAllFilters(panelPicW, panelPicH);
+	            break;
+
+	        default:
+	            System.out.println("Unknown action: " + command);
+	            break;
+	    }
 	}
 
 	public void displayPanel() {
