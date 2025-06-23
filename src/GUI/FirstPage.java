@@ -433,11 +433,7 @@ public class FirstPage implements ActionListener{
 	                
 	                Pokedex px = new Pokedex(player);
 	                PokedexPage pokedex = new PokedexPage(px);
-	                
-	                // proceed to the main application
-	                //Need to add the cardlayout to the pokedex
-	                
-	                
+
 	                
 	            } else
 	                JOptionPane.showMessageDialog(frame, "Invalid username or password.");

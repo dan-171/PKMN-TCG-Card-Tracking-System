@@ -3,12 +3,17 @@ package GUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.InputStream;
+import java.sql.Connection;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import Database.AppSession;
+import Database.JDBC;
 import Database.Player;
 import Database.Pokedex;
 import GUI.TriangleLabel.Direction;
@@ -19,9 +24,10 @@ public class PlayerProfile implements ActionListener{
 	private JPanel panelHeader,centerBg,titleBg,playerInfoPanel,
 	playerInfoArea,centerPanel,westPanel,northPanel,eastPanel,southPanel;
 	private JLabel pageTitle,profileImage,playerName,playerId,numOfcards,regDate;
-	private JButton updatePlayerInfo;
-	private RoundIconButton BackBtn;
-	
+	private JButton updatePlayerInfo, delPlayerAcc;
+	private RoundIconButton BackBtn;	
+	private JDesktopPane desktopPane;
+
 	String name ,playerID,registerDate;
 	int numOfCards;
 	private Player player;
@@ -119,7 +125,7 @@ public class PlayerProfile implements ActionListener{
 		
 		int panelPicW = (int)(screenWidth * 0.2);
 		int panelPicH = (int)(screenHeight * 0.7);
-		
+	
 		//rescaled the profile Pic
 		ImageIcon oriProfilePic = new ImageIcon("resources/profileUse/mcPic.png");
 		Image scaledProfilePic = oriProfilePic.getImage().getScaledInstance(panelPicW, panelPicH, Image.SCALE_SMOOTH);
@@ -131,16 +137,12 @@ public class PlayerProfile implements ActionListener{
 		//locate panel for profile picture
 		RoundedSidePanel ImagePanel = new RoundedSidePanel(new Color(0x89CFF0), 30, true);
 		ImagePanel.setLayout(new BorderLayout());
-		ImagePanel.setBounds(0, 0, panelW / 3, panelH);
-
-
-		
+		ImagePanel.setBounds(0, 0, panelW / 3, panelH);	
 		ImagePanel.setBackground(new Color(0x89CFF0));
 		ImagePanel.add(profileImage); //add profile into image panel
 
 		ImagePanel.setBounds(0, 0, panelW / 3, panelH);
 		playerInfoPanel.add(ImagePanel); //add image panel into center panel
-		
 		
 		//create a panel for player info
 		RoundedSidePanel playerInfoArea = new RoundedSidePanel(new Color(0xB3D9FF), 30, false);
@@ -225,11 +227,11 @@ public class PlayerProfile implements ActionListener{
 		southPanel.setLayout(new FlowLayout());
 		playerInfoArea.add(southPanel,BorderLayout.SOUTH);
 		
-		
 		ImageIcon oriIconImage = new ImageIcon("resources/profileUse/editIcon.png");
 		Image scaledIconImage = oriIconImage.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH);
 		ImageIcon editIcon = new ImageIcon(scaledIconImage);
 		
+		//button for update info
 		updatePlayerInfo = new JButton("Update Info",editIcon);
 		updatePlayerInfo.setFont(new Font("Segoe UI", Font.BOLD, 24));
 		updatePlayerInfo.setFocusable(false);
@@ -240,105 +242,19 @@ public class PlayerProfile implements ActionListener{
 		updatePlayerInfo.addActionListener(this);
 		southPanel.add(updatePlayerInfo);
 		
+		//button for delete player's account
+		delPlayerAcc = new JButton("Delete Account");
+		delPlayerAcc.setFont(new Font("Segoe UI", Font.BOLD, 24));
+		delPlayerAcc.setFocusable(false);
+		delPlayerAcc.setForeground(Color.red);
+		delPlayerAcc.setBackground(Color.LIGHT_GRAY);
+		delPlayerAcc.setPreferredSize(new Dimension (350,50));
+		delPlayerAcc.setBorder(BorderFactory.createLineBorder(Color.black,3));
+		delPlayerAcc.addActionListener(this);
+		southPanel.add(delPlayerAcc);
 		
 	}
-	public void updateInfo() {
-		//define the option
-		Integer currentId = AppSession.getCurrentPlayerId();
-	    Player player = null;
-	    if (currentId == null) {
-	        JOptionPane.showMessageDialog(playerInfoPanel, "No player is currently authenticated.", "Error", JOptionPane.ERROR_MESSAGE);
-	        return;
-	    } else {
-	        player = Player.loadPlayerProfile(currentId);
-	        if (player == null) {
-	            JOptionPane.showMessageDialog(playerInfoPanel, "Player not found.", "Error", JOptionPane.ERROR_MESSAGE);
-	            return;
-	        }
-	    }
-	    
-		String[]updateOption = {"Name","Password","Cancel"};
-		
-		//create option dialog
-		int choice = JOptionPane.showOptionDialog(playerInfoPanel, 
-				"Which personal info you want update?", 
-				"Personal Info Update", 
-				JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.PLAIN_MESSAGE, 
-				null, 
-				updateOption,0);
-		
-		switch(choice) {
-			case 0://player name
-				
-				String newUsername = JOptionPane.showInputDialog(playerInfoPanel, "Enter new username:");
-	            if (newUsername == null) { // User pressed cancel
-	                break;
-	            } else if (newUsername.trim().isEmpty()) {
-	                JOptionPane.showMessageDialog(playerInfoPanel, "Username cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
-	            } else if (newUsername.equals(player.getPlayerName())) {
-	                JOptionPane.showMessageDialog(playerInfoPanel, "Username cannot be the same.", "Error", JOptionPane.ERROR_MESSAGE);
-	            } else {
-	                boolean updated = player.resetUsername(currentId, newUsername);
-	                if ((updated)) {
-	                    JOptionPane.showMessageDialog(playerInfoPanel, "Username updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-	                    // Update label to reflect new name
-	                    playerName.setText("Name: " + newUsername);
-	                    centerPanel.revalidate();
-	                    centerPanel.repaint();
-	                } else {
-	                    JOptionPane.showMessageDialog(playerInfoPanel, "Failed to update username.", "Error", JOptionPane.ERROR_MESSAGE);
-	                }
-	            }
-	            break;
-				
-			case 1://password
-				 boolean passwordCorrect = false;
 
-		            String storedPassword = player.getPassword();
-		            System.out.println("now the password is: " + storedPassword);
-
-		            while (!passwordCorrect) {
-		                String originalPassword = JOptionPane.showInputDialog(playerInfoPanel, "Enter your current password:");
-		                if (originalPassword == null) { // User pressed cancel
-		                    break;
-		                } else if (originalPassword.equals(storedPassword)) {
-		                    passwordCorrect = true;
-
-		                    while (true) {
-		                        String newPassword = JOptionPane.showInputDialog(playerInfoPanel, "Enter new password:");
-		                        if (newPassword == null) { // User pressed cancel
-		                            break;
-		                        } else if (newPassword.trim().isEmpty()) {
-		                            JOptionPane.showMessageDialog(playerInfoPanel, "Password cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
-		                        } else if (newPassword.equals(originalPassword)) {
-		                            JOptionPane.showMessageDialog(playerInfoPanel, "New password cannot be the same as the current password.", "Error", JOptionPane.ERROR_MESSAGE);
-		                        } else {
-		                            // Update password in database
-		                            boolean updated = player.resetPassword(currentId, newPassword);
-		                            if ((updated)) {
-		                                JOptionPane.showMessageDialog(playerInfoPanel, "Password updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-		                                break;
-		                            } else {
-		                                JOptionPane.showMessageDialog(playerInfoPanel, "Failed to update password.", "Error", JOptionPane.ERROR_MESSAGE);
-		                                break;
-		                            }
-		                        }
-		                    }
-
-		                } else {
-		                    JOptionPane.showMessageDialog(playerInfoPanel, "Incorrect password.", "Error", JOptionPane.ERROR_MESSAGE);
-		                }
-		            }
-		            break;
- 
-
-		        case 2: //Cancel
-		        default:
-		            //Close dialog
-		            return;
-			}
-		}
 	//load player profile
 	public void loadProfile(int pId) {
 	    Player player = Player.loadPlayerProfile(pId);
@@ -360,18 +276,18 @@ public class PlayerProfile implements ActionListener{
         
 		Pokedex px = new Pokedex(player);
 		
-		if(e.getSource() == BackBtn)  {
-			System.out.println("Back button clicked!");
-			
-			playerProfile.dispose();
-			
+		if(e.getSource() == BackBtn)  {	
+			playerProfile.dispose();	
             PokedexPage pokedex = new PokedexPage(px);
 		}
 		
 		else if(e.getSource() == updatePlayerInfo) {
-			System.out.println("Update Player button clicked!");
-			updateInfo();
+			new updateInfo(playerProfile,this, currentId);
+		}
+		else if(e.getSource() == delPlayerAcc) {
+			new deleteAccount(playerProfile, currentId);
 		}
 
 	}
 }
+

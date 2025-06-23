@@ -14,6 +14,8 @@ public class LoadingPage {
 		 frame = new JFrame("Pokemon TCG Card Tracking System");
 	     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	     frame.setSize(1024, 768);
+	 	 ImageIcon logo = new ImageIcon("resources/LOGO/logo.jpg");
+	 	 frame.setIconImage(logo.getImage());
 	     frame.setLocationRelativeTo(null);
 	     frame.setResizable(false);
 	     
