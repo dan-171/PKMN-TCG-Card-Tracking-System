@@ -8,7 +8,7 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import Database.AppSession;
+import Database.CurrentPlayer;
 import Database.Player;
 import Database.Pokedex;
 import GUI.TriangleLabel.Direction;
@@ -243,135 +243,126 @@ public class PlayerProfile implements ActionListener{
 		
 	}
 	public void updateInfo() {
-		//define the option
-		Integer currentId = AppSession.getCurrentPlayerId();
-	    Player player = null;
-	    if (currentId == null) {
+	    // Get the current player directly
+	    Player player = CurrentPlayer.getCurrentPlayer();
+
+	    if (player == null) {
 	        JOptionPane.showMessageDialog(playerInfoPanel, "No player is currently authenticated.", "Error", JOptionPane.ERROR_MESSAGE);
 	        return;
-	    } else {
-	        player = Player.loadPlayerProfile(currentId);
-	        if (player == null) {
-	            JOptionPane.showMessageDialog(playerInfoPanel, "Player not found.", "Error", JOptionPane.ERROR_MESSAGE);
-	            return;
-	        }
 	    }
-	    
-		String[]updateOption = {"Name","Password","Cancel"};
-		
-		//create option dialog
-		int choice = JOptionPane.showOptionDialog(playerInfoPanel, 
-				"Which personal info you want update?", 
-				"Personal Info Update", 
-				JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.PLAIN_MESSAGE, 
-				null, 
-				updateOption,0);
-		
-		switch(choice) {
-			case 0://player name
-				
-				String newUsername = JOptionPane.showInputDialog(playerInfoPanel, "Enter new username:");
-	            if (newUsername == null) { // User pressed cancel
-	                break;
-	            } else if (newUsername.trim().isEmpty()) {
-	                JOptionPane.showMessageDialog(playerInfoPanel, "Username cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
-	            } else if (newUsername.equals(player.getPlayerName())) {
-	                JOptionPane.showMessageDialog(playerInfoPanel, "Username cannot be the same.", "Error", JOptionPane.ERROR_MESSAGE);
-	            } else {
-	                boolean updated = player.resetUsername(currentId, newUsername);
-	                if ((updated)) {
-	                    JOptionPane.showMessageDialog(playerInfoPanel, "Username updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-	                    // Update label to reflect new name
-	                    playerName.setText("Name: " + newUsername);
-	                    centerPanel.revalidate();
-	                    centerPanel.repaint();
-	                } else {
-	                    JOptionPane.showMessageDialog(playerInfoPanel, "Failed to update username.", "Error", JOptionPane.ERROR_MESSAGE);
-	                }
-	            }
+
+	    String[] updateOption = {"Name", "Password", "Cancel"};
+
+	    // Create option dialog
+	    int choice = JOptionPane.showOptionDialog(playerInfoPanel,
+	            "Which personal info you want to update?",
+	            "Personal Info Update",
+	            JOptionPane.YES_NO_CANCEL_OPTION,
+	            JOptionPane.PLAIN_MESSAGE,
+	            null,
+	            updateOption, 0);
+
+	    switch (choice) {
+	    case 0: // Update player name
+	        String newUsername = JOptionPane.showInputDialog(playerInfoPanel, "Enter new username:");
+	        if (newUsername == null) { // User pressed cancel
 	            break;
-				
-			case 1://password
-				 boolean passwordCorrect = false;
+	        } else if (newUsername.trim().isEmpty()) {
+	            JOptionPane.showMessageDialog(playerInfoPanel, "Username cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
+	        } else if (newUsername.equals(player.getPlayerName())) {
+	            JOptionPane.showMessageDialog(playerInfoPanel, "Username cannot be the same.", "Error", JOptionPane.ERROR_MESSAGE);
+	        } else {
+	            boolean updated = Player.resetUsername(player.getPlayerID(), newUsername);
+	            if (updated) {
+	                JOptionPane.showMessageDialog(playerInfoPanel, "Username updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+	                playerName.setText("Name: " + newUsername);
+	                centerPanel.revalidate();
+	                centerPanel.repaint();
 
-		            String storedPassword = player.getPassword();
-		            System.out.println("now the password is: " + storedPassword);
+	                // Update the name in CurrentPlayer session via setter
+	                CurrentPlayer.getCurrentPlayer().setPlayerName(newUsername);
+	            } else {
+	                JOptionPane.showMessageDialog(playerInfoPanel, "Failed to update username.", "Error", JOptionPane.ERROR_MESSAGE);
+	            }
+	        }
+	        break;
 
-		            while (!passwordCorrect) {
-		                String originalPassword = JOptionPane.showInputDialog(playerInfoPanel, "Enter your current password:");
-		                if (originalPassword == null) { // User pressed cancel
-		                    break;
-		                } else if (originalPassword.equals(storedPassword)) {
-		                    passwordCorrect = true;
+	    case 1: // Update password
+	        boolean passwordCorrect = false;
 
-		                    while (true) {
-		                        String newPassword = JOptionPane.showInputDialog(playerInfoPanel, "Enter new password:");
-		                        if (newPassword == null) { // User pressed cancel
-		                            break;
-		                        } else if (newPassword.trim().isEmpty()) {
-		                            JOptionPane.showMessageDialog(playerInfoPanel, "Password cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
-		                        } else if (newPassword.equals(originalPassword)) {
-		                            JOptionPane.showMessageDialog(playerInfoPanel, "New password cannot be the same as the current password.", "Error", JOptionPane.ERROR_MESSAGE);
-		                        } else {
-		                            // Update password in database
-		                            boolean updated = player.resetPassword(currentId, newPassword);
-		                            if ((updated)) {
-		                                JOptionPane.showMessageDialog(playerInfoPanel, "Password updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-		                                break;
-		                            } else {
-		                                JOptionPane.showMessageDialog(playerInfoPanel, "Failed to update password.", "Error", JOptionPane.ERROR_MESSAGE);
-		                                break;
-		                            }
-		                        }
-		                    }
+	        String storedPassword = player.getPassword();
 
-		                } else {
-		                    JOptionPane.showMessageDialog(playerInfoPanel, "Incorrect password.", "Error", JOptionPane.ERROR_MESSAGE);
-		                }
-		            }
-		            break;
- 
+	        while (!passwordCorrect) {
+	            String originalPassword = JOptionPane.showInputDialog(playerInfoPanel, "Enter your current password:");
+	            if (originalPassword == null) { // User pressed cancel
+	                break;
+	            } else if (originalPassword.equals(storedPassword)) {
+	                passwordCorrect = true;
 
-		        case 2: //Cancel
-		        default:
-		            //Close dialog
-		            return;
-			}
-		}
-	//load player profile
-	public void loadProfile(int pId) {
-	    Player player = Player.loadPlayerProfile(pId);
+	                while (true) {
+	                    String newPassword = JOptionPane.showInputDialog(playerInfoPanel, "Enter new password:");
+	                    if (newPassword == null) { // User pressed cancel
+	                        break;
+	                    } else if (newPassword.trim().isEmpty()) {
+	                        JOptionPane.showMessageDialog(playerInfoPanel, "Password cannot be empty.", "Error", JOptionPane.ERROR_MESSAGE);
+	                    } else if (newPassword.equals(originalPassword)) {
+	                        JOptionPane.showMessageDialog(playerInfoPanel, "New password cannot be the same as the current password.", "Error", JOptionPane.ERROR_MESSAGE);
+	                    } else {
+	                        boolean updated = Player.resetPassword(player.getPlayerID(), newPassword);
+	                        if (updated) {
+	                            JOptionPane.showMessageDialog(playerInfoPanel, "Password updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+	                            // Update password in session via setter
+	                            CurrentPlayer.getCurrentPlayer().setPassword(newPassword);
+	                            break;
+	                        } else {
+	                            JOptionPane.showMessageDialog(playerInfoPanel, "Failed to update password.", "Error", JOptionPane.ERROR_MESSAGE);
+	                            break;
+	                        }
+	                    }
+	                }
+
+	            } else {
+	                JOptionPane.showMessageDialog(playerInfoPanel, "Incorrect password.", "Error", JOptionPane.ERROR_MESSAGE);
+	            }
+	        }
+	        break;
+
+	    case 2: // Cancel
+	    default:
+	        return;
+	    }
+	}
+
+	public void loadProfile() {
+	    Player player = CurrentPlayer.getCurrentPlayer();
 
 	    if (player != null) {
-	        //refresh the GUI components:
-	    	playerName.setText("Name: " + player.getPlayerName());
+	        playerName.setText("Name: " + player.getPlayerName());
 	        playerId.setText("Player ID: " + player.getPlayerID());
 	        numOfcards.setText("Numbers of cards: " + player.getCardQuantity());
 	        regDate.setText("Registered date: " + player.getRegistrationDate().toString());
-	    } else
+	    } else {
 	        JOptionPane.showMessageDialog(playerProfile, "Player not found.");
+	    }
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Integer currentId = AppSession.getCurrentPlayerId();
-		player = new Player(currentId);
-        
-		Pokedex px = new Pokedex(player);
-		
-		if(e.getSource() == BackBtn)  {
-			System.out.println("Back button clicked!");
-			
-			playerProfile.dispose();
-			
-            PokedexPage pokedex = new PokedexPage(px);
-		}
-		
-		else if(e.getSource() == updatePlayerInfo) {
-			System.out.println("Update Player button clicked!");
-			updateInfo();
-		}
+	    // Get the current player directly
+	    Player player = CurrentPlayer.getCurrentPlayer();
 
+	    if (e.getSource() == BackBtn) {
+	        System.out.println("Back button clicked!");
+	        playerProfile.dispose();
+
+	        Pokedex px = new Pokedex(player);
+	        PokedexPage pokedex = new PokedexPage(px);
+	    }
+
+	    else if (e.getSource() == updatePlayerInfo) {
+	        System.out.println("Update Player button clicked!");
+	        updateInfo();
+	    }
 	}
 }
