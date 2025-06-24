@@ -12,8 +12,7 @@ public class Main{
 		try {
 			//Create a connection to the database
 			Connection conn = JDBC.getConnection();
-			PokedexPage pokedexPage = new PokedexPage(new Pokedex(new Player(1)));
-//			LoadingPage loadingPage = new LoadingPage();			
+			LoadingPage loadingPage = new LoadingPage();			
 			
 		}
 		catch (Exception e) {

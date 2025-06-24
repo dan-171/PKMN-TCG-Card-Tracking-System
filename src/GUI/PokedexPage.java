@@ -14,7 +14,7 @@ public class PokedexPage implements ActionListener, Page{
 	private String selectedAcquiredFilter = "All";
 	private String currentSearchKeyword = "";
 
-	
+
 	private JFrame frame;
 	private JPanel northPanel, centralPanel,searchPanel, filterPanel;
 	private int screenWidth, screenHeight;
@@ -23,12 +23,12 @@ public class PokedexPage implements ActionListener, Page{
 	private JMenuItem[]  profileMenuItems;
 	private JTextField searchField;
 	private JScrollPane scrollPane;
-	
-	private Player currentPlayer;
-	
-	private Pokedex pokedex;
-	private ArrayList<JButton> cardButton;
 
+	private Player currentPlayer;
+
+	private Pokedex pokedex;
+	private ArrayList<JButton> cardButtons;
+	private ArrayList<String> cardIDArrayList;
 
 
 	Fonts fonts = new Fonts();
@@ -42,7 +42,8 @@ public class PokedexPage implements ActionListener, Page{
 	//Constructor
 	public PokedexPage(Pokedex pokedex){
 		this.pokedex  = pokedex;
-		this.cardButton = new ArrayList<>();
+		this.cardButtons = new ArrayList<>();
+		this.cardIDArrayList = new ArrayList<String>();
 		init();
 		NorthPanel();
 		CentralPanel();
@@ -55,8 +56,8 @@ public class PokedexPage implements ActionListener, Page{
 		screenWidth = screenSize.width;
 		screenHeight = screenSize.height;
 		currentPlayer = CurrentPlayer.getCurrentPlayer();
-		
-		
+
+
 		frame = new JFrame();
 		frame.setSize(screenSize);
 		frame.setResizable(false);
@@ -71,19 +72,19 @@ public class PokedexPage implements ActionListener, Page{
 	public void NorthPanel() {
 		int top = 50;
 		int bottom = 0;
-		
+
 		//North Panel
 		northPanel = setUp.gridBagLayout();
 		northPanel.setPreferredSize(new Dimension(screenWidth,screenHeight/4));
 		northPanel.setBackground(new Color(0xD94446));
-		
+
 		//create search function
 		searchPanel = new JPanel(new FlowLayout(FlowLayout.LEADING));
 		searchField = new JTextField(10);
 		searchButton = new JButton("Search");
 		JLabel searchText = new JLabel ("Search:");
 		searchText.setForeground(Color.WHITE);
-		 
+
 		searchPanel.add(searchText);
 		searchPanel.add(searchField);
 		searchPanel.add(searchButton);
@@ -96,18 +97,18 @@ public class PokedexPage implements ActionListener, Page{
 		//filter panel
 		filterPanel = new JPanel(new FlowLayout(FlowLayout.LEADING)); 
 		filterPanel.setBackground(new Color(0xD94446));
-		
+
 		//filter type
 		JLabel filterText1 = new JLabel ("Type:");
 		filterText1.setForeground(Color.WHITE);
 		filterPanel.add(filterText1);
-		
+
 		String[] type = {"Any","Colorless","Fire","Water","Lightning","Grass","Fighting","Psychic"};
 		JComboBox<String> typeBox = new JComboBox<>(type);
 		typeBox.setActionCommand("FilterType");
 		typeBox.addActionListener(this);
 		filterPanel.add(typeBox);
-		
+
 		// filter stage
 		JLabel filterText2 = new JLabel("Stage:");
 		filterText2.setForeground(Color.WHITE);
@@ -150,35 +151,35 @@ public class PokedexPage implements ActionListener, Page{
 
 		// Create profile menu
 		profileMenuButton = new JButton("≡"); 
-		
-		
+
+
 		fonts.BodyFont(profileMenuButton);
 		profileMenu = new JPopupMenu();
 		String[] menuLabels = {"Profile", "Logout"}; // Menu item labels
 		profileMenuItems = new JMenuItem[menuLabels.length]; 
-		
+
 
 		for (int i = 0; i < menuLabels.length; i++) {
-		    profileMenuItems[i] = new JMenuItem(menuLabels[i]);
-		    fonts.BodyFont(profileMenuItems[i]);
-		    profileMenuItems[i].setBackground(new Color(0xD94446));
-		    profileMenuItems[i].setForeground(Color.WHITE);
-		    profileMenuItems[i].addActionListener(this);
-		    profileMenu.add(profileMenuItems[i]);
+			profileMenuItems[i] = new JMenuItem(menuLabels[i]);
+			fonts.BodyFont(profileMenuItems[i]);
+			profileMenuItems[i].setBackground(new Color(0xD94446));
+			profileMenuItems[i].setForeground(Color.WHITE);
+			profileMenuItems[i].addActionListener(this);
+			profileMenu.add(profileMenuItems[i]);
 		}
 
 		// Profile Menu Button
 		profileMenuButton.addMouseListener(new MouseAdapter() {
-		    public void mousePressed(MouseEvent e) {
-		        if (profileMenu.isShowing()) {
-		            profileMenu.setVisible(false);
-		        } else {
-		            // Show the popup menu below the button
-		        	int x = profileMenuButton.getWidth() - profileMenu.getPreferredSize().width;
-		        	int y = profileMenuButton.getHeight();
-		        	profileMenu.show(profileMenuButton, x, y);
-		        }
-		    }
+			public void mousePressed(MouseEvent e) {
+				if (profileMenu.isShowing()) {
+					profileMenu.setVisible(false);
+				} else {
+					// Show the popup menu below the button
+					int x = profileMenuButton.getWidth() - profileMenu.getPreferredSize().width;
+					int y = profileMenuButton.getHeight();
+					profileMenu.show(profileMenuButton, x, y);
+				}
+			}
 		});
 
 		setUp.setGBC(gbc, 2, 1, 1, gbc.LINE_END, gbc.NONE, new Insets(top, 0, bottom, 20), 1.0);
@@ -190,62 +191,62 @@ public class PokedexPage implements ActionListener, Page{
 	}
 
 	public void actionPerformed(ActionEvent event) {
-	    int panelPicW = (int) (screenWidth * 0.08);
-	    int panelPicH = (int) (screenHeight * 0.2);
-	    String command = event.getActionCommand();
+		int panelPicW = (int) (screenWidth * 0.08);
+		int panelPicH = (int) (screenHeight * 0.2);
+		String command = event.getActionCommand();
 
-	    switch (command) {
-	        case "Profile":
-	            frame.dispose();
-	            PlayerProfile playerProfile = new PlayerProfile();
+		switch (command) {
+		case "Profile":
+			frame.dispose();
+			PlayerProfile playerProfile = new PlayerProfile();
 
-	            if (currentPlayer == null) {
-	                JOptionPane.showMessageDialog(null, "No player is currently authenticated.");
-	                return;
-	            }
+			if (currentPlayer == null) {
+				JOptionPane.showMessageDialog(null, "No player is currently authenticated.");
+				return;
+			}
 
-	            // Load profile using the session player
-	            playerProfile.loadProfile(); 
-	            break;
+			// Load profile using the session player
+			playerProfile.loadProfile(); 
+			break;
 
-	        case "Logout":
-	            // Clear the session
-	            CurrentPlayer.clearSession();
+		case "Logout":
+			// Clear the session
+			CurrentPlayer.clearSession();
 
-	            // Show logout confirmation
-	            JOptionPane.showMessageDialog(null, "You have been logged out successfully.");
+			// Show logout confirmation
+			JOptionPane.showMessageDialog(null, "You have been logged out successfully.");
 
-	            // Dispose current frame
-	            frame.dispose();
+			// Dispose current frame
+			frame.dispose();
 
-	            // Redirect to first page
-	            FirstPage FP = new FirstPage();
-	            break;
+			// Redirect to first page
+			FirstPage FP = new FirstPage();
+			break;
 
-	        case "Search":
-	            currentSearchKeyword = searchField.getText().trim().toLowerCase();
-	            applyAllFilters(panelPicW, panelPicH);
-	            break;
+		case "Search":
+			currentSearchKeyword = searchField.getText().trim().toLowerCase();
+			applyAllFilters(panelPicW, panelPicH);
+			break;
 
-	        case "FilterType":
-	            selectedTypeFilter = ((String) ((JComboBox<?>) event.getSource()).getSelectedItem());
-	            applyAllFilters(panelPicW, panelPicH);
-	            break;
+		case "FilterType":
+			selectedTypeFilter = ((String) ((JComboBox<?>) event.getSource()).getSelectedItem());
+			applyAllFilters(panelPicW, panelPicH);
+			break;
 
-	        case "FilterStage":
-	            selectedStageFilter = ((String) ((JComboBox<?>) event.getSource()).getSelectedItem());
-	            applyAllFilters(panelPicW, panelPicH);
-	            break;
+		case "FilterStage":
+			selectedStageFilter = ((String) ((JComboBox<?>) event.getSource()).getSelectedItem());
+			applyAllFilters(panelPicW, panelPicH);
+			break;
 
-	        case "FilterAcquired":
-	            selectedAcquiredFilter = ((String) ((JComboBox<?>) event.getSource()).getSelectedItem());
-	            applyAllFilters(panelPicW, panelPicH);
-	            break;
+		case "FilterAcquired":
+			selectedAcquiredFilter = ((String) ((JComboBox<?>) event.getSource()).getSelectedItem());
+			applyAllFilters(panelPicW, panelPicH);
+			break;
 
-	        default:
-	            System.out.println("Unknown action: " + command);
-	            break;
-	    }
+		default:
+			System.out.println("Unknown action: " + command);
+			break;
+		}
 	}
 
 	public void CentralPanel() {
@@ -260,9 +261,11 @@ public class PokedexPage implements ActionListener, Page{
 		int panelPicH = (int) (screenHeight * 0.2);
 
 		// Loop from BS001 to BS102
+		cardButtons.clear();
 		for (int i = 1; i <= pokedex.getSetSize(); i++) {
-			final int cardIndex = i; // Create a final variable to hold the current index
+			final int cardIndex = i; 
 			generateCardButton(String.format("BS%03d", cardIndex), panelPicW, panelPicH);
+			displayCardButton(String.format("BS%03d", cardIndex));
 		}
 
 		// Set preferred size larger than the visible area to trigger scroll
@@ -275,74 +278,81 @@ public class PokedexPage implements ActionListener, Page{
 		scrollPane.getVerticalScrollBar().setUnitIncrement(50);
 		frame.add(scrollPane);
 	}
-	
+
 	public void disableScroll() {
-	     scrollPane.setWheelScrollingEnabled(false);
-	     scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+		scrollPane.setWheelScrollingEnabled(false);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 	}
 
 
 	public void enableScroll() {
-	     scrollPane.setWheelScrollingEnabled(true);
-	     scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setWheelScrollingEnabled(true);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 	}
 
 	private void applyAllFilters(int panelPicW, int panelPicH) {
-	    // Normalize filters
-	    String nameFilter = currentSearchKeyword.isEmpty() ? null : currentSearchKeyword;
-	    String typeFilter = selectedTypeFilter.equalsIgnoreCase("Any") ? "" : selectedTypeFilter;
-	    String stageFilter = selectedStageFilter.equalsIgnoreCase("All") ? "" : selectedStageFilter;
+		// Normalize filters
+		String nameFilter = currentSearchKeyword.isEmpty() ? null : currentSearchKeyword;
+		String typeFilter = selectedTypeFilter.equalsIgnoreCase("Any") ? "" : selectedTypeFilter;
+		String stageFilter = selectedStageFilter.equalsIgnoreCase("All") ? "" : selectedStageFilter;
 
-	    // Filter by name + type + stage
-	    ArrayList<String> filteredCards = pokedex.filterCards(nameFilter, typeFilter, stageFilter);
+		// Filter by name + type + stage
+		ArrayList<String> filteredCards = pokedex.filterCards(nameFilter, typeFilter, stageFilter);
 
-	    // Apply acquisition filter (Acquired/Unacquired/All)
-	    ArrayList<String> finalFilteredCards = new ArrayList<>();
-	    for (String cardId : filteredCards) {
-	        boolean isMissing = pokedex.missingCard(cardId);
+		// Apply acquisition filter (Acquired/Unacquired/All)
+		ArrayList<String> finalFilteredCards = new ArrayList<>();
+		for (String cardId : filteredCards) {
+			boolean isMissing = pokedex.missingCard(cardId);
 
-	        if (selectedAcquiredFilter.equalsIgnoreCase("All")) {
-	            finalFilteredCards.add(cardId);
-	        } else if (selectedAcquiredFilter.equalsIgnoreCase("Acquired") && !isMissing) {
-	            finalFilteredCards.add(cardId);
-	        } else if (selectedAcquiredFilter.equalsIgnoreCase("Unacquired") && isMissing) {
-	            finalFilteredCards.add(cardId);
-	        }
-	    }
+			if (selectedAcquiredFilter.equalsIgnoreCase("All")) {
+				finalFilteredCards.add(cardId);
+			} else if (selectedAcquiredFilter.equalsIgnoreCase("Acquired") && !isMissing) {
+				finalFilteredCards.add(cardId);
+			} else if (selectedAcquiredFilter.equalsIgnoreCase("Unacquired") && isMissing) {
+				finalFilteredCards.add(cardId);
+			}
+		}
 
-	    // Step 3: Display cards
-	    centralPanel.removeAll();
-	    for (String cardId : finalFilteredCards) {
-	        generateCardButton(cardId, panelPicW, panelPicH);
-	    }
-	    centralPanel.revalidate();
-	    centralPanel.repaint();
+		centralPanel.removeAll();
+		cardButtons.clear();
+		for (String cardId : finalFilteredCards) {
+			generateCardButton(cardId, panelPicW, panelPicH);
+			displayCardButton(cardId);
+		}
+		centralPanel.revalidate();
+		centralPanel.repaint();
 	}
 
 	public void generateCardButton(String cardID, int w, int h){
 		ImageIcon icon = new ImageIcon(pokedex.fetchCardImg(cardID));
-        Image scaledImage = icon.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
-        icon = new ImageIcon(scaledImage);
+		Image scaledImage = icon.getImage().getScaledInstance(w, h, Image.SCALE_SMOOTH);
+		icon = new ImageIcon(scaledImage);
 
-        
-        JButton cardButton = new JButton(pokedex.fetchCardLabel(cardID), icon);
-        cardButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-        cardButton.setHorizontalTextPosition(SwingConstants.CENTER);
-        cardButton.setFont(new Font("Roboto", Font.BOLD, 14));
-        cardButton.setPreferredSize(new Dimension(w + 20, h + 40));
+		JButton cardButton = new JButton(pokedex.fetchCardLabel(cardID), icon);
+		cardButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		cardButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		cardButton.setFont(new Font("Roboto", Font.BOLD, 14));
+		cardButton.setPreferredSize(new Dimension(w + 20, h + 40));
 
-        // Add action listener if needed (e.g. show card details)
-        cardButton.addActionListener(e -> {
-        	scrollPane.getVerticalScrollBar().setValue(0);
-        	disableScroll();
-        	cardDisplay = new CardDisplay(Integer.parseInt(cardID.substring(2)), pokedex, frame);
-			centralPanel.removeAll();
-			centralPanel.add(cardDisplay);
-			centralPanel.revalidate();
-			centralPanel.repaint();
-	});
-	centralPanel.add(cardButton);
-	centralPanel.revalidate();
-	centralPanel.repaint();
+		cardButtons.add(cardButton);
+	}
+
+	public void displayCardButton(String cardID) {
+		centralPanel.removeAll();
+		for (JButton button : cardButtons) {
+
+			button.addActionListener(e -> {			
+				scrollPane.getVerticalScrollBar().setValue(0);
+				disableScroll();
+				cardDisplay = new CardDisplay(Integer.parseInt(cardID.substring(2)), pokedex, frame);
+				centralPanel.removeAll();
+				centralPanel.add(cardDisplay);
+				centralPanel.revalidate();
+				centralPanel.repaint();
+			});
+			centralPanel.add(button); 
+		}
+		centralPanel.revalidate();
+		centralPanel.repaint();
 	}
 }
