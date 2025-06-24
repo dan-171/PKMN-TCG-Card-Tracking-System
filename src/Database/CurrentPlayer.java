@@ -3,7 +3,7 @@ package Database;
 public class CurrentPlayer extends Player {
     private static CurrentPlayer instance = null;
 
-    private CurrentPlayer(int playerID) {
+    public CurrentPlayer(int playerID) {
         super(playerID);
     }
 

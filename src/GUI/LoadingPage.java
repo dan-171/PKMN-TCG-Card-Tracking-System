@@ -25,7 +25,7 @@ public class LoadingPage implements Page{
 				e.printStackTrace();
 			}
 			if (counter == 0)
-				counter += 100;
+				counter += 12;
 			else
 				counter += 24;
 		}
