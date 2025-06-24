@@ -82,10 +82,6 @@ public class FirstPage implements ActionListener, Page{
 		centralPanel = setUp.gridLayout(1, 2);
 
 		//Declare gbc 
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.fill = GridBagConstraints.NONE;
-		gbc.anchor = GridBagConstraints.CENTER; 
 		Dimension menuDimension = new Dimension(300, 100);
 
 		//Left Part

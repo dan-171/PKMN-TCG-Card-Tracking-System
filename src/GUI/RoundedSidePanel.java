@@ -5,48 +5,48 @@ import java.awt.*;
 import java.awt.geom.Path2D;
 
 public class RoundedSidePanel extends JPanel {
-    private final Color backgroundColor;
-    private final int arc;
-    private final boolean roundLeft;
+	private final Color backgroundColor;
+	private final int arc;
+	private final boolean roundLeft;
 
-    public RoundedSidePanel(Color bgColor, int arcRadius, boolean roundLeft) {
-        this.backgroundColor = bgColor;
-        this.arc = arcRadius;
-        this.roundLeft = roundLeft;
-        setOpaque(false);
-    }
+	public RoundedSidePanel(Color bgColor, int arcRadius, boolean roundLeft) {
+		this.backgroundColor = bgColor;
+		this.arc = arcRadius;
+		this.roundLeft = roundLeft;
+		setOpaque(false);
+	}
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g.create();
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	//Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Graphics2D g2 = (Graphics2D) g.create();
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        int w = getWidth();
-        int h = getHeight();
+		int w = getWidth();
+		int h = getHeight();
 
-        Path2D.Float path = new Path2D.Float();
+		Path2D.Float path = new Path2D.Float();
 
-        if (roundLeft) {
-            path.moveTo(arc, 0);
-            path.quadTo(0, 0, 0, arc);
-            path.lineTo(0, h - arc);
-            path.quadTo(0, h, arc, h);
-            path.lineTo(w, h);
-            path.lineTo(w, 0);
-            path.closePath();
-        } else {
-            path.moveTo(0, 0);
-            path.lineTo(w - arc, 0);
-            path.quadTo(w, 0, w, arc);
-            path.lineTo(w, h - arc);
-            path.quadTo(w, h, w - arc, h);
-            path.lineTo(0, h);
-            path.closePath();
-        }
+		if (roundLeft) {
+			path.moveTo(arc, 0);
+			path.quadTo(0, 0, 0, arc);
+			path.lineTo(0, h - arc);
+			path.quadTo(0, h, arc, h);
+			path.lineTo(w, h);
+			path.lineTo(w, 0);
+			path.closePath();
+		} else {
+			path.moveTo(0, 0);
+			path.lineTo(w - arc, 0);
+			path.quadTo(w, 0, w, arc);
+			path.lineTo(w, h - arc);
+			path.quadTo(w, h, w - arc, h);
+			path.lineTo(0, h);
+			path.closePath();
+		}
 
-        g2.setColor(backgroundColor);
-        g2.fill(path);
-        g2.dispose();
-    }
+		g2.setColor(backgroundColor);
+		g2.fill(path);
+		g2.dispose();
+	}
 }

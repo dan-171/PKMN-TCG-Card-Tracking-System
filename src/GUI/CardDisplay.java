@@ -75,7 +75,8 @@ public class CardDisplay extends JPanel {
 		rightPanel.add(pageTitle);
 
 		cardDescription = pokedex.fetchCardDescription(String.format("BS%03d", cardIndex));
-		JLabel label1 = new JLabel("<html><div style='text-align:center'>" + cardDescription.replace("]", "]<br>") + "</div></html>", SwingConstants.CENTER);
+		JLabel label1 = new JLabel("<html><div style='text-align:center'>" +
+				cardDescription.replace("]", "]<br>") + "</div></html>", SwingConstants.CENTER);
 		label1.setFont(new Font("Times New Roman", Font.BOLD, 30));
 		label1.setForeground(Color.black);
 		rightPanel.add(label1); 

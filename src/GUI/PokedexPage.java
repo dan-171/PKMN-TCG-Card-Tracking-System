@@ -39,7 +39,6 @@ public class PokedexPage implements ActionListener, Page{
 
 	public static final int Margin = 300;
 
-	//Constructor
 	public PokedexPage(Pokedex pokedex){
 		this.pokedex  = pokedex;
 		this.cardButtons = new ArrayList<>();
@@ -215,8 +214,6 @@ public class PokedexPage implements ActionListener, Page{
 
 			// Show logout confirmation
 			JOptionPane.showMessageDialog(null, "You have been logged out successfully.");
-
-			// Dispose current frame
 			frame.dispose();
 
 			// Redirect to first page

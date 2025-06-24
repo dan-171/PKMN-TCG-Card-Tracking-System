@@ -3,7 +3,7 @@ package GUI;
 import javax.swing.*;
 import java.awt.*;
 
-import Database.Player;
+import Database.*;
 
 public class updateInfo extends JFrame {
     private final Player player;

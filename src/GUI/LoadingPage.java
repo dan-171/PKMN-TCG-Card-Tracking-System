@@ -1,4 +1,5 @@
 package GUI;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -24,7 +25,7 @@ public class LoadingPage implements Page{
 				e.printStackTrace();
 			}
 			if (counter == 0)
-				counter += 76;
+				counter += 100;
 			else
 				counter += 24;
 		}
@@ -43,8 +44,6 @@ public class LoadingPage implements Page{
 	}
 
 	public void CentralPanel() {
-
-
 		ImageIcon backgroundIcon = new ImageIcon("resources/LOGO/PokemonWallpaper1024.jpg");
 		JLabel background = new JLabel(backgroundIcon);
 		background.setLayout(new BorderLayout());
