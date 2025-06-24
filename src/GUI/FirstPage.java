@@ -19,10 +19,10 @@ public class FirstPage implements ActionListener, Page{
 
 	private int screenWidth, screenHeight;
 
-	Dimension screenSize;
-	Fonts fonts = new Fonts();
-	SetUp setUp = new SetUp();
-	GridBagConstraints gbc = new GridBagConstraints();
+	private Dimension screenSize;
+	private Fonts fonts = new Fonts();
+	private SetUp setUp = new SetUp();
+	private GridBagConstraints gbc = new GridBagConstraints();
 
 
 	public static final int Margin = 300;
