@@ -17,12 +17,12 @@ public class PlayerProfile implements ActionListener{
 	private JButton updatePlayerInfo, delPlayerAcc;
 	private RoundIconButton BackBtn;	
 
-	String name ,playerID,registerDate;
+	private String name ,playerID,registerDate;
 	int numOfCards;
 	
-	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-	private int screenWidth = screenSize.width;
-	private int screenHeight = screenSize.height;
+	private Dimension screenSize ;
+	private int screenWidth;
+	private int screenHeight;
 
 	public PlayerProfile(){
 		init();			
@@ -33,7 +33,10 @@ public class PlayerProfile implements ActionListener{
 		
 	}
 	public void init() {
-
+		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		screenWidth = screenSize.width;
+		screenHeight = screenSize.height;
+		
 		playerProfile = new JFrame();
 		playerProfile.setSize(screenSize);
 		playerProfile.setResizable(false);
@@ -43,6 +46,7 @@ public class PlayerProfile implements ActionListener{
 		playerProfile.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		playerProfile.setLocationRelativeTo(null);//default location in center
 		playerProfile.setLayout(null);
+		
 		
 	}
 	public void backGround() {
