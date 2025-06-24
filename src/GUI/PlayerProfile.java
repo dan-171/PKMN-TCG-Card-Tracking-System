@@ -18,7 +18,7 @@ public class PlayerProfile implements ActionListener{
 	private RoundIconButton BackBtn;	
 
 	private String name ,playerID,registerDate;
-	int numOfCards;
+	private int numOfCards;
 	
 	private Dimension screenSize ;
 	private int screenWidth;
