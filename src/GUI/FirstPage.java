@@ -72,7 +72,6 @@ public class FirstPage implements ActionListener, Page{
 		bgImage.setLayout(null);
 		northPanel.add(bgImage);
 
-
 		setUp.setGBC(gbc, 0, 0, 1, gbc.CENTER, gbc.HORIZONTAL, new Insets(30, 0, 0, 0), 0);
 		frame.add(northPanel, BorderLayout.NORTH);
 
@@ -159,7 +158,6 @@ public class FirstPage implements ActionListener, Page{
 		setUp.setGBC(gbc, 0, 4, 2, gbc.CENTER, gbc.HORIZONTAL, new Insets(0, 0, 20, 0), 1);
 		centralRightPanel.add(signInButton, gbc);
 
-
 		passwordMenu = new JButton("Forgot Password");
 		setUp.setGBC(gbc, 0, 5, 2, gbc.CENTER, gbc.NONE, new Insets(0, 0, 0, 0), 1);
 		passwordMenu.addActionListener(this);
@@ -173,7 +171,6 @@ public class FirstPage implements ActionListener, Page{
 		setUp.setGBC(gbc, 0, 0, 2, gbc.CENTER, gbc.NONE, new Insets(-200, 0, 0, 0), 0);
 		fonts.Heading1(titleJLabel);
 		centralRightPanel.add(titleJLabel, gbc);
-
 
 		//Username 
 		Insets userInsets = new Insets(-50, 0, 50, 0);
@@ -228,7 +225,6 @@ public class FirstPage implements ActionListener, Page{
 		fonts.Heading1(titleJLabel);
 		centralRightPanel.add(titleJLabel, gbc);
 
-
 		//Username 
 		Insets userInsets = new Insets(-50, 0, 50, 0);
 		JLabel playerIDJLabel = new JLabel("Player ID: ");
@@ -281,7 +277,6 @@ public class FirstPage implements ActionListener, Page{
 		westPanel.setPreferredSize(new Dimension(Margin, 0));
 		westPanel.setBackground(new Color(0xFFFFFF));
 
-
 		//rescaled the profile Pic
 		ImageIcon oriImage1 = new ImageIcon("resources/LOGO/pikachu2.png");
 		Image scaledImage1 = oriImage1.getImage().getScaledInstance(screenWidth/10, screenHeight/5, Image.SCALE_SMOOTH);
@@ -327,7 +322,6 @@ public class FirstPage implements ActionListener, Page{
 
 			//Reset the showPasswordCheckBox
 			showPasswordCheckBox.setSelected(false);
-
 
 		} else if (event.getSource() == registerMenu) {
 			fonts.Heading1(registerMenu);    

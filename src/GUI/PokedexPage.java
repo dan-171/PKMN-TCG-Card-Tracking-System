@@ -334,6 +334,7 @@ public class PokedexPage implements ActionListener, Page{
 		cardButton.setFont(new Font("Roboto", Font.BOLD, 14));
 		cardButton.setPreferredSize(new Dimension(w + 20, h + 40));
 
+
 		cardButtons.add(cardButton);
 	}
 
