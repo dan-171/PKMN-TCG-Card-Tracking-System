@@ -12,8 +12,8 @@ public class Main{
 		try {
 			//Create a connection to the database
 			Connection conn = JDBC.getConnection();
-			//JOptionPane.showMessageDialog(null, "Database successfully connected!");
-			LoadingPage loadingPage = new LoadingPage();			
+			PokedexPage pokedexPage = new PokedexPage(new Pokedex(new Player(1)));
+//			LoadingPage loadingPage = new LoadingPage();			
 			
 		}
 		catch (Exception e) {

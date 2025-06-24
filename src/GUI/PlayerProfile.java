@@ -3,34 +3,22 @@ package GUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.InputStream;
-import java.sql.Connection;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import Database.CurrentPlayer;
-import Database.JDBC;
-import Database.Player;
-import Database.Pokedex;
-import GUI.TriangleLabel.Direction;
+import Database.*;
 
 
 public class PlayerProfile implements ActionListener{
 	private JFrame playerProfile;
 	private JPanel panelHeader,centerBg,titleBg,playerInfoPanel,
-	playerInfoArea,centerPanel,westPanel,northPanel,eastPanel,southPanel;
+	centerPanel,westPanel,northPanel,eastPanel,southPanel;
 	private JLabel pageTitle,profileImage,playerName,playerId,numOfcards,regDate;
 	private JButton updatePlayerInfo, delPlayerAcc;
 	private RoundIconButton BackBtn;	
-	private JDesktopPane desktopPane;
 
 	String name ,playerID,registerDate;
 	int numOfCards;
-	private Player player;
 	
 	Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	private int screenWidth = screenSize.width;
@@ -276,7 +264,6 @@ public class PlayerProfile implements ActionListener{
 	    }
 	}
 
-	@Override
 	public void actionPerformed(ActionEvent e) {
 	    Player player = CurrentPlayer.getCurrentPlayer();
 

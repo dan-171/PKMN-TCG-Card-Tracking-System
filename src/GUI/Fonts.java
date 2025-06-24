@@ -14,7 +14,6 @@ public class  Fonts{
 		this.heading2 = new Font("Roboto", Font.BOLD, heading2Size);
 		this.bodyFont = new Font("Times New Roman", Font.PLAIN, bodyFontSize);
 		
-		
 		//Change the default fonts
 		UIManager.put("Label.font", bodyFont);
         UIManager.put("Button.font", bodyFont);

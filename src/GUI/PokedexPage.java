@@ -1,18 +1,14 @@
 package GUI;
 
-import Database.CurrentPlayer;
-import Database.JDBC;
-import Database.Player;
-import Database.Pokedex;
+import Database.*;
 
 import javax.swing.*;
-import javax.swing.event.*;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class PokedexPage implements ActionListener{
+public class PokedexPage implements ActionListener, Page{
 	private String selectedTypeFilter = "";
 	private String selectedStageFilter = "";
 	private String selectedAcquiredFilter = "All";
@@ -28,7 +24,7 @@ public class PokedexPage implements ActionListener{
 	private JTextField searchField;
 	private JScrollPane scrollPane;
 	
-	private Player player = CurrentPlayer.getCurrentPlayer();
+	private Player currentPlayer;
 	
 	private Pokedex pokedex;
 	private ArrayList<JButton> cardButton;
@@ -49,7 +45,7 @@ public class PokedexPage implements ActionListener{
 		this.cardButton = new ArrayList<>();
 		init();
 		NorthPanel();
-		displayPanel();
+		CentralPanel();
 		frame.setVisible(true);
 
 	}
@@ -58,7 +54,9 @@ public class PokedexPage implements ActionListener{
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		screenWidth = screenSize.width;
 		screenHeight = screenSize.height;
-
+		currentPlayer = CurrentPlayer.getCurrentPlayer();
+		
+		
 		frame = new JFrame();
 		frame.setSize(screenSize);
 		frame.setResizable(false);
@@ -201,14 +199,13 @@ public class PokedexPage implements ActionListener{
 	            frame.dispose();
 	            PlayerProfile playerProfile = new PlayerProfile();
 
-	            Player currentPlayer = CurrentPlayer.getCurrentPlayer();
 	            if (currentPlayer == null) {
 	                JOptionPane.showMessageDialog(null, "No player is currently authenticated.");
 	                return;
 	            }
 
 	            // Load profile using the session player
-	            playerProfile.loadProfile(); // You can now simplify loadProfile() to use CurrentPlayer directly
+	            playerProfile.loadProfile(); 
 	            break;
 
 	        case "Logout":
@@ -251,7 +248,7 @@ public class PokedexPage implements ActionListener{
 	    }
 	}
 
-	public void displayPanel() {
+	public void CentralPanel() {
 		int panelWidth = (int) (screenWidth * 0.9);
 		int panelHeight = (int) (screenHeight * 0.85);
 
