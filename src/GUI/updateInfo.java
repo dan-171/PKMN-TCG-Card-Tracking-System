@@ -99,7 +99,6 @@ public class updateInfo extends JFrame {
                 if (updated) {
                     JOptionPane.showMessageDialog(this, "Username updated successfully!");
                     profileRef.loadProfile();  // reload profile data
-                    // Update session's playerName as well
                     player.setPlayerName(newUsername);
                     dispose();
                 } else {
@@ -150,7 +149,6 @@ public class updateInfo extends JFrame {
                 boolean updated = player.resetPassword(playerId, newPwd);
                 if (updated) {
                     JOptionPane.showMessageDialog(this, "Password updated successfully!");
-                    // Update session password
                     player.setPassword(newPwd);
                     dispose();
                 } else {

@@ -310,7 +310,6 @@ public class PokedexPage implements ActionListener, Page{
 	        }
 	    }
 
-	    // Step 3: Display cards
 	    centralPanel.removeAll();
 	    for (String cardId : finalFilteredCards) {
 	        generateCardButton(cardId, panelPicW, panelPicH);
@@ -331,7 +330,6 @@ public class PokedexPage implements ActionListener, Page{
         cardButton.setFont(new Font("Roboto", Font.BOLD, 14));
         cardButton.setPreferredSize(new Dimension(w + 20, h + 40));
 
-        // Add action listener if needed (e.g. show card details)
         cardButton.addActionListener(e -> {
         	scrollPane.getVerticalScrollBar().setValue(0);
         	disableScroll();

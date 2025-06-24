@@ -45,13 +45,11 @@ public class CardDisplay extends JPanel {
 
 			frame.dispose();
 			new PokedexPage(this.pokedex).enableScroll();
-
 		});
 
 		headerPanel.add(backButton);
 		headerPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		add(headerPanel, BorderLayout.NORTH);
-
 
 		// Create center panel
 		JPanel centreJPanel = new JPanel();
@@ -76,21 +74,15 @@ public class CardDisplay extends JPanel {
 		pageTitle.setFont(new Font("Times New Roman", Font.BOLD, 40));
 		rightPanel.add(pageTitle);
 
-
-
 		cardDescription = pokedex.fetchCardDescription(String.format("BS%03d", cardIndex));
 		JLabel label1 = new JLabel("<html><div style='text-align:center'>" + cardDescription.replace("]", "]<br>") + "</div></html>", SwingConstants.CENTER);
 		label1.setFont(new Font("Times New Roman", Font.BOLD, 30));
 		label1.setForeground(Color.black);
 		rightPanel.add(label1); 
 
-
-
 		// Quantity control
 		JPanel quantityPanel = createQuantityControl(String.format("BS%03d", cardIndex));
 		rightPanel.add(quantityPanel);
-
-
 
 		centreJPanel.add(rightPanel);
 		add(centreJPanel, BorderLayout.CENTER);
@@ -142,12 +134,9 @@ public class CardDisplay extends JPanel {
 			}
 		});
 
-
-
 		quantityPanel.add(minusButton);
 		quantityPanel.add(quantityLabel);
 		quantityPanel.add(plusButton);
-
 
 		return quantityPanel;
 	}	
