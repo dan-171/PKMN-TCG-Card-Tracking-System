@@ -28,7 +28,6 @@ public class PokedexPage implements ActionListener, Page{
 
 	private Pokedex pokedex;
 	private ArrayList<JButton> cardButtons;
-	private ArrayList<String> cardIDArrayList;
 
 
 	Fonts fonts = new Fonts();
@@ -42,7 +41,6 @@ public class PokedexPage implements ActionListener, Page{
 	public PokedexPage(Pokedex pokedex){
 		this.pokedex  = pokedex;
 		this.cardButtons = new ArrayList<>();
-		this.cardIDArrayList = new ArrayList<String>();
 		init();
 		NorthPanel();
 		CentralPanel();
