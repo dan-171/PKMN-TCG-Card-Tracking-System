@@ -19,6 +19,6 @@ Currently supports base set (the very first set of Pokémon TCG cards!)
 2. Right click project -> Libraries -> Classpath -> Add External JARs -> locate the MySQL connector JAR
 3. Enjoy!
 
-'''
+```
 To launch executable: java -jar PTCGTracker
-'''
+```
